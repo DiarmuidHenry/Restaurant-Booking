@@ -1,8 +1,5 @@
 from django.contrib import admin
-from .models import RestaurantTable
-from .models import Reservation
-from .models import NormalOpeningHours
-from .models import ExceptionalOpeningHours
+from .models import RestaurantTable, Reservation, NormalOpeningHours, ExceptionalOpeningHours
 
 # Register your models here.
 admin.site.register(RestaurantTable)
