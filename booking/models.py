@@ -30,6 +30,7 @@ class NormalOpeningHours(models.Model):
 
 class ExceptionalOpeningHours(models.Model):
     date = models.DateField(unique=True)
+    is_open = models.BooleanField(default=False)
     opening_time = models.TimeField()
     closing_time = models.TimeField()
 
