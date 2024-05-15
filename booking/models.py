@@ -44,8 +44,13 @@ class ExceptionalOpeningHours(models.Model):
 
 
 class RestaurantTable(models.Model):
+    LOCATION_CHOICES = [
+        (0, 'Inside'),
+        (1, 'Outside'),
+    ]
     table_number = models.PositiveIntegerField(unique=True)
     capacity = models.PositiveIntegerField(validators=[MinValueValidator(1)])
+    table_location = models.CharField(choices=LOCATION_CHOICES, default=0)
 
 class Reservation(models.Model):
     STATUS_CHOICES = [
