@@ -53,6 +53,11 @@ class RestaurantTable(models.Model):
     table_location = models.CharField(choices=LOCATION_CHOICES, default=0)
 
 class Reservation(models.Model):
+    LOCATION_CHOICES = [
+        (0, 'Inside'),
+        (1, 'Outside'),
+    ]
+    
     STATUS_CHOICES = [
         (1, 'Confirmed'),
         (0, 'Cancelled'),
@@ -74,6 +79,7 @@ class Reservation(models.Model):
     reservation_time = models.TimeField(default=timezone.now)
     reservation_length = models.CharField(choices=LENGTH_CHOICES, default=2)
     number_of_guests = models.PositiveIntegerField(validators=[MinValueValidator(1)])
+    table_location = models.CharField(choices=LOCATION_CHOICES, default=0)
     status = models.CharField(choices=STATUS_CHOICES, default=1)
 
     def clean(self):
