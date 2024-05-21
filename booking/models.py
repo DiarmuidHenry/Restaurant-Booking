@@ -54,6 +54,12 @@ class RestaurantTable(models.Model):
     capacity = models.PositiveIntegerField(validators=[MinValueValidator(1)])
     table_location = models.CharField(choices=LOCATION_CHOICES, default=0)
 
+    class Meta:
+        ordering = ["table_number"]
+
+    def __str__(self):
+        return f"Table {self.table_number} | Capacity: {self.capacity} | {self.table_location}"
+
 class Reservation(models.Model):
     LOCATION_CHOICES = [
         ('inside', 'Inside'),
