@@ -43,6 +43,15 @@ class ExceptionalOpeningHours(models.Model):
         if self.date <= now.date():
             raise ValidationError("Exceptional opening hours can only be created for future dates.")
 
+    class Meta:
+        ordering = ["date"]
+
+    def __str__(self):
+        if is_open:
+            return f"{self.date} | {self.opening_time} - {self.closing_time}"
+        else:
+            return f"{self.date} - CLOSED" 
+    
 
 class RestaurantTable(models.Model):
     LOCATION_CHOICES = [
@@ -60,6 +69,7 @@ class RestaurantTable(models.Model):
     def __str__(self):
         return f"Table {self.table_number} | Capacity: {self.capacity} | {self.table_location}"
 
+    
 class Reservation(models.Model):
     LOCATION_CHOICES = [
         ('inside', 'Inside'),
@@ -130,3 +140,9 @@ class Reservation(models.Model):
         # Check if requested reservation date is more than 1 year in the future
         if reservation_date > (now.date() + relativedelta(years=1)):
             raise ValidationError("Reservations can only be made up to 1 year in advance.")
+
+    class Meta:
+        ordering = ["reservation_date"]
+
+    def __str__(self):
+        return f"{self.reservation_date} - {self.reservation_time} | {self.customer_name} | {self.number_of_guests}"
