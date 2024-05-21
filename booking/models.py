@@ -31,8 +31,8 @@ class NormalOpeningHours(models.Model):
 class ExceptionalOpeningHours(models.Model):
     date = models.DateField(unique=True)
     is_open = models.BooleanField(default=False)
-    opening_time = models.TimeField()
-    closing_time = models.TimeField()
+    opening_time = models.TimeField(null=True, blank=True)
+    closing_time = models.TimeField(null=True, blank=True)
 
     def clean(self):
         from datetime import datetime
@@ -42,6 +42,16 @@ class ExceptionalOpeningHours(models.Model):
         # Check if entered date is in the future
         if self.date <= now.date():
             raise ValidationError("Exceptional opening hours can only be created for future dates.")
+        
+        # Check if opening_time and closing_time exist, when is_open is True
+        if self.is_open:
+            if self.opening_time is None or self.closing_time is None:
+                raise ValidationError("Opening and closing times must be set if the restaurant is open.")
+            if self.opening_time > self.closing_time:
+                raise ValidationError("Closing time must be later than opening time.")
+        else:
+            if self.opening_time is not None or self.closing_time is not None:
+                raise ValidationError("Opening and closing times should not be set if the restaurant is closed.")
 
     class Meta:
         ordering = ["date"]
