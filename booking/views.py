@@ -3,15 +3,7 @@ from django.views.generic.edit import FormView
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Reservation
-
-class ReservationForm(forms.ModelForm):
-    class Meta:
-        model = Reservation
-        exclude = ['status', 'table']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['reservation_time'].input_formats = ['%H:%S']
+from .forms import ReservationForm
 
 class ReservationView(FormView):
     template_name = 'booking/booking_form.html'
