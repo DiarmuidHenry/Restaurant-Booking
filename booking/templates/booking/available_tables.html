@@ -8,7 +8,22 @@
 </head>
 <body>
     <h1>Available Tables</h1>
-    <div id="availabilityResult"></div>
+    {% if available_tables %}
+        <ul>
+            {% for table in available_tables %}
+                <li>{{ table }}</li>
+                <form method="POST" action="{% url 'make_reservation' table.id %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="reservation_date" value="{{ reservation_date }}">
+                    <input type="hidden" name="reservation_time" value="{{ reservation_time }}">
+                    <input type="hidden" name="reservation_length" value="{{ reservation_length }}">
+                    <button type="submit">Reserve Table</button>
+                </form>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No tables available for the selected time slot.</p>
+    {% endif %}
 
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

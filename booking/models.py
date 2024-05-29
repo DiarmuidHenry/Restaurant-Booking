@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator
 from django.utils import timezone
+from datetime import datetime, timedelta
 from django.contrib.auth.models import User
 
 # Create your models here.
@@ -85,6 +86,22 @@ class RestaurantTable(models.Model):
     def __str__(self):
         return f"Table {self.table_number} | Capacity: {self.capacity} | {self.table_location}"
 
+
+class TableBooking(models.Model):
+    table = models.ForeignKey(RestaurantTable, on_delete=models.CASCADE)
+    reservation_date = models.DateField()
+    reservation_time = models.TimeField()
+    duration = models.FloatField()
+
+    @property
+    def end_time(self):
+        reservation_datetime = datetime.combine(self.reservation_date, self.reservation_time)
+        end_datetime = reservation_datetime + timedelta(hours=self.duration)
+        return end_datetime.time()
+
+    class Meta:
+        verbose_name = "Table Booking"
+        verbose_name_plural = "Table Bookings"
     
 class Reservation(models.Model):
     LOCATION_CHOICES = [
