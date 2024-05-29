@@ -2,7 +2,7 @@ from django import forms
 from django.views.generic.edit import FormView
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Reservation
+from .models import Reservation, RestaurantTable
 from .forms import ReservationForm
 
 class ReservationView(FormView):

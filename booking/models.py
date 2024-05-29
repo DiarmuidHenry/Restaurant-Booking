@@ -110,11 +110,18 @@ class Reservation(models.Model):
     table = models.ForeignKey(RestaurantTable, on_delete=models.CASCADE)
     created_on = models.DateTimeField(auto_now_add=True)
     reservation_date = models.DateField(default=timezone.now)
-    reservation_time = models.TimeField(default=timezone.now, input_formats=['%H:%S'], format='%H:%S')
+    reservation_time = models.TimeField(default=timezone.now)
     reservation_length = models.FloatField(choices=LENGTH_CHOICES, default=2)
     number_of_guests = models.PositiveIntegerField(validators=[MinValueValidator(1)])
     table_location = models.CharField(choices=LOCATION_CHOICES, default='inside')
     status = models.CharField(choices=STATUS_CHOICES, default=1)
+
+    def formatted_reservation_time(self):
+        return self.reservation_time.strftime('%H:%S')
+
+    def set_formatted_reservation_time(self, value):
+        # Parse the value in HH:SS format and set it to reservation_time
+        self.reservation_time = datetime.strptime(value, '%H:%S').time()
 
     def clean(self):
         from datetime import datetime, timedelta

@@ -6,6 +6,11 @@ class ReservationForm(forms.ModelForm):
         model = Reservation
         exclude = ['status', 'table']
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['reservation_time'].input_formats = ['%H:%S']
+    def clean(self):
+        cleaned_data = super().clean()
+        reservation_time = cleaned_data.get('reservation_time')
+
+        # Format the reservation_time in HH:SS format
+        cleaned_data['reservation_time'] = reservation_time.strftime('%H:%S')
+
+        return cleaned_data
