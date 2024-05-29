@@ -10,11 +10,16 @@
 
 <body>
     <h1>Make a Reservation</h1>
-    <form method="post">
+    <form id="reservationForm" method="post" action="{% url 'check_availability' %}">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Submit</button>
+        <button type="submit" id="checkAvailabilityBtn">Check Availability</button>
     </form>
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- JavaScript search file -->
+    <script src="/booking/js/search.js"></script>
 </body>
 
 </html>
