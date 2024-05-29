@@ -8,6 +8,9 @@ class ReservationForm(forms.ModelForm):
     class Meta:
         model = Reservation
         exclude = ['status', 'table']
+        input_formats = {
+            'reservation_time': ['%H:%S']
+        }
 
 class ReservationView(FormView):
     template_name = 'booking/booking_form.html'
