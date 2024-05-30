@@ -4,7 +4,7 @@ from .models import Reservation
 class ReservationForm(forms.ModelForm):
     class Meta:
         model = Reservation
-        exclude = ['status', 'table']
+        exclude = ['status', 'table', 'reservation_end_time']
 
     def clean(self):
         cleaned_data = super().clean()

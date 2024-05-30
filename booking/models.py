@@ -3,6 +3,7 @@ from django.core.validators import MinValueValidator
 from django.utils import timezone
 from datetime import datetime, timedelta
 from django.contrib.auth.models import User
+from dateutil.relativedelta import relativedelta
 
 # Create your models here.
 
@@ -87,21 +88,21 @@ class RestaurantTable(models.Model):
         return f"Table {self.table_number} | Capacity: {self.capacity} | {self.table_location}"
 
 
-class TableBooking(models.Model):
-    table = models.ForeignKey(RestaurantTable, on_delete=models.CASCADE)
-    reservation_date = models.DateField()
-    reservation_time = models.TimeField()
-    duration = models.FloatField()
+# class TableBooking(models.Model):
+#     table = models.ForeignKey(RestaurantTable, on_delete=models.CASCADE)
+#     reservation_date = models.DateField()
+#     reservation_time = models.TimeField()
+#     duration = models.FloatField()
 
-    @property
-    def end_time(self):
-        reservation_datetime = datetime.combine(self.reservation_date, self.reservation_time)
-        end_datetime = reservation_datetime + timedelta(hours=self.duration)
-        return end_datetime.time()
+#     @property
+#     def end_time(self):
+#         reservation_datetime = datetime.combine(self.reservation_date, self.reservation_time)
+#         end_datetime = reservation_datetime + timedelta(hours=self.duration)
+#         return end_datetime.time()
 
-    class Meta:
-        verbose_name = "Table Booking"
-        verbose_name_plural = "Table Bookings"
+#     class Meta:
+#         verbose_name = "Table Booking"
+#         verbose_name_plural = "Table Bookings"
     
 class Reservation(models.Model):
     LOCATION_CHOICES = [
@@ -132,6 +133,14 @@ class Reservation(models.Model):
     number_of_guests = models.PositiveIntegerField(validators=[MinValueValidator(1)])
     table_location = models.CharField(choices=LOCATION_CHOICES, default='inside')
     status = models.CharField(choices=STATUS_CHOICES, default=1)
+    reservation_end_time = models.TimeField(null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        # Calculate reservation end time before saving
+        reservation_start_datetime = datetime.combine(self.reservation_date, self.reservation_time)
+        reservation_end_datetime = reservation_start_datetime + timedelta(hours=self.reservation_length)
+        self.reservation_end_time = reservation_end_datetime.time()
+        super().save(*args, **kwargs)
 
     def formatted_reservation_time(self):
         return self.reservation_time.strftime('%H:%S')
@@ -141,9 +150,7 @@ class Reservation(models.Model):
         self.reservation_time = datetime.strptime(value, '%H:%S').time()
 
     def clean(self):
-        from datetime import datetime, timedelta
-        from dateutil.relativedelta import relativedelta
-
+    
         now = datetime.now()
 
         # Calculate reservation start and end datetime based on start time and length
