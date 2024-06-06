@@ -156,6 +156,9 @@ class Reservation(models.Model):
         print(f"Reservation Date: {self.reservation_date}")
         print(f"Reservation Time: {self.reservation_time}")
         print(f"Reservation Length: {self.reservation_length}")
+
+        if self.number_of_guests > 8:
+            raise ValidationError(f"If you wish to make a reservation for {self.number_of_guests} people, please email the restaurant directly and we will do our best to accommodate you. INSERT EMAIL LINK HERE?!")
     
         now = datetime.now()
 
