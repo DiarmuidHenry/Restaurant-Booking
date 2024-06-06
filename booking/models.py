@@ -1,7 +1,9 @@
 from django.db import models
 from django.core.validators import MinValueValidator
+from django.core.exceptions import ValidationError
 from django.utils import timezone
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
+import time
 from django.contrib.auth.models import User
 from dateutil.relativedelta import relativedelta
 
@@ -142,22 +144,31 @@ class Reservation(models.Model):
         self.reservation_end_time = reservation_end_datetime.time()
         super().save(*args, **kwargs)
 
-    def formatted_reservation_time(self):
-        return self.reservation_time.strftime('%H:%S')
+    # def formatted_reservation_time(self):
+    #     return self.reservation_time.strftime('%H:%S')
 
-    def set_formatted_reservation_time(self, value):
-        # Parse the value in HH:SS format and set it to reservation_time
-        self.reservation_time = datetime.strptime(value, '%H:%S').time()
+    # def set_formatted_reservation_time(self, value):
+    #     # Parse the value in HH:SS format and set it to reservation_time
+    #     self.reservation_time = datetime.strptime(value, '%H:%S').time()
 
     def clean(self):
+
+        print(f"Reservation Date: {self.reservation_date}")
+        print(f"Reservation Time: {self.reservation_time}")
+        print(f"Reservation Length: {self.reservation_length}")
     
         now = datetime.now()
 
         # Calculate reservation start and end datetime based on start time and length
         reservation_start_datetime = datetime.combine(self.reservation_date, self.reservation_time)
+        reservation_start_time = reservation_start_datetime.time()
         reservation_end_datetime = reservation_start_datetime + timedelta(hours=self.reservation_length)
         reservation_end_time = reservation_end_datetime.time()
-
+        print("reservation_start_datetime : ", reservation_start_datetime)
+        print("reservation_start_time :", reservation_start_time)
+        print("reservation_end_datetime : ", reservation_end_datetime)
+        print("reservation_end_time : ", reservation_end_time)
+        
         # Get opening times for the reservation date, first checking ExceptionalOpeningHours
         reservation_day_open = None
         reservation_day_close = None
@@ -166,6 +177,7 @@ class Reservation(models.Model):
             if exceptional_opening_hours.is_open:
                 reservation_day_open = exceptional_opening_hours.opening_time
                 reservation_day_close = exceptional_opening_hours.closing_time
+                print(f"Exceptional Opening Hours: {reservation_day_open} - {reservation_day_close}")
             else:
                 raise ValidationError("The restaurant is closed on the selected date.")
         except ExceptionalOpeningHours.DoesNotExist:
@@ -175,20 +187,26 @@ class Reservation(models.Model):
                 normal_opening_hours = NormalOpeningHours.objects.get(day=self.reservation_date.strftime('%A').lower())
                 reservation_day_open = normal_opening_hours.opening_time
                 reservation_day_close = normal_opening_hours.closing_time
+                reservation_day_close_datetime = datetime.combine(self.reservation_date, reservation_day_close)
+
+                print(f"Normal Opening Hours: {reservation_day_open} - {reservation_day_close}")
             except NormalOpeningHours.DoesNotExist:
                 # If no opening hours are defined for the reservation date, raise an error
                 raise ValidationError("No opening hours are defined for the selected reservation date.")
 
+        print("Reservation_day_open :", reservation_day_open)
+        print("Reservation_day_close :", reservation_day_close)
+        print("Reservation_day_close_datetime :", reservation_day_close_datetime)
+        print("Reservation day close type :", type(reservation_day_close))
+        print("Reservation_start_time type :", type(reservation_start_time))
+        print("Reservation_day_close_datetime type :", type(reservation_day_close_datetime))
         # Check if requested reservation date is in the past
         if self.reservation_date < now.date() or (self.reservation_date == now.date() and self.reservation_time <= now.time()):
             raise ValidationError("Reservation date cannot be in the past.")
 
-        # # Check if reservation for today is in past on current day
-        # if self.reservation_date == now.date() and self.reservation_time <= now.time():
-        #     raise ValidationError("Reservation time cannot be in the past on the current day.")
         
         # Check if requested reservation ends after closing time on that day
-        if reservation_end_time > reservation_day_close:
+        if reservation_start_datetime > (reservation_day_close_datetime - timedelta(hours=self.reservation_length)):
             raise ValidationError(f"The requested reservation ends after closing time for {self.reservation_date.strftime('%A')} {self.reservation_date}. Please choose an earlier reservation time, or a shorter reservation length.")
 
         # Check if requested reservation date is more than 1 year in the future

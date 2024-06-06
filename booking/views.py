@@ -1,6 +1,7 @@
 from django import forms
 from django.views.generic.edit import FormView
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 from datetime import datetime, timedelta
 from .models import Reservation, RestaurantTable
@@ -31,8 +32,23 @@ def check_availability(request):
             reservation_length = form.cleaned_data['reservation_length']
             table_location = form.cleaned_data['table_location']
             number_of_guests = form.cleaned_data['number_of_guests']
-            
-            reservation_time = datetime.strptime(reservation_time, "%H:%M").time()
+
+            # Convert reservation_time from string to time object
+            reservation_time = datetime.strptime(reservation_time, '%H:%M').time()
+
+            try:
+                reservation = Reservation(
+                    reservation_date=reservation_date,
+                    reservation_time=reservation_time,
+                    reservation_length=reservation_length,
+                    table_location=table_location,
+                    number_of_guests=number_of_guests
+                )
+                reservation.clean()
+            except ValidationError as e:
+                return render(request, 'booking/booking_form.html', {'form': form, 'errors': e.messages})
+
+            # reservation_time = datetime.strptime(reservation_time, "%H:%M").time()
             reservation_datetime = datetime.combine(reservation_date, reservation_time)
             end_datetime = reservation_datetime + timedelta(hours=reservation_length)
 
@@ -56,7 +72,9 @@ def check_availability(request):
 
             return render(request, 'booking/available_tables.html', {'available_tables': available_tables})
 
-    form = ReservationForm()
+    else:
+        form = ReservationForm()
+
     return render(request, 'booking/booking_form.html', {'form': form})
 
 def make_reservation(request, table_id):
