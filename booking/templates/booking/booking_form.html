@@ -16,6 +16,16 @@
         <button type="submit">Check Availability</button>
     </form>
 
+    {% if errors %}
+        <div class="error">
+            <ul>
+                {% for error in errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- JavaScript search file -->
