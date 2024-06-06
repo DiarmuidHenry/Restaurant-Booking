@@ -179,13 +179,18 @@ class Reservation(models.Model):
                 reservation_day_close = exceptional_opening_hours.closing_time
                 print(f"Exceptional Opening Hours: {reservation_day_open} - {reservation_day_close}")
             else:
+                print("No exceptional opening hours exist")
                 raise ValidationError("The restaurant is closed on the selected date.")
         except ExceptionalOpeningHours.DoesNotExist:
             # If no exceptional opening hours, use nromal opening hours
             try:
                 # Use normal opening hours for the reservation date
                 normal_opening_hours = NormalOpeningHours.objects.get(day=self.reservation_date.strftime('%A').lower())
+                if not normal_opening_hours.is_open:
+                    print("Normal opening hours says restaurant is closed")
+                    raise ValidationError(f"The restaurant is closed on {self.reservation_date.strftime('%A')}s.")
                 reservation_day_open = normal_opening_hours.opening_time
+                reservation_day_open_datetime = datetime.combine(self.reservation_date, reservation_day_open)
                 reservation_day_close = normal_opening_hours.closing_time
                 reservation_day_close_datetime = datetime.combine(self.reservation_date, reservation_day_close)
 
@@ -204,10 +209,13 @@ class Reservation(models.Model):
         if self.reservation_date < now.date() or (self.reservation_date == now.date() and self.reservation_time <= now.time()):
             raise ValidationError("Reservation date cannot be in the past.")
 
+        # Check if requested reservation starts before opening time on that day
+        if reservation_start_datetime < reservation_day_open_datetime:
+            raise ValidationError(f"The requested reservation begins before opening time ({reservation_day_open}) for {self.reservation_date.strftime('%A')} {self.reservation_date}. Please choose a later reservation time.")
         
         # Check if requested reservation ends after closing time on that day
         if reservation_start_datetime > (reservation_day_close_datetime - timedelta(hours=self.reservation_length)):
-            raise ValidationError(f"The requested reservation ends after closing time for {self.reservation_date.strftime('%A')} {self.reservation_date}. Please choose an earlier reservation time, or a shorter reservation length.")
+            raise ValidationError(f"The requested reservation ends after closing time ({reservation_day_close}) for {self.reservation_date.strftime('%A')} {self.reservation_date}. Please choose an earlier reservation time, or a shorter reservation length.")
 
         # Check if requested reservation date is more than 1 year in the future
         if self.reservation_date > (now.date() + timedelta(days=365)):
