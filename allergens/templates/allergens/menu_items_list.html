@@ -33,13 +33,65 @@
     </form>
 
     <ul>
-        {% for item in page_obj %}
+        <h2>Starters</h2>
+        {% for item in starters %}
             <li>
-                <h2>{{ item.dish_name }}</h2>
+                <h3>{{ item.dish_name }}</h3>
                 <p>{{ item.description }}</p>
             </li>
+        {% empty %}
+            <li>No starters available.</li>
         {% endfor %}
     </ul>
+    
+    <ul>
+        <h2>Mains</h2>
+        {% for item in mains %}
+            <li>
+                <h3>{{ item.dish_name }}</h3>
+                <p>{{ item.description }}</p>
+            </li>
+        {% empty %}
+            <li>No mains available.</li>
+        {% endfor %}
+    </ul>
+    
+    <ul>
+        <h2>Kids</h2>
+        {% for item in kids %}
+            <li>
+                <h3>{{ item.dish_name }}</h3>
+                <p>{{ item.description }}</p>
+            </li>
+        {% empty %}
+            <li>No kids items available.</li>
+        {% endfor %}
+    </ul>
+    
+    <ul>
+        <h2>Sides</h2>
+        {% for item in sides %}
+            <li>
+                <h3>{{ item.dish_name }}</h3>
+                <p>{{ item.description }}</p>
+            </li>
+        {% empty %}
+            <li>No sides available.</li>
+        {% endfor %}
+    </ul>
+    
+    <ul>
+        <h2>Desserts</h2>
+        {% for item in desserts %}
+            <li>
+                <h3>{{ item.dish_name }}</h3>
+                <p>{{ item.description }}</p>
+            </li>
+        {% empty %}
+            <li>No desserts available.</li>
+        {% endfor %}
+    </ul>
+    
 
     <div>
         <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
