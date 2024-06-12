@@ -1,0 +1,59 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Menu Items</title>
+</head>
+<body>
+    <h1>Menu Items</h1>
+
+    <form method="get">
+        <div>
+            <label>Allergens:</label><br>
+            {% for allergen in allergens %}
+                <label>
+                    <input type="checkbox" name="{{ allergen }}" {% if request.GET.allergen %}checked{% endif %}>
+                    {{ allergen }}
+                </label><br>
+            {% endfor %}
+        </div>
+        <div>
+            <label>Dietary Preferences:</label><br>
+            <label>
+                <input type="checkbox" name="vegan" {% if request.GET.vegan %}checked{% endif %}>
+                Vegan
+            </label><br>
+            <label>
+                <input type="checkbox" name="vegetarian" {% if request.GET.vegetarian %}checked{% endif %}>
+                Vegetarian
+            </label><br>
+        </div>
+        <button type="submit">Filter</button>
+    </form>
+
+    <ul>
+        {% for item in page_obj %}
+            <li>
+                <h2>{{ item.description }}</h2>
+                <img src="{{ item.image.url }}" alt="{{ item.description }}" style="width:100px;height:100px;">
+                <p>{{ item.description }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <div>
+        <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+    </div>
+
+    <div>
+        {% if page_obj.has_previous %}
+            <a href="?{% if request.GET %}{{ request.GET.urlencode }}&{% endif %}page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        {% if page_obj.has_next %}
+            <a href="?{% if request.GET %}{{ request.GET.urlencode }}&{% endif %}page={{ page_obj.next_page_number }}">Next</a>
+        {% endif %}
+    </div>
+</body>
+</html>

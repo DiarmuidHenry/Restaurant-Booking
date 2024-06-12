@@ -4,7 +4,7 @@ from django.db import models
 class MenuItem(models.Model):
     dish_name = models.TextField()
     description = models.TextField()
-    image = models.ImageField(upload_to='menu_images/')
+    # image = models.ImageField(upload_to='menu_images/', required=False)
     contains_gluten = models.BooleanField(default=False)
     contains_crustaceans = models.BooleanField(default=False)
     contains_eggs = models.BooleanField(default=False)
@@ -21,6 +21,9 @@ class MenuItem(models.Model):
     contains_molluscs = models.BooleanField(default=False)
     vegan = models.BooleanField(default=False)
     vegetarian = models.BooleanField(default=False)
+
+    # def clean(self):
+
 
     def __str__(self):
         return self.dish_name
