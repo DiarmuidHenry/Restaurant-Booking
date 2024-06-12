@@ -2,8 +2,18 @@ from django.db import models
 
 # Create your models here.
 class MenuItem(models.Model):
+
+    SECTION_CHOICES = [
+        ('starters', 'Starters'),
+        ('mains', 'Mains'),
+        ('sides', 'Sides'),
+        ('kids', 'Kids'),
+        ('desserts', 'Desserts'),
+    ]
+
     dish_name = models.TextField()
     description = models.TextField()
+    section = models.CharField(choices=SECTION_CHOICES, default='mains')
     gluten = models.BooleanField(default=False)
     crustaceans = models.BooleanField(default=False)
     eggs = models.BooleanField(default=False)

@@ -31,9 +31,21 @@ def menu_items_list(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
+    
+    starters = menu_items.filter(section='starters')
+    mains = menu_items.filter(section='mains')
+    kids = menu_items.filter(section='kids')
+    sides = menu_items.filter(section='sides')
+    desserts = menu_items.filter(section='desserts')
+
     context = {
         'page_obj': page_obj,
-        'allergens': allergens
+        'allergens': allergens,
+        'starters': starters,
+        'mains': mains,
+        'kids': kids,
+        'sides': sides,
+        'desserts': desserts,
     }
 
     return render(request, 'allergens/menu_items_list.html', context)
