@@ -8,15 +8,16 @@ def menu_items_list(request):
 
     # Filtering
     allergens = [
-        'contains_gluten', 'contains_crustaceans', 'contains_eggs', 'contains_fish',
-        'contains_peanuts', 'contains_soybeans', 'contains_milk', 'contains_nuts',
-        'contains_celery', 'contains_mustard', 'contains_sesame', 'contains_sulphur_dioxide_sulphites',
-        'contains_lupin', 'contains_molluscs'
+        'Gluten', 'Crustaceans', 'Eggs', 'Fish',
+        'Peanuts', 'Soy', 'Dairy', 'Nuts',
+        'Celery', 'Mustard', 'Sesame', 'Sulphites',
+        'Lupin', 'Molluscs'
     ]
 
     # Check for allergen filters in query parmaters
     for allergen in allergens:
         if request.GET.get(allergen):
+            allergen = allergen.lower()
             menu_items = menu_items.filter(**{allergen: False})
 
     # Check for vegan vegetarian filters

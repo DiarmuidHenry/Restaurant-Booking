@@ -10,7 +10,7 @@
 
     <form method="get">
         <div>
-            <label>Allergens:</label><br>
+            <label>Remove items that include:</label><br>
             {% for allergen in allergens %}
                 <label>
                     <input type="checkbox" name="{{ allergen }}" {% if request.GET.allergen %}checked{% endif %}>
@@ -35,8 +35,7 @@
     <ul>
         {% for item in page_obj %}
             <li>
-                <h2>{{ item.description }}</h2>
-                <img src="{{ item.image.url }}" alt="{{ item.description }}" style="width:100px;height:100px;">
+                <h2>{{ item.dish_name }}</h2>
                 <p>{{ item.description }}</p>
             </li>
         {% endfor %}
