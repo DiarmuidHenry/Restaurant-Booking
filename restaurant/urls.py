@@ -26,3 +26,6 @@ urlpatterns = [
     path('booking/', include('booking.urls'), name='booking-urls'),
     path('allergens/', include('allergens.urls'), name='allergen-urls'),
 ]
+
+# if settings.DEBUG:
+#     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

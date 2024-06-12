@@ -33,6 +33,8 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['8000-diarmuidhen-restaurantb-wngi8kmlpst.ws-eu114.gitpod.io', '.herokuapp.com',]
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Application definition
 
