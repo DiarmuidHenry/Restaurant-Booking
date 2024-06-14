@@ -26,14 +26,21 @@
                         <input type="hidden" name="reservation_date" value="{{ form.reservation_date.value }}">
                         <input type="hidden" name="reservation_time" value="{{ form.reservation_time.value }}">
                         <input type="hidden" name="reservation_length" value="{{ form.reservation_length.value }}">
-                        <input type="hidden" name="customer_name" value="{{ form.customer_name.value }}">
+                        <input type="hidden" name="name" value="{{ form.name.value }}">
                         <input type="hidden" name="number_of_guests" value="{{ form.number_of_guests.value }}">
                         <input type="hidden" name="table_location" value="{{ form.table_location.value }}">
+                        <input type="hidden" name="message" value="{{ form.message.value }}">
+                        <input type="hidden" name="email" value="{{ form.email.value }}">
+                        <input type="hidden" name="phone_number" value="{{ form.phone_number.value }}">
                         <button type="submit">Reserve Table</button>
                     </form>
                 </li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+                {% endfor %}
+            </ul>
+        {% else %}
+            {% if form.is_bound and not available_tables %}
+                <p>No tables available for the selected time slot.</p>
+            {% endif %}
+        {% endif %}
 </body>
 </html>

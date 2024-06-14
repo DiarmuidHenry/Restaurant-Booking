@@ -32,7 +32,11 @@ def check_availability(request):
             reservation_time_str = form.cleaned_data['reservation_time']
             reservation_length = form.cleaned_data['reservation_length']
             table_location = form.cleaned_data['table_location']
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            phone_number = form.cleaned_data['phone_number']
             number_of_guests = form.cleaned_data['number_of_guests']
+            message = form.cleaned_data.get('message', '')
 
             # Convert reservation_time from string to time object
             reservation_time = datetime.strptime(reservation_time_str, '%H:%M').time()
@@ -81,8 +85,12 @@ def make_reservation(request, table_id):
             reservation_date = form.cleaned_data['reservation_date']
             reservation_time_str = form.cleaned_data['reservation_time']
             reservation_length = form.cleaned_data['reservation_length']
-            customer_name = form.cleaned_data['customer_name']
+            table_location = form.cleaned_data['table_location']
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            phone_number = form.cleaned_data['phone_number']
             number_of_guests = form.cleaned_data['number_of_guests']
+            message = form.cleaned_data.get('message', '')
 
             reservation_time = datetime.strptime(reservation_time_str, "%H:%M").time()
             reservation_datetime = datetime.combine(reservation_date, reservation_time)
@@ -90,13 +98,16 @@ def make_reservation(request, table_id):
 
             table = RestaurantTable.objects.get(id=table_id)
             new_booking = Reservation.objects.create(
-                customer_name=customer_name,
+                name=name,
+                email=email,
+                phone_number=phone_number,
                 table=table,
                 reservation_date=reservation_date,
                 reservation_time=reservation_time,
                 reservation_length=reservation_length,
                 number_of_guests=number_of_guests,
-                status='confirmed'  # assuming 'confirmed' is the correct status
+                message = form.cleaned_data.get('message', ''),
+                status='confirmed' 
             )
             new_booking.save()
 
