@@ -110,7 +110,9 @@ class Reservation(models.Model):
     ]
 
     reservation_id = models.AutoField(primary_key=True)
-    customer_name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
+    email = models.EmailField(default='')
+    phone_number = models.CharField(max_length=20, default='')
     table = models.ForeignKey(RestaurantTable, on_delete=models.CASCADE)
     created_on = models.DateTimeField(auto_now_add=True)
     reservation_date = models.DateField(default=timezone.now)
@@ -120,6 +122,7 @@ class Reservation(models.Model):
     table_location = models.CharField(choices=LOCATION_CHOICES, default='inside')
     status = models.CharField(choices=STATUS_CHOICES, default=1)
     reservation_end_time = models.TimeField(null=True, blank=True)
+    message = models.TextField(max_length=200, blank=True, null=True) 
 
     def save(self, *args, **kwargs):
         # Calculate reservation end time before saving
@@ -215,6 +218,6 @@ class Reservation(models.Model):
         ordering = ["reservation_date"]
 
     def __str__(self):
-        return f"{self.reservation_date} - {self.reservation_time} | {self.customer_name} | {self.number_of_guests}"
+        return f"{self.reservation_date} : {self.reservation_time} - {self.reservation_end_time} | {self.name} | {self.number_of_guests}"
 
     
