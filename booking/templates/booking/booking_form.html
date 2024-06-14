@@ -2,36 +2,38 @@
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reservation Form</title>
+    <title>Make a Reservation</title>
+    <script src="{% static 'js/search.js' %}"></script>
 </head>
-
 <body>
     <h1>Make a Reservation</h1>
-    <form method="POST" action="{% url 'check_availability' %}">
+    <form method="post" action="{% url 'check_availability' %}">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Check Availability</button>
     </form>
 
-    {% if errors %}
-        <div class="error">
-            <ul>
-                {% for error in errors %}
-                    <li>{{ error }}</li>
-                {% endfor %}
-            </ul>
-        </div>
+    {% if available_tables %}
+        <h2>Available Tables</h2>
+        <ul>
+            {% for table in available_tables %}
+                <li>
+                    Table {{ table.table_number }} ({{ table.capacity }} people)
+                    <form method="post" action="{% url 'make_reservation' table.id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="reservation_date" value="{{ form.reservation_date.value }}">
+                        <input type="hidden" name="reservation_time" value="{{ form.reservation_time.value }}">
+                        <input type="hidden" name="reservation_length" value="{{ form.reservation_length.value }}">
+                        <input type="hidden" name="customer_name" value="{{ form.customer_name.value }}">
+                        <input type="hidden" name="number_of_guests" value="{{ form.number_of_guests.value }}">
+                        <input type="hidden" name="table_location" value="{{ form.table_location.value }}">
+                        <button type="submit">Reserve Table</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
     {% endif %}
-
-    <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!-- JavaScript search file -->
-    <script src="/booking/js/search.js"></script>
 </body>
-
 </html>

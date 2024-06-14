@@ -36,4 +36,4 @@ class MenuItem(models.Model):
 
 
     def __str__(self):
-        return self.dish_name
+        return f"{self.dish_name} | {self.section} | {self.price}"

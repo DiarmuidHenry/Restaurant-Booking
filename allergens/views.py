@@ -27,7 +27,7 @@ def menu_items_list(request):
         menu_items = menu_items.filter(vegetarian=True)
 
     # Pagination
-    paginator = Paginator(menu_items, 25)
+    paginator = Paginator(menu_items, 100)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
