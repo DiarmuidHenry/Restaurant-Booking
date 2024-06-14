@@ -89,22 +89,6 @@ class RestaurantTable(models.Model):
     def __str__(self):
         return f"Table {self.table_number} | Capacity: {self.capacity} | {self.table_location}"
 
-
-# class TableBooking(models.Model):
-#     table = models.ForeignKey(RestaurantTable, on_delete=models.CASCADE)
-#     reservation_date = models.DateField()
-#     reservation_time = models.TimeField()
-#     duration = models.FloatField()
-
-#     @property
-#     def end_time(self):
-#         reservation_datetime = datetime.combine(self.reservation_date, self.reservation_time)
-#         end_datetime = reservation_datetime + timedelta(hours=self.duration)
-#         return end_datetime.time()
-
-#     class Meta:
-#         verbose_name = "Table Booking"
-#         verbose_name_plural = "Table Bookings"
     
 class Reservation(models.Model):
     LOCATION_CHOICES = [
@@ -152,6 +136,9 @@ class Reservation(models.Model):
     #     self.reservation_time = datetime.strptime(value, '%H:%S').time()
 
     def clean(self):
+
+        if self.number_of_guests is None:
+            raise ValidationError("Number of guests is required.")
 
         print(f"Reservation Date: {self.reservation_date}")
         print(f"Reservation Time: {self.reservation_time}")
