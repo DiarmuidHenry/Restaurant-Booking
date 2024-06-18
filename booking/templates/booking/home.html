@@ -1,5 +1,9 @@
 {% load static %}
 
+{% url 'account_login' as login_url %}
+{% url 'account_signup' as signup_url %}
+{% url 'account_logout' as logout_url %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,6 +17,21 @@
         <h1>Welcome to Our Restaurant</h1>
         <a href="{% url 'reservation' %}" class="btn btn-primary">Make a Reservation</a>
         <a href="{% url 'menu_items_list' %}" class="btn btn-primary">See our menu</a>
+    </div>
+    <div>
+        {% if user.is_authenticated %}
+        <li class="nav-item">
+            <a class="nav-link {% if request.path == logout_url %}active{% endif %}" aria-current="page" href="{% url 'account_logout' %}">Logout</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+            <a class="nav-link {% if request.path == signup_url %}active{% endif %}" aria-current="page"
+                href="{% url 'account_signup' %}">Register</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {% if request.path == login_url %}active{% endif %}" aria-current="page" href="{% url 'account_login' %}">Login</a>
+        </li>
+        {% endif %}
     </div>
 </body>
 </html>
