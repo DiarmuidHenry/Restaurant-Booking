@@ -6,11 +6,17 @@ from django.http import HttpResponse
 from datetime import datetime, timedelta
 from .models import Reservation, RestaurantTable
 from .forms import ReservationForm, CustomSignupForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-class ReservationView(FormView):
+class ReservationView(LoginRequiredMixin, FormView):
     template_name = 'booking/booking_form.html'
     form_class = ReservationForm
     success_url = '/thank_you/'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
 
     def form_valid(self, form):
         print("Form is valid")
