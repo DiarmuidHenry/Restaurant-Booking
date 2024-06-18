@@ -110,10 +110,9 @@ class Reservation(models.Model):
     ]
 
     reservation_id = models.AutoField(primary_key=True)
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=25, default='')
+    last_name = models.CharField(max_length=25, default='')
     email = models.EmailField(default='')
-    phone_number = models.CharField(max_length=20, default='')
     table = models.ForeignKey(RestaurantTable, on_delete=models.CASCADE)
     created_on = models.DateTimeField(auto_now_add=True)
     reservation_date = models.DateField(default=timezone.now)
@@ -219,6 +218,6 @@ class Reservation(models.Model):
         ordering = ["reservation_date"]
 
     def __str__(self):
-        return f"{self.reservation_date} : {self.reservation_time} - {self.reservation_end_time} | {self.name} | {self.number_of_guests}"
+        return f"{self.reservation_date} : {self.reservation_time} - {self.reservation_end_time} | {self.first_name} {self.last_name} | {self.number_of_guests}"
 
     

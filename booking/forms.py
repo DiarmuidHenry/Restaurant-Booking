@@ -14,7 +14,6 @@ class ReservationForm(forms.ModelForm):
             self.fields['first_name'].initial = user.first_name
             self.fields['last_name'].initial = user.last_name
             self.fields['email'].initial = user.email
-            self.fields['phone_number'].initial = user.profile.phone_number
 
     def clean(self):
         cleaned_data = super().clean()
@@ -34,13 +33,11 @@ class ReservationForm(forms.ModelForm):
 class CustomSignupForm(SignupForm):
     first_name = forms.CharField(max_length=25)
     last_name = forms.CharField(max_length=25)
-    phone_number = forms.CharField(max_length=20)
 
     def save(self, request):
         user = super(CustomSignupForm, self).save(request)
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']
-        user.phone_number = self.cleaned_data['phone_number']
         user.save()
         
         return user

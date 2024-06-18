@@ -34,7 +34,6 @@ def check_availability(request):
             table_location = form.cleaned_data['table_location']
             name = form.cleaned_data['name']
             email = form.cleaned_data['email']
-            phone_number = form.cleaned_data['phone_number']
             number_of_guests = form.cleaned_data['number_of_guests']
             message = form.cleaned_data.get('message', '')
 
@@ -86,9 +85,9 @@ def make_reservation(request, table_id):
             reservation_time_str = form.cleaned_data['reservation_time']
             reservation_length = form.cleaned_data['reservation_length']
             table_location = form.cleaned_data['table_location']
-            name = form.cleaned_data['name']
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
             email = form.cleaned_data['email']
-            phone_number = form.cleaned_data['phone_number']
             number_of_guests = form.cleaned_data['number_of_guests']
             message = form.cleaned_data.get('message', '')
 
@@ -101,7 +100,6 @@ def make_reservation(request, table_id):
                 first_name=first_name,
                 last_name=last_name,
                 email=email,
-                phone_number=phone_number,
                 table=table,
                 reservation_date=reservation_date,
                 reservation_time=reservation_time,
