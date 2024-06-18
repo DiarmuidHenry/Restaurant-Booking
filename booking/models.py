@@ -110,7 +110,8 @@ class Reservation(models.Model):
     ]
 
     reservation_id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
     email = models.EmailField(default='')
     phone_number = models.CharField(max_length=20, default='')
     table = models.ForeignKey(RestaurantTable, on_delete=models.CASCADE)

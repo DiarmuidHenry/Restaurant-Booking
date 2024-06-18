@@ -1,8 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-{% load static %}
+    {% load static %}
     <h1>Make a Reservation</h1>
     <form method="post" action="{% url 'check_availability' %}">
         {% csrf_token %}
@@ -21,7 +20,8 @@
                         <input type="hidden" name="reservation_date" value="{{ form.reservation_date.value }}">
                         <input type="hidden" name="reservation_time" value="{{ form.reservation_time.value }}">
                         <input type="hidden" name="reservation_length" value="{{ form.reservation_length.value }}">
-                        <input type="hidden" name="name" value="{{ form.name.value }}">
+                        <input type="hidden" name="first_name" value="{{ form.first_name.value }}">
+                        <input type="hidden" name="last_name" value="{{ form.last_name.value }}">
                         <input type="hidden" name="number_of_guests" value="{{ form.number_of_guests.value }}">
                         <input type="hidden" name="table_location" value="{{ form.table_location.value }}">
                         <input type="hidden" name="message" value="{{ form.message.value }}">
@@ -30,12 +30,11 @@
                         <button type="submit">Reserve Table</button>
                     </form>
                 </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            {% if form.is_bound and not available_tables %}
-                <p>No tables available for the selected time slot.</p>
-            {% endif %}
+            {% endfor %}
+        </ul>
+    {% else %}
+        {% if form.is_bound and not available_tables %}
+            <p>No tables available for the selected time slot.</p>
         {% endif %}
-
+    {% endif %}
 {% endblock %}

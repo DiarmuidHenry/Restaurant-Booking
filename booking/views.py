@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 from datetime import datetime, timedelta
 from .models import Reservation, RestaurantTable
-from .forms import ReservationForm
+from .forms import ReservationForm, CustomSignupForm
 
 class ReservationView(FormView):
     template_name = 'booking/booking_form.html'
@@ -98,7 +98,8 @@ def make_reservation(request, table_id):
 
             table = RestaurantTable.objects.get(id=table_id)
             new_booking = Reservation.objects.create(
-                name=name,
+                first_name=first_name,
+                last_name=last_name,
                 email=email,
                 phone_number=phone_number,
                 table=table,
@@ -106,12 +107,14 @@ def make_reservation(request, table_id):
                 reservation_time=reservation_time,
                 reservation_length=reservation_length,
                 number_of_guests=number_of_guests,
-                message = form.cleaned_data.get('message', ''),
+                message=message,
                 status='confirmed' 
             )
             new_booking.save()
 
             return redirect('thank_you')
+    else:
+        form = ReservationForm(user=request.user)
 
     form = ReservationForm()
     return render(request, 'booking/booking_form.html', {'form': form})
