@@ -1,13 +1,8 @@
-{% load static %}
+{% extends "base.html" %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Make a Reservation</title>
-    <script src="{% static 'js/search.js' %}"></script>
-</head>
-<body>
+{% block content %}
+
+{% load static %}
     <h1>Make a Reservation</h1>
     <form method="post" action="{% url 'check_availability' %}">
         {% csrf_token %}
@@ -42,5 +37,5 @@
                 <p>No tables available for the selected time slot.</p>
             {% endif %}
         {% endif %}
-</body>
-</html>
+
+{% endblock %}
