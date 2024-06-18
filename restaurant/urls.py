@@ -21,10 +21,11 @@ from allergens.views import menu_items_list
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', home, name='home'),
+    path('accounts/', include('allauth.urls')),
     path('summernote/', include('django_summernote.urls')),
     path('booking/', include('booking.urls'), name='booking-urls'),
     path('allergens/', include('allergens.urls'), name='allergen-urls'),
+    path('', home, name='home'),
 ]
 
 # if settings.DEBUG:
