@@ -21,7 +21,7 @@ def thank_you(request):
     return render(request, 'booking/thank_you.html')
 
 def home(request):
-    return render(request, 'booking/home.html')
+    return render(request, 'booking/index.html')
 
 def check_availability(request):
     available_tables = []
