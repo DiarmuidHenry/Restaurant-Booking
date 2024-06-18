@@ -32,7 +32,8 @@ def check_availability(request):
             reservation_time_str = form.cleaned_data['reservation_time']
             reservation_length = form.cleaned_data['reservation_length']
             table_location = form.cleaned_data['table_location']
-            name = form.cleaned_data['name']
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
             email = form.cleaned_data['email']
             number_of_guests = form.cleaned_data['number_of_guests']
             message = form.cleaned_data.get('message', '')
