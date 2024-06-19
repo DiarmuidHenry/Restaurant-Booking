@@ -2,11 +2,12 @@ from django import forms
 from django.views.generic.edit import FormView
 from django.shortcuts import render, redirect
 from django.core.exceptions import ValidationError
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from datetime import datetime, timedelta
-from .models import Reservation, RestaurantTable
+from .models import Reservation, RestaurantTable, ExceptionalOpeningHours, NormalOpeningHours
 from .forms import ReservationForm, CustomSignupForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+import datetime
 
 class ReservationView(LoginRequiredMixin, FormView):
     template_name = 'booking/booking_form.html'
@@ -123,3 +124,72 @@ def make_reservation(request, table_id):
 
     form = ReservationForm()
     return render(request, 'booking/booking_form.html', {'form': form})
+
+def get_opening_hours(request):
+    date = request.GET.get('date')
+    if date:
+        try:
+            opening_hours = ExceptionalOpeningHours.objects.get(date=date)
+            data = {
+                'opening_time': opening_hours.opening_time,
+                'closing_time': opening_hours.closing_time
+            }
+        except ExceptionalOpeningHours.DoesNotExist:
+            data = {'error': 'No opening hours found for this date'}
+    else:
+        data = {'error': 'No date provided'}
+    
+    return JsonResponse(data)
+    # selected_date = request.GET.get('date')
+    # if not selected_date:
+    #     return JsonResponse({'error': 'Date not provided'}, status=400)
+
+    # selected_date = datetime.datetime.strptime(selected_date, '%Y-%m-%d').date()
+
+    # reservation_day_open = None
+    # reservation_day_close = None
+    # try:
+    #     exceptional_opening_hours = ExceptionalOpeningHours.objects.get(date=selected_date)
+    #     if exceptional_opening_hours.is_open:
+    #         reservation_day_open = exceptional_opening_hours.opening_time.strftime('%H:%M')
+    #         reservation_day_close = exceptional_opening_hours.closing_time.strftime('%H:%M')
+    #         print(f"Exceptional Opening Hours: {reservation_day_open} - {reservation_day_close}")
+    #     else:
+    #         print("No exceptional opening hours exist")
+    #         # raise ValidationError("The restaurant is closed on the selected date.")
+    # except ExceptionalOpeningHours.DoesNotExist:
+    #     # If no exceptional opening hours, use nromal opening hours
+    #     try:
+    #         # Use normal opening hours for the reservation date
+    #         normal_opening_hours = NormalOpeningHours.objects.get(day=selected_date.strftime('%A').lower())
+    #         if not normal_opening_hours.is_open:
+    #             print("Normal opening hours says restaurant is closed")
+    #             raise ValidationError(f"The restaurant is closed on {self.reservation_date.strftime('%A')}s.")
+    #         reservation_day_open = normal_opening_hours.opening_time
+    #         # reservation_day_open_datetime = datetime.combine(self.reservation_date, reservation_day_open)
+    #         reservation_day_close = normal_opening_hours.closing_time
+    #         # reservation_day_close_datetime = datetime.combine(self.reservation_date, reservation_day_close)
+
+    #         print(f"Normal Opening Hours: {reservation_day_open} - {reservation_day_close}")
+    #     except NormalOpeningHours.DoesNotExist:
+    #         # If no opening hours are defined for the reservation date, raise an error
+    #         raise ValidationError("No opening hours are defined for the selected reservation date.")
+    #         return JsonResponse({'error': 'Opening hours not found'}, status=404)
+
+    # return JsonResponse({'opening_time': opening_time, 'closing_time': closing_time})
+
+    
+    # try:
+    #     exceptional_hours = ExceptionalOpeningHours.objects.get(date=selected_date)
+    #     opening_time = exceptional_hours.opening_time.strftime('%H:%M')
+    #     closing_time = exceptional_hours.closing_time.strftime('%H:%M')
+    # except ExceptionalOpeningHours.DoesNotExist:
+    #     day_of_week = selected_date.weekday()  # Monday is 0 and Sunday is 6
+    #     try:
+    #         normal_hours = NormalOpeningHours.objects.get(day_of_week=day_of_week)
+    #         opening_time = normal_hours.opening_time.strftime('%H:%M')
+    #         closing_time = normal_hours.closing_time.strftime('%H:%M')
+    #     except NormalOpeningHours.DoesNotExist:
+    #         return JsonResponse({'error': 'Opening hours not found'}, status=404)
+
+    # return JsonResponse({'opening_time': opening_time, 'closing_time': closing_time})

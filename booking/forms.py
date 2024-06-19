@@ -1,6 +1,7 @@
 from django import forms
 from allauth.account.forms import SignupForm
 from .models import Reservation
+from django.utils import timezone
 
 class ReservationForm(forms.ModelForm):
     class Meta:
@@ -14,6 +15,14 @@ class ReservationForm(forms.ModelForm):
             self.fields['first_name'].initial = user.first_name
             self.fields['last_name'].initial = user.last_name
             self.fields['email'].initial = user.email
+
+        today = timezone.now().date()
+        self.fields['reservation_date'].widget = forms.DateInput(attrs={
+            'type': 'date',
+            'min': today,
+            'max': today + timezone.timedelta(days=365)
+        })
+        self.fields['reservation_time'].widget = forms.Select()
 
     def clean(self):
         cleaned_data = super().clean()
