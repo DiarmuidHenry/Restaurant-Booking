@@ -2,10 +2,11 @@
 
 {% block content %}
     {% load static %}
+    {% load crispy_forms_tags %}
     <h1>Make a Reservation</h1>
     <form method="post" action="{% url 'check_availability' %}">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ form | crispy }}
         <button type="submit">Check Availability</button>
     </form>
 
