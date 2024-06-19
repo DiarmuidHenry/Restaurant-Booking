@@ -8,6 +8,7 @@ from .models import Reservation, RestaurantTable, ExceptionalOpeningHours, Norma
 from .forms import ReservationForm, CustomSignupForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 import datetime
+from datetime import datetime, time
 
 class ReservationView(LoginRequiredMixin, FormView):
     template_name = 'booking/booking_form.html'
@@ -37,6 +38,10 @@ def check_availability(request):
         if form.is_valid():
             reservation_date = form.cleaned_data['reservation_date']
             reservation_time_str = form.cleaned_data['reservation_time']
+            print("reservation_time_str:", reservation_time_str)
+            print("reservation_time_str TYPE :", type(reservation_time_str))
+            reservation_time = datetime.strptime(reservation_time_str, "%H:%M").time()
+            print("reservation_time TYPE :", type(reservation_time))
             reservation_length = form.cleaned_data['reservation_length']
             table_location = form.cleaned_data['table_location']
             first_name = form.cleaned_data['first_name']
@@ -46,7 +51,7 @@ def check_availability(request):
             message = form.cleaned_data.get('message', '')
 
             # Convert reservation_time from string to time object
-            reservation_time = datetime.strptime(reservation_time_str, '%H:%M').time()
+            # reservation_time = datetime.strptime(reservation_time_str, '%H:%M').time()
             reservation_datetime = datetime.combine(reservation_date, reservation_time)
             end_datetime = reservation_datetime + timedelta(hours=reservation_length)
 
@@ -101,7 +106,8 @@ def make_reservation(request, table_id):
 
             reservation_time = datetime.strptime(reservation_time_str, "%H:%M").time()
             reservation_datetime = datetime.combine(reservation_date, reservation_time)
-            end_datetime = reservation_datetime + timedelta(hours=reservation_length)
+            reservation_end_datetime = reservation_datetime + timedelta(hours=(reservation_length-1), minutes=59)
+            reservation_end_time = reservation_end_datetime.time()
 
             table = RestaurantTable.objects.get(id=table_id)
             new_booking = Reservation.objects.create(
@@ -112,6 +118,7 @@ def make_reservation(request, table_id):
                 reservation_date=reservation_date,
                 reservation_time=reservation_time,
                 reservation_length=reservation_length,
+                reservation_end_time=reservation_end_time,
                 number_of_guests=number_of_guests,
                 message=message,
                 status='confirmed' 
