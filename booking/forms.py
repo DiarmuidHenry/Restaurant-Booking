@@ -2,6 +2,8 @@ from django import forms
 from allauth.account.forms import SignupForm
 from .models import Reservation
 from django.utils import timezone
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserChangeForm
 
 class ReservationForm(forms.ModelForm):
     class Meta:
@@ -50,3 +52,8 @@ class CustomSignupForm(SignupForm):
         user.save()
         
         return user
+
+class CustomUserChangeForm(UserChangeForm):
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'email')
