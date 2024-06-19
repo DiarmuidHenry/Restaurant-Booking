@@ -45,6 +45,7 @@ def check_availability(request):
             reservation_time = datetime.strptime(reservation_time_str, "%H:%M").time()
             print("reservation_time TYPE :", type(reservation_time))
             reservation_length = form.cleaned_data['reservation_length']
+            print("reservation_length check: ", reservation_length)
             table_location = form.cleaned_data['table_location']
             first_name = form.cleaned_data['first_name']
             last_name = form.cleaned_data['last_name']

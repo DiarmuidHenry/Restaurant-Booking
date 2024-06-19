@@ -9,6 +9,7 @@ class ReservationAdmin(SummernoteModelAdmin):
     search_fields = ['reservation_id', 'first_name', 'last_name']
     list_filter = ('status', 'created_on', 'reservation_date',)
     summernote_fields = ('reservation_id',)
+    exclude = ('reservation_length',)
 
 # Register your models here.
 admin.site.register(RestaurantTable)
