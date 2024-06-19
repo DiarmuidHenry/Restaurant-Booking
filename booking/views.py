@@ -9,6 +9,7 @@ from .forms import ReservationForm, CustomSignupForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 import datetime
 from datetime import datetime, time
+from django.db.models import Max
 
 class ReservationView(LoginRequiredMixin, FormView):
     template_name = 'booking/booking_form.html'
@@ -70,8 +71,31 @@ def check_availability(request):
             # Filter out tables wiht capacity is less than the number of guests
             available_tables = available_tables.filter(capacity__gte=number_of_guests)
 
-            for booking in overlapping_bookings:
-                available_tables = available_tables.exclude(id=booking.table.id)
+            # Initialize variables for finding the smallest available table that fits the group size
+            min_capacity = number_of_guests
+            max_capacity = available_tables.aggregate(max_capacity=Max('capacity'))['max_capacity']
+
+            found_tables = False
+
+            # Iterate from group size up to max_capacity to find the smallest available table
+            for capacity in range(min_capacity, max_capacity + 1):
+                filtered_tables = available_tables.filter(capacity=capacity)
+                if filtered_tables.exists():
+                    available_tables = filtered_tables
+                    found_tables = True
+                    break
+
+            # If no exact match was found, look for larger tables step by step
+            # if not found_tables:
+            #     for capacity in range(min_capacity + 1, max_capacity + 1):
+            #         filtered_tables = available_tables.filter(capacity=capacity)
+            #         if filtered_tables.exists():
+            #             available_tables = filtered_tables
+            #             break
+
+
+            # for booking in overlapping_bookings:
+            #     available_tables = available_tables.exclude(id=booking.table.id)
 
         else:
             print("Form is invalid")
@@ -115,6 +139,7 @@ def make_reservation(request, table_id):
                 last_name=last_name,
                 email=email,
                 table=table,
+                table_location=table_location,
                 reservation_date=reservation_date,
                 reservation_time=reservation_time,
                 reservation_length=reservation_length,
