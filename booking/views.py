@@ -133,16 +133,31 @@ def make_reservation(request, table_id):
     return render(request, 'booking/booking_form.html', {'form': form})
 
 def get_opening_hours(request):
-    date = request.GET.get('date')
-    if date:
+    date_str = request.GET.get('date')
+    
+    if date_str:
+        try:
+            date = datetime.strptime(date_str, '%Y-%m-%d').date()
+        except ValueError:
+            return JsonResponse({'error': 'Invalid date format. Use YYYY-MM-DD.'}, status=400)
+        
         try:
             opening_hours = ExceptionalOpeningHours.objects.get(date=date)
             data = {
-                'opening_time': opening_hours.opening_time,
-                'closing_time': opening_hours.closing_time
+                'opening_time': opening_hours.opening_time.strftime('%H:%M'),
+                'closing_time': opening_hours.closing_time.strftime('%H:%M')
             }
+            print("Opening data retreived from ExceptionalOpeningHours")
         except ExceptionalOpeningHours.DoesNotExist:
-            data = {'error': 'No opening hours found for this date'}
+            try:
+                opening_hours = NormalOpeningHours.objects.get(day=date.strftime('%A').lower())
+                data = {
+                    'opening_time': opening_hours.opening_time.strftime('%H:%M'),
+                    'closing_time': opening_hours.closing_time.strftime('%H:%M')
+                }
+                print("Opening data retreived from NormalOpeningHours")
+            except NormalOpeningHours.DoesNotExist:
+                data = {'error': 'No opening hours found for this date'}
     else:
         data = {'error': 'No date provided'}
     
