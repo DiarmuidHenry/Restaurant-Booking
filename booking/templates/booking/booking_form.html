@@ -44,8 +44,8 @@
             const reservationLengthField = document.getElementById('id_reservation_length');
             const reservationTimeField = document.getElementById('id_reservation_time');
 
-            reservationDateField.addEventListener('change', function() {
-                const selectedDate = this.value;
+            function changeReservationInput() {
+                const selectedDate = reservationDateField.value;
                 const reservationLength = reservationLengthField.value;
                 console.log(`Date selected: ${selectedDate}, Reservation length: ${reservationLength}`)
         
@@ -54,7 +54,7 @@
                 } else {
                     reservationTimeField.innerHTML = '<option value="">Error 1: Select a time</option>';
                 }
-            });
+            };
 
             function fetchOpeningHours(date, length) {
                 console.log(`Fetching opening hours for date: ${date}`);
@@ -74,8 +74,6 @@
                         reservationTimeField.innerHTML = '<option value="">Error 3: Select a time</option>';
                     });
             }
-
-            
 
             function populateTimeOptions(openingTime, closingTime, length) {
                 console.log(`Populating time options from ${openingTime} to ${length} hours before ${closingTime}`);
@@ -112,6 +110,9 @@
                 reservationTimeField.innerHTML = times.map(time => `<option value="${time}">${time}</option>`).join('');
                 console.log('Time options populated:', times);
             }
+
+            reservationDateField.addEventListener('change', changeReservationInput);
+            reservationLengthField.addEventListener('change', changeReservationInput);
         }); 
     </script>
 {% endblock %}
