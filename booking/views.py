@@ -194,3 +194,25 @@ def get_opening_hours(request):
 def current_reservations(request):
     reservations = Reservation.objects.filter(email=request.user.email)
     return render(request, 'booking/current_reservations.html', {'reservations': reservations})
+
+@login_required
+def edit_reservation(request, reservation_id):
+    reservation = Reservation.objects.get(reservation_id=reservation_id, email=request.user.email)
+    if request.method == 'POST':
+        form = ReservationForm(request.POST, instance=reservation)
+        if form.is_valid():
+            form.save()
+            return redirect('current_reservations')
+    else:
+        form = ReservationForm(instance=reservation)
+    
+    return render(request, 'booking/edit_reservation.html', {'form': form, 'reservation': reservation})
+
+@login_required
+def cancel_reservation(request, reservation_id):
+    reservation = Reservation.objects.get(reservation_id=reservation_id, email=request.user.email)
+    if request.method == 'POST':
+        reservation.delete()
+        return redirect('current_reservations')
+    
+    return render(request, 'booking/cancel_reservation.html', {'reservation': reservation})
