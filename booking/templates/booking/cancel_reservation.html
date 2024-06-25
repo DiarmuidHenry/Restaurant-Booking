@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+<h1>Cancel Reservation</h1>
+    <p>Are you sure you want to cancel this reservation?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Yes, Cancel</button>
+        <a href="{% url 'current_reservations' %}">No, Go Back</a>
+    </form>
+
+{% endblock %}
