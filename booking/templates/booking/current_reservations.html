@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+<h1>My Reservations</h1>
+
+    {% if reservations %}
+    <table>
+        <thead>
+            <tr>
+                <th>Reservation Date</th>
+                <th>Reservation Time</th>
+                <th>Reservation Length</th>
+                <th>Table</th>
+                <th>Number of Guests</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reservation in reservations %}
+            <tr>
+                <td>{{ reservation.reservation_date }}</td>
+                <td>{{ reservation.reservation_time }}</td>
+                <td>{{ reservation.reservation_length }}</td>
+                <td>{{ reservation.table }}</td>
+                <td>{{ reservation.number_of_guests }}</td>
+                <td>{{ reservation.status }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>You have no reservations.</p>
+    {% endif %}
+
+{% endblock %}
