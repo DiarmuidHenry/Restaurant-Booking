@@ -190,14 +190,7 @@ def get_opening_hours(request):
     
     return JsonResponse(data)
     
-
-def profile_view(request):
-    if request.method == 'POST':
-        form = CustomUserChangeForm(request.POST, instance=request.user)
-        if form.is_valid():
-            form.save()
-            return redirect('profile')
-    else:
-        form = CustomUserChangeForm(instance=request.user)
-    
-    return render(request, 'booking/profile.html', {'form': form})
+@login_required
+def current_reservations(request):
+    reservations = Reservation.objects.filter(email=request.user.email)
+    return render(request, 'booking/current_reservations.html', {'reservations': reservations})

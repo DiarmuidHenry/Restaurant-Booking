@@ -87,7 +87,7 @@ class RestaurantTable(models.Model):
         ordering = ["table_number"]
 
     def __str__(self):
-        return f"Table {self.table_number} | Capacity: {self.capacity} | {self.table_location}"
+        return f"Table {self.table_number}"
 
     
 class Reservation(models.Model):
