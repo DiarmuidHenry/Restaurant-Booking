@@ -12,8 +12,8 @@
             <tr>
                 <th>Reservation Date</th>
                 <th>Reservation Time</th>
-                <th>Reservation Length</th>
-                <th>Table</th>
+                <!-- <th>Reservation Length</th> -->
+                <th>Table Number</th>
                 <th>Number of Guests</th>
                 <th>Status</th>
                 <th>Options</th>
@@ -23,13 +23,17 @@
             {% for reservation in reservations %}
             <tr>
                 <td>{{ reservation.reservation_date }}</td>
-                <td>{{ reservation.reservation_time }}</td>
-                <td>{{ reservation.reservation_length }}</td>
+                <td>{{ reservation.reservation_time }} - {{ reservation.reservation_end_time }}</td>
+                <!-- <td>{{ reservation.reservation_length }}</td> -->
                 <td>{{ reservation.table }}</td>
                 <td>{{ reservation.number_of_guests }}</td>
                 <td>{{ reservation.status }}</td>
                 <td>
-                    <a href="{% url 'cancel_reservation' reservation.reservation_id %}">Cancel</a>
+                    {% if reservation.status != 'cancelled' %}
+                        <a href="{% url 'cancel_reservation' reservation.reservation_id %}">Cancel</a>
+                    {% else %}
+                        -
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}

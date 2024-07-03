@@ -64,7 +64,8 @@ def check_availability(request):
             # Check for overlapping bookings and exclude tables with such bookings
             overlapping_bookings = Reservation.objects.filter(
                 reservation_date=reservation_date,
-                table__in=available_tables
+                table__in=available_tables,
+                status='confirmed'
             ).filter(
                 reservation_time__lt=end_datetime.time(),
                 reservation_end_time__gt=reservation_time
@@ -195,24 +196,25 @@ def current_reservations(request):
     reservations = Reservation.objects.filter(email=request.user.email)
     return render(request, 'booking/current_reservations.html', {'reservations': reservations})
 
-@login_required
-def edit_reservation(request, reservation_id):
-    reservation = Reservation.objects.get(reservation_id=reservation_id, email=request.user.email)
-    if request.method == 'POST':
-        form = ReservationForm(request.POST, instance=reservation)
-        if form.is_valid():
-            form.save()
-            return redirect('current_reservations')
-    else:
-        form = ReservationForm(instance=reservation)
+# @login_required
+# def edit_reservation(request, reservation_id):
+#     reservation = Reservation.objects.get(reservation_id=reservation_id, email=request.user.email)
+#     if request.method == 'POST':
+#         form = ReservationForm(request.POST, instance=reservation)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('current_reservations')
+#     else:
+#         form = ReservationForm(instance=reservation)
     
-    return render(request, 'booking/edit_reservation.html', {'form': form, 'reservation': reservation})
+#     return render(request, 'booking/edit_reservation.html', {'form': form, 'reservation': reservation})
 
 @login_required
 def cancel_reservation(request, reservation_id):
     reservation = Reservation.objects.get(reservation_id=reservation_id, email=request.user.email)
     if request.method == 'POST':
-        reservation.delete()
+        reservation.status = 'cancelled'
+        reservation.save()
         return redirect('current_reservations')
     
     return render(request, 'booking/cancel_reservation.html', {'reservation': reservation})
