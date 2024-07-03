@@ -1,4 +1,6 @@
 from django.db import models
+from cloudinary.models import CloudinaryField
+from django.utils.text import slugify
 
 # Create your models here.
 class MenuItem(models.Model):
@@ -15,6 +17,8 @@ class MenuItem(models.Model):
     description = models.TextField()
     section = models.CharField(choices=SECTION_CHOICES, default='mains', max_length=50)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    # image = CloudinaryField('image', blank=True, null=True)
+    # slug = models.SlugField(unique=True, blank=True)
     gluten = models.BooleanField(default=False)
     crustaceans = models.BooleanField(default=False)
     eggs = models.BooleanField(default=False)
@@ -32,8 +36,11 @@ class MenuItem(models.Model):
     vegan = models.BooleanField(default=False)
     vegetarian = models.BooleanField(default=False)
 
-    # def clean(self):
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.dish_name)
+        super().save(*args, **kwargs)
 
 
     def __str__(self):
-        return f"{self.dish_name} | {self.section} | {self.price}"
+        return f"{self.dish_name} | {self.section}"
