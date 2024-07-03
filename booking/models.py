@@ -75,8 +75,8 @@ class ExceptionalOpeningHours(models.Model):
 
 class RestaurantTable(models.Model):
     LOCATION_CHOICES = [
-        ('inside', 'Inside'),
-        ('outside', 'Outside'),
+        ('Inside', 'Inside'),
+        ('Outside', 'Outside'),
     ]
 
     table_number = models.PositiveIntegerField(unique=True)
@@ -87,18 +87,18 @@ class RestaurantTable(models.Model):
         ordering = ["table_number"]
 
     def __str__(self):
-        return f"Table {self.table_number}"
+        return f"{self.table_number}"
 
     
 class Reservation(models.Model):
     LOCATION_CHOICES = [
-        ('inside', 'Inside'),
-        ('outside', 'Outside'),
+        ('Inside', 'Inside'),
+        ('Outside', 'Outside'),
     ]
 
     STATUS_CHOICES = [
-        ('confirmed', 'Confirmed'),
-        ('cancelled', 'Cancelled'),
+        ('Confirmed', 'Confirmed'),
+        ('Cancelled', 'Cancelled'),
     ]
 
     LENGTH_CHOICES = [
@@ -131,12 +131,16 @@ class Reservation(models.Model):
     #     self.reservation_end_time = reservation_end_datetime.time()
     #     super().save(*args, **kwargs)
 
-    # def formatted_reservation_time(self):
-    #     return self.reservation_time.strftime('%H:%S')
+    def formatted_reservation_time(self):
+        return self.reservation_time.strftime('%H:%M')
 
-    # def set_formatted_reservation_time(self, value):
-    #     # Parse the value in HH:SS format and set it to reservation_time
-    #     self.reservation_time = datetime.strptime(value, '%H:%S').time()
+    def formatted_reservation_end_time(self):
+        return self.reservation_end_time.strftime('%H:%M')
+
+    def reservation_end_time_plus_one_minute(self):
+        end_datetime = datetime.combine(self.reservation_date, self.reservation_end_time)
+        end_datetime_plus_one_minute = end_datetime + timedelta(minutes=1)
+        return end_datetime_plus_one_minute.strftime('%H:%M')
 
     def clean(self):
 
@@ -217,7 +221,7 @@ class Reservation(models.Model):
     class Meta:
         ordering = ["reservation_date"]
 
-    def __str__(self):
-        return f"{self.reservation_date} : {self.reservation_time} - {self.reservation_end_time} | {self.first_name} {self.last_name} | {self.number_of_guests}"
+    # def __str__(self):
+    #     return f"{self.reservation_date} : {self.formatted_reservation_time} - {self.formatted_reservation_end_time} | {self.first_name} {self.last_name} | {self.number_of_guests}"
 
     

@@ -22,8 +22,8 @@
         <tbody>
             {% for reservation in reservations %}
             <tr>
-                <td>{{ reservation.reservation_date }}</td>
-                <td>{{ reservation.reservation_time }} - {{ reservation.reservation_end_time }}</td>
+                <td>{{ reservation.reservation_date|date:"d/m/Y" }}</td>
+                <td>{{ reservation.formatted_reservation_time }} - {{ reservation.reservation_end_time_plus_one_minute }}</td>
                 <!-- <td>{{ reservation.reservation_length }}</td> -->
                 <td>{{ reservation.table }}</td>
                 <td>{{ reservation.number_of_guests }}</td>
