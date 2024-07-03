@@ -29,7 +29,6 @@
                 <td>{{ reservation.number_of_guests }}</td>
                 <td>{{ reservation.status }}</td>
                 <td>
-                    <a href="{% url 'edit_reservation' reservation.reservation_id %}">Edit</a> | 
                     <a href="{% url 'cancel_reservation' reservation.reservation_id %}">Cancel</a>
                 </td>
             </tr>
