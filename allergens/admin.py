@@ -9,4 +9,3 @@ class MenuItemAdmin(SummernoteModelAdmin):
     search_fields = ['dish_name',]
     list_filter = ('section', 'vegetarian', 'vegan',)
     summernote_fields = ('dish_name',)
-

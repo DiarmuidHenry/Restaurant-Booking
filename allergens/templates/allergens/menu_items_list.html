@@ -5,6 +5,11 @@
 {% load static %}
     <h1>Menu Items</h1>
 
+    <div>
+        <p>Like what you see? Click below to book a table with us</p>
+        <a href="{% url 'reservation' %}" class="btn btn-primary">Make a Reservation</a>
+    </div>
+
     <form method="get">
         <div>
             <label>Remove items that include:</label><br>
@@ -93,5 +98,10 @@
             <li>No desserts available.</li>
         {% endfor %}
     </ul>
+
+    <div>
+        <p>Like what you see? Click below to book a table with us</p>
+        <a href="{% url 'reservation' %}" class="btn btn-primary">Make a Reservation</a>
+    </div>
 
 {% endblock %}

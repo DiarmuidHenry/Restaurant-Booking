@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
 from .models import MenuItem
 
@@ -49,3 +49,8 @@ def menu_items_list(request):
     }
 
     return render(request, 'allergens/menu_items_list.html', context)
+
+
+def menu_item_detail(request, slug):
+    item = get_object_or_404(MenuItem, slug=slug)
+    return render(request, 'menu_item_detail.html', {'item': item})

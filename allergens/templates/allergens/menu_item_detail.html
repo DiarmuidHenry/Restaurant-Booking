@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{ item.dish_name }}</h1>
+    <img src="{{ item.image.url }}" alt="{{ item.dish_name }}" width="200">
+    <p>{{ item.description }}</p>
+    <p>€{{ item.price }}</p>
+    <p>Like what you see? Click below to book a table with us</p>
+    <a href="{% url 'reservation' %}" class="btn btn-primary">Make a Reservation</a>
+{% endblock %}
