@@ -81,7 +81,7 @@ class RestaurantTable(models.Model):
 
     table_number = models.PositiveIntegerField(unique=True)
     capacity = models.PositiveIntegerField(validators=[MinValueValidator(1)])
-    table_location = models.CharField(choices=LOCATION_CHOICES, default='inside', max_length=50)
+    table_location = models.CharField(choices=LOCATION_CHOICES, default='Inside', max_length=50)
 
     class Meta:
         ordering = ["table_number"]
@@ -119,7 +119,7 @@ class Reservation(models.Model):
     reservation_length = models.FloatField(choices=LENGTH_CHOICES, default=2)
     reservation_time = models.TimeField(default=timezone.now)
     number_of_guests = models.PositiveIntegerField(validators=[MinValueValidator(1)])
-    table_location = models.CharField(choices=LOCATION_CHOICES, default='inside', max_length=50)
+    table_location = models.CharField(choices=LOCATION_CHOICES, default='Inside', max_length=50)
     status = models.CharField(choices=STATUS_CHOICES, default=1, max_length=50)
     reservation_end_time = models.TimeField(null=True, blank=True)
     message = models.TextField(max_length=200, blank=True, null=True) 

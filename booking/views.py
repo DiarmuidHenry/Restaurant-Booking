@@ -47,10 +47,12 @@ def check_availability(request):
             reservation_length = form.cleaned_data['reservation_length']
             print("reservation_length check: ", reservation_length)
             table_location = form.cleaned_data['table_location']
+            print("table location: ", table_location)
             first_name = form.cleaned_data['first_name']
             last_name = form.cleaned_data['last_name']
             email = form.cleaned_data['email']
             number_of_guests = form.cleaned_data['number_of_guests']
+            print("number of guests: ", number_of_guests)
             message = form.cleaned_data.get('message', '')
 
             # Convert reservation_time from string to time object
@@ -58,8 +60,21 @@ def check_availability(request):
             reservation_datetime = datetime.combine(reservation_date, reservation_time)
             end_datetime = reservation_datetime + timedelta(hours=reservation_length)
 
-            # Find all tables in the specified location
-            available_tables = RestaurantTable.objects.filter(table_location=table_location)
+            
+            available_tables = RestaurantTable.objects.filter(table_location=table_location, capacity__gte=number_of_guests)
+            print("Available tables:", available_tables)
+
+            # available_tables = RestaurantTable.objects
+            # print("Available tables: ", available_tables)
+
+            # # Find all tables in the specified location
+            # available_tables = available_tables.filter(table_location=table_location)
+            # print("Available tables: ", available_tables)
+
+            # # Filter out tables wiht capacity is less than the number of guests
+            # available_tables = available_tables.filter(capacity__gte=number_of_guests)
+
+            # print("Available tables: ", available_tables)
 
             # Check for overlapping bookings and exclude tables with such bookings
             overlapping_bookings = Reservation.objects.filter(
@@ -71,12 +86,13 @@ def check_availability(request):
                 reservation_end_time__gt=reservation_time
             )
 
-            # Filter out tables wiht capacity is less than the number of guests
-            available_tables = available_tables.filter(capacity__gte=number_of_guests)
+            
 
             # Initialize variables for finding the smallest available table that fits the group size
             min_capacity = number_of_guests
-            max_capacity = available_tables.aggregate(max_capacity=Max('capacity'))['max_capacity']
+            print("MIN_CAPACITY: ", min_capacity)
+            max_capacity = RestaurantTable.objects.aggregate(max_capacity=Max('capacity'))['max_capacity']
+            print("MAX_CAPACITY: ", max_capacity)
 
             found_tables = False
 

@@ -12,3 +12,4 @@ urlpatterns = [
     # path('profile/', profile_view, name='profile'),
     path('current_reservations/', current_reservations, name='current_reservations')
 ]
+
