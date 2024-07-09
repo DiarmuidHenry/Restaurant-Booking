@@ -103,11 +103,6 @@ class Reservation(models.Model):
         ('Outside', 'Outside'),
     ]
 
-    STATUS_CHOICES = [
-        ('Confirmed', 'Confirmed'),
-        ('Cancelled', 'Cancelled'),
-    ]
-
     LENGTH_CHOICES = [
         (1, '1 hour'),
         (1.5, '1.5 hours'),
@@ -127,7 +122,6 @@ class Reservation(models.Model):
     reservation_time = models.TimeField(default=timezone.now)
     number_of_guests = models.PositiveIntegerField(validators=[MinValueValidator(1)])
     table_location = models.CharField(choices=LOCATION_CHOICES, default='Inside', max_length=50)
-    status = models.CharField(choices=STATUS_CHOICES, default=1, max_length=50)
     reservation_end_time = models.TimeField(null=True, blank=True)
     message = models.TextField(max_length=200, blank=True, null=True) 
 

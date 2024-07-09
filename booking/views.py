@@ -86,7 +86,6 @@ def check_availability(request):
             overlapping_bookings = Reservation.objects.filter(
                 reservation_date=reservation_date,
                 table__in=available_tables,
-                status='confirmed'
             ).filter(
                 reservation_time__lt=end_datetime.time(),
                 reservation_end_time__gt=reservation_time
@@ -171,7 +170,6 @@ def make_reservation(request, table_id):
                 reservation_end_time=reservation_end_time,
                 number_of_guests=number_of_guests,
                 message=message,
-                status='confirmed' 
             )
             new_booking.save()
 
@@ -224,14 +222,15 @@ def current_reservations(request):
 def cancel_reservation(request, reservation_id):
     reservation = Reservation.objects.get(reservation_id=reservation_id, email=request.user.email)
     if request.method == 'POST':
-        reservation.status = 'cancelled'
-        reservation.save()
+        reservation.delete()
         send_reservation_email(reservation, is_creation=False)
         return redirect('current_reservations')
     
     return render(request, 'booking/cancel_reservation.html', {'reservation': reservation})
 
 def send_reservation_email(reservation, is_creation=True):
+
+    print("is_creation: ", is_creation)
 
     subject_guest = 'BigByte - Reservation Confirmation' if is_creation else 'BigByte - Reservation Cancellation'
     subject_restaurant = 'New Reservation' if is_creation else 'Reservation Cancelled'
