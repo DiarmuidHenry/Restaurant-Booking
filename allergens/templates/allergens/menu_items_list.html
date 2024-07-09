@@ -37,16 +37,18 @@
     <ul>
         <h2>Starters</h2>
         {% for item in starters %}
-            <li>
+        <li>
+            <a href="{% url 'menu_item_detail' slug=item.slug %}">
                 <h3>{{ item.dish_name }}</h3>
                 {% if item.image %}
                     <img src="{{ item.image.url }}" alt="{{ item.dish_name }}" width="200">
                 {% else %}
                     <p>No image available</p>
                 {% endif %}
-                <p>{{ item.description }}</p>
-                <p>€{{ item.price }}</p>
-            </li>
+            </a>
+            <p>{{ item.description }}</p>
+            <p>€{{ item.price }}</p>
+        </li>
         {% empty %}
             <li>No starters available.</li>
         {% endfor %}
@@ -55,16 +57,18 @@
     <ul>
         <h2>Mains</h2>
         {% for item in mains %}
-            <li>
+        <li>
+            <a href="{% url 'menu_item_detail' slug=item.slug %}">
                 <h3>{{ item.dish_name }}</h3>
                 {% if item.image %}
                     <img src="{{ item.image.url }}" alt="{{ item.dish_name }}" width="200">
                 {% else %}
                     <p>No image available</p>
                 {% endif %}
-                <p>{{ item.description }}</p>
-                <p>€{{ item.price }}</p>
-            </li>
+            </a>
+            <p>{{ item.description }}</p>
+            <p>€{{ item.price }}</p>
+        </li>
         {% empty %}
             <li>No mains available.</li>
         {% endfor %}
@@ -73,16 +77,18 @@
     <ul>
         <h2>Kids</h2>
         {% for item in kids %}
-            <li>
+        <li>
+            <a href="{% url 'menu_item_detail' slug=item.slug %}">
                 <h3>{{ item.dish_name }}</h3>
                 {% if item.image %}
                     <img src="{{ item.image.url }}" alt="{{ item.dish_name }}" width="200">
                 {% else %}
                     <p>No image available</p>
                 {% endif %}
-                <p>{{ item.description }}</p>
-                <p>€{{ item.price }}</p>
-            </li>
+            </a>
+            <p>{{ item.description }}</p>
+            <p>€{{ item.price }}</p>
+        </li>
         {% empty %}
             <li>No kids items available.</li>
         {% endfor %}
@@ -92,15 +98,18 @@
         <h2>Sides</h2>
         {% for item in sides %}
             <li>
-                <h3>{{ item.dish_name }}</h3>
-                {% if item.image %}
-                    <img src="{{ item.image.url }}" alt="{{ item.dish_name }}" width="200">
-                {% else %}
-                    <p>No image available</p>
-                {% endif %}
-                <p>{{ item.description }}</p>
-                <p>€{{ item.price }}</p>
-            </li>
+                <li>
+                    <a href="{% url 'menu_item_detail' slug=item.slug %}">
+                        <h3>{{ item.dish_name }}</h3>
+                        {% if item.image %}
+                            <img src="{{ item.image.url }}" alt="{{ item.dish_name }}" width="200">
+                        {% else %}
+                            <p>No image available</p>
+                        {% endif %}
+                    </a>
+                    <p>{{ item.description }}</p>
+                    <p>€{{ item.price }}</p>
+                </li>
         {% empty %}
             <li>No sides available.</li>
         {% endfor %}
@@ -109,16 +118,18 @@
     <ul>
         <h2>Desserts</h2>
         {% for item in desserts %}
-            <li>
+        <li>
+            <a href="{% url 'menu_item_detail' slug=item.slug %}">
                 <h3>{{ item.dish_name }}</h3>
                 {% if item.image %}
                     <img src="{{ item.image.url }}" alt="{{ item.dish_name }}" width="200">
                 {% else %}
                     <p>No image available</p>
                 {% endif %}
-                <p>{{ item.description }}</p>
-                <p>€{{ item.price }}</p>
-            </li>
+            </a>
+            <p>{{ item.description }}</p>
+            <p>€{{ item.price }}</p>
+        </li>
         {% empty %}
             <li>No desserts available.</li>
         {% endfor %}
