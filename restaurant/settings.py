@@ -30,7 +30,7 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['8000-diarmuidhen-restaurantb-kssj58ulctj.ws.codeinstitute-ide.net', '.herokuapp.com',]
 
@@ -182,6 +182,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Media settings
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -203,6 +206,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # smtpserver = smtplib.SMTP_SSL('smtp.gmail.com', 465)
 # smtpserver.ehlo()
 # smtpserver.login(YOUR_GOOGLE_EMAIL, YOUR_GOOGLE_EMAIL_APP_PASSWORD)
+
+CLOUDINARY_URL = os.environ.get("CLOUDINARY_URL")
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
