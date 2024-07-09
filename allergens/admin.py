@@ -8,4 +8,4 @@ class MenuItemAdmin(SummernoteModelAdmin):
     list_display = ('dish_name', 'section', 'price')
     search_fields = ['dish_name',]
     list_filter = ('section', 'vegetarian', 'vegan',)
-    summernote_fields = ('dish_name',)
+    summernote_fields = ()

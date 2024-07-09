@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 from booking.views import home
 from allergens.views import menu_items_list
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,5 +30,5 @@ urlpatterns = [
     path('', home, name='home'),
 ]
 
-# if settings.DEBUG:
-#     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

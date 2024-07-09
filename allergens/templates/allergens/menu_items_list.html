@@ -39,6 +39,11 @@
         {% for item in starters %}
             <li>
                 <h3>{{ item.dish_name }}</h3>
+                {% if item.image %}
+                    <img src="{{ item.image.url }}" alt="{{ item.dish_name }}" width="200">
+                {% else %}
+                    <p>No image available</p>
+                {% endif %}
                 <p>{{ item.description }}</p>
                 <p>€{{ item.price }}</p>
             </li>
@@ -52,6 +57,11 @@
         {% for item in mains %}
             <li>
                 <h3>{{ item.dish_name }}</h3>
+                {% if item.image %}
+                    <img src="{{ item.image.url }}" alt="{{ item.dish_name }}" width="200">
+                {% else %}
+                    <p>No image available</p>
+                {% endif %}
                 <p>{{ item.description }}</p>
                 <p>€{{ item.price }}</p>
             </li>
@@ -65,6 +75,11 @@
         {% for item in kids %}
             <li>
                 <h3>{{ item.dish_name }}</h3>
+                {% if item.image %}
+                    <img src="{{ item.image.url }}" alt="{{ item.dish_name }}" width="200">
+                {% else %}
+                    <p>No image available</p>
+                {% endif %}
                 <p>{{ item.description }}</p>
                 <p>€{{ item.price }}</p>
             </li>
@@ -78,6 +93,11 @@
         {% for item in sides %}
             <li>
                 <h3>{{ item.dish_name }}</h3>
+                {% if item.image %}
+                    <img src="{{ item.image.url }}" alt="{{ item.dish_name }}" width="200">
+                {% else %}
+                    <p>No image available</p>
+                {% endif %}
                 <p>{{ item.description }}</p>
                 <p>€{{ item.price }}</p>
             </li>
@@ -91,6 +111,11 @@
         {% for item in desserts %}
             <li>
                 <h3>{{ item.dish_name }}</h3>
+                {% if item.image %}
+                    <img src="{{ item.image.url }}" alt="{{ item.dish_name }}" width="200">
+                {% else %}
+                    <p>No image available</p>
+                {% endif %}
                 <p>{{ item.description }}</p>
                 <p>€{{ item.price }}</p>
             </li>
