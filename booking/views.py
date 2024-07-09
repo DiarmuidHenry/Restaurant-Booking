@@ -36,6 +36,8 @@ class ReservationView(LoginRequiredMixin, FormView):
 def thank_you(request):
     return render(request, 'booking/thank_you.html')
 
+
+
 def home(request):
     return render(request, 'booking/index.html')
 
@@ -218,13 +220,16 @@ def current_reservations(request):
     reservations = Reservation.objects.filter(email=request.user.email)
     return render(request, 'booking/current_reservations.html', {'reservations': reservations})
 
+def cancellation_confirmed(request):
+    return render(request, 'booking/cancellation_confirmed.html')
+
 @login_required
 def cancel_reservation(request, reservation_id):
     reservation = Reservation.objects.get(reservation_id=reservation_id, email=request.user.email)
     if request.method == 'POST':
         reservation.delete()
         send_reservation_email(reservation, is_creation=False)
-        return redirect('current_reservations')
+        return redirect('cancellation_confirmed')
     
     return render(request, 'booking/cancel_reservation.html', {'reservation': reservation})
 
@@ -314,3 +319,4 @@ def send_reservation_email(reservation, is_creation=True):
 #     send_reservation_email(reservation)
 
 #     return render(request, 'thank_you.html')
+
