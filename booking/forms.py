@@ -24,7 +24,7 @@ class ReservationForm(forms.ModelForm):
             'min': today,
             'max': today + timezone.timedelta(days=365)
         })
-        self.fields['reservation_time'].widget = forms.Select()
+        self.fields['reservation_time'].widget = forms.Select(attrs={'required': True})
 
     def clean(self):
         cleaned_data = super().clean()

@@ -36,7 +36,7 @@ class MenuItem(models.Model):
     molluscs = models.BooleanField(default=False)
     vegan = models.BooleanField(default=False)
     vegetarian = models.BooleanField(default=False)
-    image = CloudinaryField('image')
+    image = CloudinaryField('image', null=True)
     slug = models.SlugField(unique=True, blank=True)
 
     def __str__(self):
