@@ -8,9 +8,15 @@ from .models import Reservation, RestaurantTable, ExceptionalOpeningHours, Norma
 from .forms import ReservationForm, CustomSignupForm, CustomUserChangeForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 import datetime
+import os
 from datetime import datetime, time
 from django.db.models import Max
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+import smtplib
 
 class ReservationView(LoginRequiredMixin, FormView):
     template_name = 'booking/booking_form.html'
@@ -169,6 +175,8 @@ def make_reservation(request, table_id):
             )
             new_booking.save()
 
+            send_reservation_email(new_booking)
+
             return redirect('thank_you')
     else:
         form = ReservationForm(user=request.user)
@@ -212,25 +220,98 @@ def current_reservations(request):
     reservations = Reservation.objects.filter(email=request.user.email)
     return render(request, 'booking/current_reservations.html', {'reservations': reservations})
 
-# @login_required
-# def edit_reservation(request, reservation_id):
-#     reservation = Reservation.objects.get(reservation_id=reservation_id, email=request.user.email)
-#     if request.method == 'POST':
-#         form = ReservationForm(request.POST, instance=reservation)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('current_reservations')
-#     else:
-#         form = ReservationForm(instance=reservation)
-    
-#     return render(request, 'booking/edit_reservation.html', {'form': form, 'reservation': reservation})
-
 @login_required
 def cancel_reservation(request, reservation_id):
     reservation = Reservation.objects.get(reservation_id=reservation_id, email=request.user.email)
     if request.method == 'POST':
         reservation.status = 'cancelled'
         reservation.save()
+        send_reservation_email(reservation, is_creation=False)
         return redirect('current_reservations')
     
     return render(request, 'booking/cancel_reservation.html', {'reservation': reservation})
+
+def send_reservation_email(reservation, is_creation=True):
+
+    subject_guest = 'BigByte - Reservation Confirmation' if is_creation else 'BigByte - Reservation Cancellation'
+    subject_restaurant = 'New Reservation' if is_creation else 'Reservation Cancelled'
+    template_guest = 'booking/reservation_confirmation_guest.html' if is_creation else 'booking/reservation_cancellation_guest.html'
+    template_restaurant = 'booking/reservation_confirmation_restaurant.html' if is_creation else 'booking/reservation_cancellation_restaurant.html'
+
+    # Format reservation length as "__ hours"
+    reservation_length_str = f"{reservation.reservation_length} hours"
+
+    # Format reservation time and end time as HH:MM
+    reservation_time_str = reservation.reservation_time.strftime('%H:%M')
+    reservation_end_time_str = reservation.reservation_end_time.strftime('%H:%M')
+
+    # Context for guest and restaurant email
+    context_email = {
+        'guest_first_name': reservation.first_name,
+        'guest_last_name': reservation.last_name,
+        'reservation_date': reservation.reservation_date,
+        'reservation_time': reservation_time_str,
+        'reservation_end_time': reservation_end_time_str,
+        'reservation_length': reservation_length_str,
+        'message': reservation.message,
+        'reservation': reservation
+    }
+
+    print("Context Email:", context_email)
+
+    html_message_guest = render_to_string(template_guest, context_email)
+    html_message_restaurant = render_to_string(template_restaurant, context_email)
+    
+    plain_message_guest = strip_tags(html_message_guest)
+    plain_message_restaurant = strip_tags(html_message_restaurant)
+    
+    from_email = settings.DEFAULT_FROM_EMAIL
+    to_guest = reservation.email
+    to_restaurant = settings.RESTAURANT_EMAIL
+
+    # Send email to the user
+    send_mail(subject_guest, plain_message_guest, from_email, [to_guest], html_message=html_message_guest)
+
+    # Send email to the restaurant
+    send_mail(subject_restaurant, plain_message_restaurant, from_email, [to_restaurant], html_message=html_message_restaurant)
+
+
+
+
+
+
+
+
+    # # Format reservation length as "__ hours"
+    # reservation.reservation_length = f"{reservation.reservation_length} hours"
+
+    # # Format reservation time and end time as HH:MM
+    # reservation.reservation_time = reservation.reservation_time.strftime('%H:%M')
+    # reservation.reservation_end_time = reservation.reservation_end_time.strftime('%H:%M')
+
+    # subject_guest = 'BigByte - Reservation Confirmation'
+    # subject_restaurant = 'New Reservation'
+    # html_message_guest = render_to_string('booking/reservation_confirmation_guest.html', {'guest_first_name': reservation.first_name, 'guest_last_name': reservation.last_name, 'reservation': reservation})
+    # html_message_restaurant = render_to_string('booking/reservation_confirmation_restaurant.html', {'guest_first_name': reservation.first_name, 'guest_last_name': reservation.last_name, 'reservation': reservation})
+    # plain_message_guest = strip_tags(html_message_guest)
+    # plain_message_restaurant = strip_tags(html_message_restaurant)
+    # from_email = 'pp4restaurant@gmail.com'
+    # to = reservation.email
+    
+    # plain_message_guest = strip_tags(html_message_guest)
+    # plain_message_restaurant = strip_tags(html_message_restaurant)
+
+#     # Send email to the user
+#     send_mail(subject_guest, plain_message_guest, from_email, [to], html_message=html_message_guest)
+
+#     # Send email to the restaurant
+#     send_mail(subject_restaurant, plain_message_restaurant, from_email, [settings.EMAIL_HOST_USER], html_message=html_message_restaurant)
+
+# def reservation_completed(request):
+#     # Handle reservation logic
+#     reservation = create_reservation(request) 
+
+#     # Send confirmation email
+#     send_reservation_email(reservation)
+
+#     return render(request, 'thank_you.html')

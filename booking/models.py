@@ -6,6 +6,13 @@ from datetime import datetime, timedelta, time
 import time
 from django.contrib.auth.models import User
 from dateutil.relativedelta import relativedelta
+from django.db import models
+from django.db.models.signals import post_save, post_delete
+from django.dispatch import receiver
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from django.conf import settings
 
 # Create your models here.
 
@@ -115,7 +122,7 @@ class Reservation(models.Model):
     email = models.EmailField(default='')
     table = models.ForeignKey(RestaurantTable, on_delete=models.CASCADE)
     created_on = models.DateTimeField(auto_now_add=True)
-    reservation_date = models.DateField(default=timezone.now)
+    reservation_date = models.DateField()
     reservation_length = models.FloatField(choices=LENGTH_CHOICES, default=2)
     reservation_time = models.TimeField(default=timezone.now)
     number_of_guests = models.PositiveIntegerField(validators=[MinValueValidator(1)])
@@ -220,8 +227,3 @@ class Reservation(models.Model):
 
     class Meta:
         ordering = ["reservation_date"]
-
-    # def __str__(self):
-    #     return f"{self.reservation_date} : {self.formatted_reservation_time} - {self.formatted_reservation_end_time} | {self.first_name} {self.last_name} | {self.number_of_guests}"
-
-    
