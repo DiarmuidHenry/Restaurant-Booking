@@ -186,7 +186,7 @@ def make_reservation(request, table_id):
 
 def get_opening_hours(request):
     date_str = request.GET.get('date')
-    
+    print("date_str: ", date_str)
     if date_str:
         try:
             date = datetime.strptime(date_str, '%Y-%m-%d').date()
@@ -195,11 +195,13 @@ def get_opening_hours(request):
         
         try:
             opening_hours = ExceptionalOpeningHours.objects.get(date=date)
+            opening_time = opening_hours.opening_time.strftime('%H:%M') if opening_hours.opening_time else '00:00'
+            closing_time = opening_hours.closing_time.strftime('%H:%M') if opening_hours.closing_time else '00:00'
             data = {
-                'opening_time': opening_hours.opening_time.strftime('%H:%M'),
-                'closing_time': opening_hours.closing_time.strftime('%H:%M')
+                'opening_time': opening_time,
+                'closing_time': closing_time
             }
-            print("Opening data retreived from ExceptionalOpeningHours")
+            print("Opening data retrieved from ExceptionalOpeningHours")
         except ExceptionalOpeningHours.DoesNotExist:
             try:
                 opening_hours = NormalOpeningHours.objects.get(day=date.strftime('%A').lower())
