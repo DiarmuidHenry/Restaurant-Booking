@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from django.http import HttpResponse, JsonResponse
 from datetime import datetime, timedelta
 from .models import Reservation, RestaurantTable, ExceptionalOpeningHours, NormalOpeningHours
-from .forms import ReservationForm, CustomSignupForm, CustomUserChangeForm
+from .forms import ReservationForm, CustomSignupForm, CustomUserChangeForm, ContactForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
@@ -322,3 +322,41 @@ def send_reservation_email(reservation, is_creation=True):
 
 #     return render(request, 'thank_you.html')
 
+def contact(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            email = form.cleaned_data['email']
+            phone = form.cleaned_data['phone']
+            subject = form.cleaned_data['subject']
+            message = form.cleaned_data['message']
+
+            context_email = {
+                'first_name': first_name,
+                'last_name': last_name,
+                'email': email,
+                'phone': phone,
+                'subject': subject,
+                'message': message,
+            }
+
+            email_content = render_to_string('booking/contact_restaurant.html', context_email)
+
+            plain_email_content = strip_tags(email_content)
+    
+            from_email = settings.DEFAULT_FROM_EMAIL
+            to_restaurant = settings.RESTAURANT_EMAIL
+
+            # Send email to the restaurant
+            send_mail(subject, plain_email_content, from_email, [to_restaurant], html_message=email_content)
+
+            return redirect('contact_success')
+
+    else:
+        form = ContactForm()
+    return render(request, 'booking/contact.html', {'form': form})
+
+def contact_success(request):
+    return render(request, 'booking/contact_success.html')

@@ -4,6 +4,8 @@ from .models import Reservation
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserChangeForm
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
 
 class ReservationForm(forms.ModelForm):
     class Meta:
@@ -57,3 +59,17 @@ class CustomUserChangeForm(UserChangeForm):
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'email')
+
+class ContactForm(forms.Form):
+    first_name = forms.CharField(max_length=100, label='First Name')
+    last_name = forms.CharField(max_length=100, label='Last Name')
+    email = forms.EmailField(max_length=100, label='Email')
+    phone = forms.CharField(max_length=15, label='Phone Number')
+    subject = forms.CharField(max_length=100, label='Subject')
+    message = forms.CharField(widget=forms.Textarea, label='Message')
+
+    def __init__(self, *args, **kwargs):
+        super(ContactForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.add_input(Submit('submit', 'Send'))
