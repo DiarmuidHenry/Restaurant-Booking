@@ -1,112 +1,204 @@
-![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
+# BigByte Restaurant
 
-Welcome Diarmuid Henry,
+This project is a Django based website that handles bookings for a restaurant. Users sign up and can see and delete their reservations, with the database being updated accordingly. The website also allows users to see the menu, filtering the results by allergens and dietary preferences.
 
-This is the Code Institute student template for Gitpod. We have preinstalled all of the tools you need to get started. It's perfectly ok to use this template as the basis for your project submissions.
+IMAGE OF WEBSITE ON DIFFERENT DEVICES
 
-You can safely delete this README.md file or change it for your own project. Please do read it at least once, though! It contains some important information about Gitpod and the extensions we use. Some of this information has been updated since the video content was created. The last update to this file was: **April 26, 2024**
+[Deployed Website](https://restaurant--booking-465b6b7fd829.herokuapp.com/)
 
-## Gitpod Reminders
+## Table of Contents
 
-To run a frontend (HTML, CSS, Javascript only) application in Gitpod, in the terminal, type:
+- [Goals](#goals)
+- [Key Features](#key-features)
+- [Potential Users](#potential-users)
+- [UX Design & Development](#ux-design--development)
+  - [Agile Development](#agile-development)
+    - [Epic 1](#epic-1)
+    - [Epic 2](#epic-2)
+    - [Epic 3](#epic-3)
+  - [Wireframes](#wireframes)
+  - [Images](#images)
+  - [Colour Scheme](#colour-scheme)
+  - [Other Features](#other-features)
+- [Data Model](#data-model)
+- [Logic](#logic)
+- [Technology & Resources](#technology--resources)
+- [Deployment](#deployment)
+- [Issues/Bugs](#issuesbugs)
+  - [Resolved](#resolved)
+  - [Unresolved](#unresolved)
+- [Testing & Validation](#testing--validation)
+  - [Functional Testing](#functional-testing)
+  - [PEP8 Validation](#pep8-validation)
+- [Future Improvements/Developments](#future-improvementsdevelopments)
+- [Acknowledgments](#acknowledgments)
 
-`python3 -m http.server`
 
-A blue button should appear to click: _Make Public_,
+## Goals
 
-Another blue button should appear to click: _Open Browser_.
+- To build a functioning website for a restaurant.
+- To allow users to book a table for their desired time and date, on the website.
+- To show the user the restaurant's menu, including allergen information.
+- To give the user a way of contacting the restaurant directly with any questions/queries.
 
-To run a backend Python file, type `python3 app.py` if your Python file is named `app.py`, of course.
+## Key Features
 
-A blue button should appear to click: _Make Public_,
+- INCLUDE SCREENSHOTS
 
-Another blue button should appear to click: _Open Browser_.
+- Large, clear images of the restaurant to show the user the interior.
+- Reseration page, where users can make a reservation.
+- My Reservations page, where users can see their reserevations, past and present.
+- Thanks/Contact conformation pages, to confirm to the user that their action has been completed, as well as confirmation emails.
+- Contact page, for users to directly contact the restaurant.
+- Menu, where users can filter the menu by the allergens that apply to them/their co-diners. Users can also click on each item to see an enlarged image.
+- Make A Reservation buttons appearing regularly, giving the user an easy path to booking a table.
 
-By Default, Gitpod gives you superuser security privileges. Therefore, you do not need to use the `sudo` (superuser do) command in the bash terminal in any of the lessons.
+## Potential Users
 
-To log into the Heroku toolbelt CLI:
+- Regulars of the restaurant.
+- Potential future diners, curious about the ambience/style.
+- Users with allergies, who want to research their meal beforehand.
 
-1. Log in to your Heroku account and go to *Account Settings* in the menu under your avatar.
-2. Scroll down to the *API Key* and click *Reveal*
-3. Copy the key
-4. In Gitpod, from the terminal, run `heroku_config`
-5. Paste in your API key when asked
+## UX Design & Development
 
-You can now use the `heroku` CLI program - try running `heroku apps` to confirm it works. This API key is unique and private to you, so do not share it. If you accidentally make it public, you can create a new one with _Regenerate API Key_.
+Explain the user experience design and development process.
 
-------
+### Agile Development
 
-## Release History
+COPY CONTENT FROM KANDAN BOARD IN PROJECTS
 
-We continually tweak and adjust this template to help give you the best experience. Here is the version history:
+#### Epic 1: Title of Epic 1
 
-**April 26 2024:** Update node version to 16
+| User Story | Acceptance Criteria | How this is Achieved | Accomplished? |
+|------------|---------------------|----------------------|--------------|
+| User story 1 | - Acceptance criteria 1 | - Explanation of how it's achieved | Yes/No |
+|| - Acceptance criteria 2 | - Explanation of how it's achieved | Yes/No |
+|| - Acceptance criteria 3 | - Explanation of how it's achieved | Yes/No |
+| User story 2 | - Acceptance criteria 1 | - Explanation of how it's achieved | Yes/No |
+|| - Acceptance criteria 2 | - Explanation of how it's achieved | Yes/No |
+|| - Acceptance criteria 3 | - Explanation of how it's achieved | Yes/No |
 
-**September 20 2023:** Update Python version to 3.9.17.
+#### Epic 2: Title of Epic 2
 
-**September 1 2021:** Remove `PGHOSTADDR` environment variable.
+| User Story | Acceptance Criteria | How this is Achieved | Accomplished? |
+|------------|---------------------|----------------------|--------------|
+| User story 1 | - Acceptance criteria 1 | - Explanation of how it's achieved | Yes/No |
+|| - Acceptance criteria 2 | - Explanation of how it's achieved | Yes/No |
+|| - Acceptance criteria 3 | - Explanation of how it's achieved | Yes/No |
+| User story 2 | - Acceptance criteria 1 | - Explanation of how it's achieved | Yes/No |
+|| - Acceptance criteria 2 | - Explanation of how it's achieved | Yes/No |
+|| - Acceptance criteria 3 | - Explanation of how it's achieved | Yes/No |
 
-**July 19 2021:** Remove `font_fix` script now that the terminal font issue is fixed.
+#### Epic 3: Title of Epic 3
 
-**July 2 2021:** Remove extensions that are not available in Open VSX.
+| User Story | Acceptance Criteria | How this is Achieved | Accomplished? |
+|------------|---------------------|----------------------|--------------|
+| User story 1 | - Acceptance criteria 1 | - Explanation of how it's achieved | Yes/No |
+|| - Acceptance criteria 2 | - Explanation of how it's achieved | Yes/No |
+|| - Acceptance criteria 3 | - Explanation of how it's achieved | Yes/No |
+| User story 2 | - Acceptance criteria 1 | - Explanation of how it's achieved | Yes/No |
+|| - Acceptance criteria 2 | - Explanation of how it's achieved | Yes/No |
+|| - Acceptance criteria 3 | - Explanation of how it's achieved | Yes/No |
 
-**June 30 2021:** Combined the P4 and P5 templates into one file, added the uptime script. See the FAQ at the end of this file.
 
-**June 10 2021:** Added: `font_fix` script and alias to fix the Terminal font issue
+### Wireframes
 
-**May 10 2021:** Added `heroku_config` script to allow Heroku API key to be stored as an environment variable.
+HOME PAGE 
+MAKE A RESERVATION
+MENU
+CONTACT
+MY RESERVATIONS
 
-**April 7 2021:** Upgraded the template for VS Code instead of Theia.
+### Images
 
-**October 21 2020:** Versions of the HTMLHint, Prettier, Bootstrap4 CDN and Auto Close extensions updated. The Python extension needs to stay the same version for now.
+- Hero/Background Image
 
-**October 08 2020:** Additional large Gitpod files (`core.mongo*` and `core.python*`) are now hidden in the Explorer, and have been added to the `.gitignore` by default.
+This image was used to show the stylish interior of the restaurant, in order to give the user an impression of the ambience and feel of the place.
 
-**September 22 2020:** Gitpod occasionally creates large `core.Microsoft` files. These are now hidden in the Explorer. A `.gitignore` file has been created to make sure these files will not be committed, along with other common files.
+- Example/s of food images
 
-**April 16 2020:** The template now automatically installs MySQL instead of relying on the Gitpod MySQL image. The message about a Python linter not being installed has been dealt with, and the set-up files are now hidden in the Gitpod file explorer.
+These are used simply to show the user what each dish looks like.
 
-**April 13 2020:** Added the _Prettier_ code beautifier extension instead of the code formatter built-in to Gitpod.
+### Colour Scheme
 
-**February 2020:** The initialisation files now _do not_ auto-delete. They will remain in your project. You can safely ignore them. They just make sure that your workspace is configured correctly each time you open it. It will also prevent the Gitpod configuration popup from appearing.
+Pastel colours, that match the styling and ambience of the restaurant, SOMETHING SOMETHING
 
-**December 2019:** Added Eventyret's Bootstrap 4 extension. Type `!bscdn` in a HTML file to add the Bootstrap boilerplate. Check out the <a href="https://github.com/Eventyret/vscode-bcdn" target="_blank">README.md file at the official repo</a> for more options.
+### Other Features
 
-------
+The fixed background?
 
-## FAQ about the uptime script
+## Data Model
 
-**Why have you added this script?**
+I created 2 apps for this project
 
-It will help us to calculate how many running workspaces there are at any one time, which greatly helps us with cost and capacity planning. It will help us decide on the future direction of our cloud-based IDE strategy.
+### Booking
 
-**How will this affect me?**
+Explanation of the models, attributes, and CRUD implimentation. Mention what the superuser (i.e. restaurant manager/staff) can do/see. Links between Opening Hours, Table Numbers, Reservation.
 
-For everyday usage of Gitpod, it doesn’t have any effect at all. The script only captures the following data:
+### Allergens
 
-- An ID that is randomly generated each time the workspace is started.
-- The current date and time
-- The workspace status of “started” or “running”, which is sent every 5 minutes.
+Explain the model, and how it gets information put in (in a user friendly way through the admin panel) to filter by allergen.
 
-It is not possible for us or anyone else to trace the random ID back to an individual, and no personal data is being captured. It will not slow down the workspace or affect your work.
+## Logic
 
-**So….?**
+### Booking
 
-We want to tell you this so that we are being completely transparent about the data we collect and what we do with it.
+Flowchart, for the process of making and cancelling a booking (and how data from different models is called).
 
-**Can I opt out?**
+### Allergens
 
-Yes, you can. Since no personally identifiable information is being captured, we'd appreciate it if you let the script run; however if you are unhappy with the idea, simply run the following commands from the terminal window after creating the workspace, and this will remove the uptime script:
+Flowchart, for the process of using filters, as well as making new entries in the database.
 
-```
-pkill uptime.sh
-rm .vscode/uptime.sh
-```
+## Technology & Resources
 
-**Anything more?**
+List the technologies, tools, and resources used to build the project.
 
-Yes! We'd strongly encourage you to look at the source code of the `uptime.sh` file so that you know what it's doing. As future software developers, it will be great practice to see how these shell scripts work.
+## Deployment
 
----
+### Heroku
 
-Happy coding!
+Copy and paste from earlier project?
+
+## Issues/Bugs
+
+### Resolved
+
+- List of bugs
+- Screenshots included (collapsable?)
+
+### Unresolved
+
+- Things that I want to develop in the future?
+- This whatever doesnt work
+
+## Testing & Validation
+
+### Manual Functional Testing
+
+Manual testing table for every functionality in the website (lots of work, but most will be repeats of simple commands). Table format, use earlier project as template.
+
+### HTML
+
+Run finished project through validator, include screenshot.
+
+### CSS
+
+Run finished project through validator, include screenshot.
+
+### JS
+
+Run finished project through validator, include screenshot.
+
+### Python
+
+Run finished project through validator, include screenshot.
+
+## Future Improvements/Developments
+
+- Add possibility for user to select several tables when booking for a larger group.
+- Cascade for when the opening hours are changed, affecting an already existing reservation. SHOULD I DO THIS?
+
+## Acknowledgments
+
+- Student Care
+- Mentor
