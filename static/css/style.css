@@ -1,5 +1,47 @@
-.navbar-nav .disabled {
-    pointer-events: none;
-    opacity: 0.5;
-    color: red;
+/* Body styling */
+body {
+    font-family: 'Roboto', sans-serif; /* Example font family */
+    margin: 0;
+    padding: 0;
+    background-image: url('../images/hero_image.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    height: 100vh; /* Ensure full viewport height */
+    overflow-x: hidden; /* Hide horizontal overflow */
+    position: relative; /* Ensure stacking context */
 }
+
+/* Translucent overlay for background */
+.main-bg {
+    background-color: rgba(255, 255, 255, 0.9); /* Adjust opacity as needed */
+    position: relative; /* Ensure stacking context */
+    z-index: 1; /* Ensure content is above hero image */
+    padding-top: 25vh; /* Adjust to position content 25% down the page */
+}
+
+#main-bg-home {
+    padding-top: 40vh;
+}
+
+.main-bg > main {
+    padding-top: 0;
+} 
+
+/* Center content vertically on hero image */
+.container-hero {
+    text-align: center;
+    color: white; /* Adjust text color to ensure visibility */
+    padding-top: 20vh; /* Adjust to position content vertically */
+}
+
+/* Navbar styles */
+.navbar {
+    background-color: rgba(255, 255, 255, 0.8); /* Adjust navbar background opacity */
+    backdrop-filter: blur(10px); /* Apply backdrop blur effect */
+    /* position: fixed; Fixed position to remain at top */
+    width: 100%; /* Full width */
+    z-index: 2; /* Ensure navbar is above hero image */
+}
+
+/* Adjust navbar height and other styles as needed */
