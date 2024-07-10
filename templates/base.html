@@ -1,6 +1,8 @@
 {% url 'account_login' as login_url %}
 {% url 'account_signup' as signup_url %}
 {% url 'account_logout' as logout_url %}
+
+{% load static %}
 <!DOCTYPE html>
 <html class="h-100" lang="en">
 
@@ -20,6 +22,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 
+    <!-- Custom CSS -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
 
 </head>
 
@@ -45,16 +49,20 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
+                        <a class="nav-link {% if request.path == home %}disabled text-muted{% endif %}" 
+                            href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {% if request.path == reservations_url %}disabled text-muted{% endif %}" 
                             href="{% url 'reservation' %}">Make a Reservation</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == menu_url %}disabled text-muted{% endif %}" 
+                        <a class="nav-link {% if request.path == menu_items_list %}disabled text-muted{% endif %}" 
                             href="{% url 'menu_items_list' %}">See our Menu</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == contact_url %}disabled text-muted{% endif %}" 
-                            href="{% url 'menu_items_list' %}">Contact Us</a>
+                        <a class="nav-link {% if request.path == contact %}disabled text-muted{% endif %}" 
+                            href="{% url 'contact' %}">Contact Us</a>
                     </li>
                     {% if user.is_authenticated %}
                     <li class="nav-item">
