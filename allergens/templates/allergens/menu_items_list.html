@@ -32,13 +32,14 @@
             </label><br>
         </div>
         <button type="submit">Filter</button>
+        <a href="{% url 'menu_items_list' %}" class="btn btn-secondary">Clear Filters</a>
     </form>
 
     <ul>
         <h2>Starters</h2>
         {% for item in starters %}
         <li>
-            <a href="{% url 'menu_item_detail' slug=item.slug %}">
+            <a href="{% url 'menu_item_detail' slug=item.slug %}?{{ filters }}">
                 <h3>{{ item.dish_name }}</h3>
                 {% if item.image %}
                     <img src="{{ item.image.url }}" alt="{{ item.dish_name }}" width="200">
@@ -58,7 +59,7 @@
         <h2>Mains</h2>
         {% for item in mains %}
         <li>
-            <a href="{% url 'menu_item_detail' slug=item.slug %}">
+            <a href="{% url 'menu_item_detail' slug=item.slug %}?{{ filters }}">
                 <h3>{{ item.dish_name }}</h3>
                 {% if item.image %}
                     <img src="{{ item.image.url }}" alt="{{ item.dish_name }}" width="200">
@@ -78,7 +79,7 @@
         <h2>Kids</h2>
         {% for item in kids %}
         <li>
-            <a href="{% url 'menu_item_detail' slug=item.slug %}">
+            <a href="{% url 'menu_item_detail' slug=item.slug %}?{{ filters }}">
                 <h3>{{ item.dish_name }}</h3>
                 {% if item.image %}
                     <img src="{{ item.image.url }}" alt="{{ item.dish_name }}" width="200">
@@ -99,7 +100,7 @@
         {% for item in sides %}
             <li>
                 <li>
-                    <a href="{% url 'menu_item_detail' slug=item.slug %}">
+                    <a href="{% url 'menu_item_detail' slug=item.slug %}?{{ filters }}">
                         <h3>{{ item.dish_name }}</h3>
                         {% if item.image %}
                             <img src="{{ item.image.url }}" alt="{{ item.dish_name }}" width="200">
@@ -119,7 +120,7 @@
         <h2>Desserts</h2>
         {% for item in desserts %}
         <li>
-            <a href="{% url 'menu_item_detail' slug=item.slug %}">
+            <a href="{% url 'menu_item_detail' slug=item.slug %}?{{ filters }}">
                 <h3>{{ item.dish_name }}</h3>
                 {% if item.image %}
                     <img src="{{ item.image.url }}" alt="{{ item.dish_name }}" width="200">

@@ -46,6 +46,7 @@ def menu_items_list(request):
         'kids': kids,
         'sides': sides,
         'desserts': desserts,
+        'filters': request.GET.urlencode(), # Filters are passed on to template #
     }
 
     return render(request, 'allergens/menu_items_list.html', context)
@@ -53,4 +54,6 @@ def menu_items_list(request):
 
 def menu_item_detail(request, slug):
     item = get_object_or_404(MenuItem, slug=slug)
-    return render(request, 'allergens/menu_item_detail.html', {'item': item})
+    # Filters are passed on so they remain when user goes back to menu
+    filters = request.GET.urlencode()
+    return render(request, 'allergens/menu_item_detail.html', {'item': item, 'filters': filters})
