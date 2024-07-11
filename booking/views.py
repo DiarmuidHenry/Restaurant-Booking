@@ -13,7 +13,7 @@ from django.conf import settings
 import datetime
 import os
 from datetime import datetime, time
-from django.db.models import Max
+from django.db.models import Max, Q
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -43,7 +43,7 @@ def thank_you(request):
 def home(request):
     return render(request, 'booking/index.html')
 
-def check_availability(request):
+def check_availability(request, reservation_id=None):
     # Initialise variables 
     available_tables = []
     alert_message = ""
@@ -96,7 +96,8 @@ def check_availability(request):
                 table__in=available_tables,
             ).filter(
                 reservation_time__lt=end_datetime.time(),
-                reservation_end_time__gt=reservation_time
+                reservation_end_time__gt=reservation_time,
+                reservation_id=reservation_id
             )
 
             available_tables = available_tables.exclude(id__in=overlapping_bookings.values_list('table_id', flat=True))
@@ -402,16 +403,16 @@ def edit_confirmed(request):
     return render(request, 'booking/edit_confirmed.html')
 
 def edit_reservation(request, reservation_id):
-    reservation = get_object_or_404(Reservation, pk=reservation_id)
-    context = {
-        'reservation': reservation,
-    }
+    reservation = get_object_or_404(Reservation, reservation_id=reservation_id)
+    # context = {
+    #     'reservation': reservation,
+    # }
 
     if request.method == 'POST':
         form = EditReservationForm(request.POST, instance=reservation)
         if form.is_valid():
             updated_reservation = form.save()
-            return redirect('edit_confirmed', reservation_id=updated_reservation.pk)
+            return redirect('edit_confirmed', reservation_id=updated_reservation.reservation_id)
     else:
         form = EditReservationForm(instance=reservation, initial={'reservation_id': reservation_id})
 
