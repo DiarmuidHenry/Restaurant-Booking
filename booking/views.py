@@ -348,7 +348,15 @@ def contact(request):
             return redirect('contact_success')
 
     else:
-        form = ContactForm()
+        initial_data = {}
+        if request.user.is_authenticated:
+            initial_data = {
+                'first_name': request.user.first_name,
+                'last_name': request.user.last_name,
+                'email': request.user.email,
+            }
+        
+        form = ContactForm(initial=initial_data)
     return render(request, 'booking/contact.html', {'form': form})
 
 def contact_success(request):
