@@ -44,8 +44,10 @@ def home(request):
     return render(request, 'booking/index.html')
 
 def check_availability(request):
+    # Initialise variables 
     available_tables = []
     alert_message = ""
+    max_capacity = 0
 
     if request.method == 'POST':
         form = ReservationForm(request.POST)
