@@ -42,6 +42,7 @@ def home(request):
 
 def check_availability(request):
     available_tables = []
+
     if request.method == 'POST':
         form = ReservationForm(request.POST)
         if form.is_valid():
@@ -93,8 +94,7 @@ def check_availability(request):
             )
 
             available_tables = available_tables.exclude(id__in=overlapping_bookings.values_list('table_id', flat=True))
-
-
+            
             # Initialize variables for finding the smallest available table that fits the group size
             min_capacity = number_of_guests
             print("MIN_CAPACITY: ", min_capacity)
@@ -102,6 +102,18 @@ def check_availability(request):
             print("MAX_CAPACITY: ", max_capacity)
 
             found_tables = False
+
+            # Check if number of guests exceeds the largest table capacity or no tables are available
+            # Determine availability message
+            if number_of_guests > max_capacity or not available_tables.exists():
+                if number_of_guests > max_capacity:
+                    message = f"If you wish to book a table for {number_of_guests} people, please <a href='/contact/'>contact us using the contact form</a>."
+                else:
+                    message = f"Unfortunately, we do not have a table available for your group of {number_of_guests} at the chosen time. Please <a href='/contact/'>contact us using the contact form</a> for assistance, or try searching for another time or date."
+                available_tables = []
+            else:
+                message = ""
+
 
             # Iterate from group size up to max_capacity to find the smallest available table
             for capacity in range(min_capacity, max_capacity + 1):
@@ -111,25 +123,37 @@ def check_availability(request):
                     found_tables = True
                     break
 
+            
+
 
             # for booking in overlapping_bookings:
             #     available_tables = available_tables.exclude(id=booking.table.id)
+
+            return render(request, 'booking/booking_form.html', {
+                'form': form,
+                'available_tables': available_tables,
+                'max_capacity': max_capacity,
+                'message': message,
+            })
 
         else:
             print("Form is invalid")
             print(form.errors)
 
-        return render(request, 'booking/booking_form.html', {
-            'form': form,
-            'available_tables': available_tables
-        })
+        # return render(request, 'booking/booking_form.html', {
+        #     'form': form,
+        #     'available_tables': available_tables,
+        #     'max_capacity': max_capacity  # Pass max_capacity to the template
+        # })
 
     else:
         form = ReservationForm()
 
     return render(request, 'booking/booking_form.html', {
         'form': form,
-        'available_tables': available_tables
+        'available_tables': available_tables,
+        'max_capacity': max_capacity,
+        'message': message,
     })
 
 def make_reservation(request, table_id):

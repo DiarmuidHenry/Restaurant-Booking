@@ -34,10 +34,23 @@
         </ul>
     {% else %}
         {% if form.is_bound and not available_tables %}
-            <p>No tables available for the selected time slot.</p>
+            {% if form.number_of_guests.value %}
+                {% if form.number_of_guests.value|add:0 > max_capacity %}
+                    <p>If you wish to book a table for {{ form.number_of_guests.value }} people, please <a href="{% url 'contact' %}">contact us using the contact form</a>.</p>
+                {% else %}
+                    <p>Unfortunately, we do not have a table available for your group of {{ form.number_of_guests.value }} at the chosen time. Please <a href="{% url 'contact' %}">contact us using the contact form</a> for assistance, or try searching for another time or date.</p>
+                {% endif %}
+            {% else %}
+                <p>No tables available for the selected time slot.</p>
+            {% endif %}
         {% endif %}
     {% endif %}
+    <div id="popup_container"></div>
 
     <script src="{% static 'js/get_opening_hours.js' %}"></script>
+    <script>
+        // Pass show_popup value from Django to JavaScript
+        const showPopup = "{{ show_popup }}";
+    </script>
 
 {% endblock %}
