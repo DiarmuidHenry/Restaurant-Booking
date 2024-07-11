@@ -101,11 +101,11 @@ class Reservation(models.Model):
     ]
 
     LENGTH_CHOICES = [
-        (1, '1 hour'),
+        (1.0, '1 hour'),
         (1.5, '1.5 hours'),
-        (2, '2 hours'),
+        (2.0, '2 hours'),
         (2.5, '2.5 hours'),
-        (3, '3 hours'),
+        (3.0, '3 hours'),
     ]
 
     def validate_reservation_time(value):
