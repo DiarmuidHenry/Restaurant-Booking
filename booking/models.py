@@ -1,5 +1,5 @@
 from django.db import models
-from django.core.validators import MinValueValidator, ValidationError
+from django.core.validators import MinValueValidator, ValidationError, MaxValueValidator
 from django.utils import timezone
 from datetime import timedelta
 from datetime import datetime
@@ -122,7 +122,7 @@ class Reservation(models.Model):
     reservation_date = models.DateField()
     reservation_length = models.FloatField(choices=LENGTH_CHOICES, default=2)
     reservation_time = models.TimeField(blank=False)
-    number_of_guests = models.PositiveIntegerField(validators=[MinValueValidator(1)])
+    number_of_guests = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(50)])
     table_location = models.CharField(choices=LOCATION_CHOICES, default='Inside', max_length=50)
     reservation_end_time = models.TimeField(null=True, blank=True)
     message = models.TextField(max_length=200, blank=True, null=True) 
