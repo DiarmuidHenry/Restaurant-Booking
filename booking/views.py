@@ -43,11 +43,12 @@ def thank_you(request):
 def home(request):
     return render(request, 'booking/index.html')
 
-def check_availability(request, reservation_id=None):
+def check_availability(request, current_reservation_id=None):
     # Initialise variables 
     available_tables = []
     alert_message = ""
     max_capacity = 0
+    current_reservation_id = request.POST.get('current_reservation_id')
 
     if request.method == 'POST':
         form = ReservationForm(request.POST)
@@ -97,8 +98,11 @@ def check_availability(request, reservation_id=None):
             ).filter(
                 reservation_time__lt=end_datetime.time(),
                 reservation_end_time__gt=reservation_time,
-                reservation_id=reservation_id
             )
+
+            if current_reservation_id:
+                print("ID IS BEING RECEIVED")
+                overlapping_bookings = overlapping_bookings.exclude(reservation_id=current_reservation_id)
 
             available_tables = available_tables.exclude(id__in=overlapping_bookings.values_list('table_id', flat=True))
             
@@ -412,8 +416,8 @@ def edit_reservation(request, reservation_id):
         form = EditReservationForm(request.POST, instance=reservation)
         if form.is_valid():
             updated_reservation = form.save()
-            return redirect('edit_confirmed', reservation_id=updated_reservation.reservation_id)
+            return redirect('edit_confirmed', reservation_id=updated_reservation.id)
     else:
-        form = EditReservationForm(instance=reservation, initial={'reservation_id': reservation_id})
+        form = EditReservationForm(instance=reservation)
 
     return render(request, 'booking/edit_reservation.html', {'form': form, 'reservation': reservation})
