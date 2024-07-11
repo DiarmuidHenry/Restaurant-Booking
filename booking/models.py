@@ -113,6 +113,7 @@ class Reservation(models.Model):
             raise ValidationError('Reservation time cannot be empty.')
 
     reservation_id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     first_name = models.CharField(max_length=25, default='')
     last_name = models.CharField(max_length=25, default='')
     email = models.EmailField(default='')
