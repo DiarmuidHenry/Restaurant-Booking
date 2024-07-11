@@ -3,6 +3,7 @@ from django.views.generic.edit import FormView
 from django.shortcuts import render, redirect
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse, JsonResponse
+from django.urls import reverse
 from datetime import datetime, timedelta
 from .models import Reservation, RestaurantTable, ExceptionalOpeningHours, NormalOpeningHours
 from .forms import ReservationForm, CustomSignupForm, CustomUserChangeForm, ContactForm
@@ -17,6 +18,8 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 import smtplib
+from urllib.parse import urlencode
+from django.utils import formats
 
 class ReservationView(LoginRequiredMixin, FormView):
     template_name = 'booking/booking_form.html'
@@ -42,6 +45,7 @@ def home(request):
 
 def check_availability(request):
     available_tables = []
+    alert_message = ""
 
     if request.method == 'POST':
         form = ReservationForm(request.POST)
@@ -106,13 +110,17 @@ def check_availability(request):
             # Check if number of guests exceeds the largest table capacity or no tables are available
             # Determine availability message
             if number_of_guests > max_capacity or not available_tables.exists():
+                formatted_reservation_date = formats.date_format(reservation_date, "d F Y")
                 if number_of_guests > max_capacity:
-                    message = f"If you wish to book a table for {number_of_guests} people, please <a href='/contact/'>contact us using the contact form</a>."
+                    subject = f"Booking Enquiry: {number_of_guests} people - {formatted_reservation_date} - {reservation_time_str} - {reservation_length} hours - {table_location}"
+                    subject_param = urlencode({'subject': subject})
+                    alert_message = f"If you wish to book a table for {number_of_guests} people, please <a href='{reverse('contact')}?{subject_param}&message={message}'>contact us using the contact form</a>."
                 else:
-                    message = f"Unfortunately, we do not have a table available for your group of {number_of_guests} at the chosen time. Please <a href='/contact/'>contact us using the contact form</a> for assistance, or try searching for another time or date."
+                    subject = f"Booking Enquiry: {number_of_guests} people - {formatted_reservation_date} - {reservation_time_str} - {reservation_length} hours - {table_location}"
+                    subject_param = urlencode({'subject': subject})
+                    alert_message = f"Unfortunately, we do not have a table available for your group of {number_of_guests} at the chosen time. Please <a href='{reverse('contact')}?{subject_param}&message={message}'>contact us using the contact form</a> for assistance, or try searching for another time or date."
                 available_tables = []
-            else:
-                message = ""
+
 
 
             # Iterate from group size up to max_capacity to find the smallest available table
@@ -133,7 +141,7 @@ def check_availability(request):
                 'form': form,
                 'available_tables': available_tables,
                 'max_capacity': max_capacity,
-                'message': message,
+                'alert_message': alert_message,
             })
 
         else:
@@ -153,7 +161,7 @@ def check_availability(request):
         'form': form,
         'available_tables': available_tables,
         'max_capacity': max_capacity,
-        'message': message,
+        'alert_message': alert_message,
     })
 
 def make_reservation(request, table_id):
@@ -378,6 +386,8 @@ def contact(request):
                 'first_name': request.user.first_name,
                 'last_name': request.user.last_name,
                 'email': request.user.email,
+                'subject': request.GET.get('subject', ''),
+                'message': request.GET.get('message', ''),
             }
         
         form = ContactForm(initial=initial_data)
