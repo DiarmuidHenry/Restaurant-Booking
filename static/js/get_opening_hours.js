@@ -215,6 +215,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 return `<option value="${time}" ${time === selectedTime ? 'selected' : ''}>${time}</option>`;
             }).join('');
             scrollToAvailableTables();
+            scrollToAlertMessage();
             console.log('Time options populated:', times);
         }
     }
@@ -229,6 +230,15 @@ document.addEventListener('DOMContentLoaded', function () {
             availableTablesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     }
+
+    function scrollToAlertMessage() {
+        const alertMessageSection = document.getElementById('alertMessage');
+        if (alertMessageSection) {
+            alertMessageSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+
+    
 
     // Event listener for time field changes
     reservationTimeField.addEventListener('change', function() {
@@ -254,15 +264,5 @@ document.addEventListener('DOMContentLoaded', function () {
             event.preventDefault(); // Prevent form submission if validation fails
         }
     });
-
-    // Check if showPopup is true, and display the popup message accordingly
-    const showPopup = "{{ show_popup }}";
-    if (showPopup === "True") {
-        const popupContainer = document.getElementById('popup_container');
-        const popupMessage = document.createElement('div');
-        popupMessage.id = 'popup_message';
-        popupMessage.innerHTML = '<p>For this booking, please <a href="/contact/">CONTACT US</a>.</p>';  // Replace with the correct URL
-        popupContainer.appendChild(popupMessage);
-    }
 });
 
