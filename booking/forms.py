@@ -10,7 +10,7 @@ from crispy_forms.layout import Submit
 class ReservationForm(forms.ModelForm):
     class Meta:
         model = Reservation
-        exclude = ['status', 'table', 'reservation_end_time']
+        exclude = ['status', 'table', 'reservation_end_time', 'user']
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)

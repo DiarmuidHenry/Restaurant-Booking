@@ -29,8 +29,7 @@ class ReservationView(LoginRequiredMixin, FormView):
         return kwargs
 
     def form_valid(self, form):
-        print("Form is valid")
-        form.save()
+        form.instance.user = self.request.user  # Automatically set the user
         return super().form_valid(form)
 
 def thank_you(request):
@@ -93,7 +92,8 @@ def check_availability(request):
                 reservation_end_time__gt=reservation_time
             )
 
-            
+            available_tables = available_tables.exclude(id__in=overlapping_bookings.values_list('table_id', flat=True))
+
 
             # Initialize variables for finding the smallest available table that fits the group size
             min_capacity = number_of_guests
@@ -110,14 +110,6 @@ def check_availability(request):
                     available_tables = filtered_tables
                     found_tables = True
                     break
-
-            # If no exact match was found, look for larger tables step by step
-            # if not found_tables:
-            #     for capacity in range(min_capacity + 1, max_capacity + 1):
-            #         filtered_tables = available_tables.filter(capacity=capacity)
-            #         if filtered_tables.exists():
-            #             available_tables = filtered_tables
-            #             break
 
 
             # for booking in overlapping_bookings:
@@ -161,6 +153,7 @@ def make_reservation(request, table_id):
 
             table = RestaurantTable.objects.get(id=table_id)
             new_booking = Reservation.objects.create(
+                user=request.user,
                 first_name=first_name,
                 last_name=last_name,
                 email=email,
@@ -219,7 +212,7 @@ def get_opening_hours(request):
     
 @login_required
 def current_reservations(request):
-    reservations = Reservation.objects.filter(email=request.user.email)
+    reservations = Reservation.objects.filter(user=request.user)
     return render(request, 'booking/current_reservations.html', {'reservations': reservations})
 
 def cancellation_confirmed(request):
@@ -227,7 +220,7 @@ def cancellation_confirmed(request):
 
 @login_required
 def cancel_reservation(request, reservation_id):
-    reservation = Reservation.objects.get(reservation_id=reservation_id, email=request.user.email)
+    reservation = Reservation.objects.get(reservation_id=reservation_id, user=request.user)
     if request.method == 'POST':
         reservation.delete()
         send_reservation_email(reservation, is_creation=False)
