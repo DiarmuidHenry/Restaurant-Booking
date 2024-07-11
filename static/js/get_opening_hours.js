@@ -164,12 +164,20 @@ document.addEventListener('DOMContentLoaded', function () {
             reservationTimeField.innerHTML = times.map(time => {
                 return `<option value="${time}" ${time === selectedTime ? 'selected' : ''}>${time}</option>`;
             }).join('');
+            scrollToAvailableTables();
             console.log('Time options populated:', times);
         }
     }
 
     function clearTimeOptions() {
         reservationTimeField.innerHTML = '<option value="">Select a time</option>';
+    }
+
+    function scrollToAvailableTables() {
+        const availableTablesSection = document.getElementById('availableTables');
+        if (availableTablesSection) {
+            availableTablesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
     }
 
     // Event listener for time field changes
