@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% load static %}
+    {% load crispy_forms_tags %}
+    <h1>Edit Reservation</h1>
+    <form method="post" action="{% url 'check_availability' %}">
+        {% csrf_token %}
+        {{ form | crispy }}
+        <button type="submit">Check Availability</button>
+    </form>
+    <div id="edit-reservation-page"></div>
+
+    {% if available_tables %}
+        <h2 id="availableTables">Available Tables</h2>
+        <ul>
+            {% for table in available_tables %}
+                <li>
+                    Table {{ table.table_number }} ({{ table.capacity }} people)
+                    <form method="post" action="{% url 'make_reservation' table.id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="reservation_date" value="{{ form.reservation_date.value }}">
+                        <input type="hidden" name="reservation_time" value="{{ form.reservation_time.value }}">
+                        <input type="hidden" name="reservation_length" value="{{ form.reservation_length.value }}">
+                        <input type="hidden" name="first_name" value="{{ form.first_name.value }}">
+                        <input type="hidden" name="last_name" value="{{ form.last_name.value }}">
+                        <input type="hidden" name="number_of_guests" value="{{ form.number_of_guests.value }}">
+                        <input type="hidden" name="table_location" value="{{ form.table_location.value }}">
+                        <input type="hidden" name="message" value="{{ form.message.value }}">
+                        <input type="hidden" name="email" value="{{ form.email.value }}">
+                        <button type="submit">Update Reservation</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    
+    {% if alert_message %}
+        <p id="alertMessage">{{ alert_message | safe }}</p>
+    {% endif %}
+
+
+    <script>        
+        const reservationTime = "{% if reservation.reservation_time %}{{ reservation.reservation_time|time:'H:i' }}{% endif %}";
+        const reservationLength = "{% if reservation.reservation_length %}{{ reservation.reservation_length}}{% endif %}";
+        console.log(reservationLength)
+        console.log(reservationTime)
+    </script>
+    <script src="{% static 'js/get_opening_hours.js' %}"></script>
+
+{% endblock %}

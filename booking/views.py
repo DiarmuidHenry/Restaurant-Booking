@@ -1,12 +1,12 @@
 from django import forms
 from django.views.generic.edit import FormView
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
 from datetime import datetime, timedelta
 from .models import Reservation, RestaurantTable, ExceptionalOpeningHours, NormalOpeningHours
-from .forms import ReservationForm, CustomSignupForm, CustomUserChangeForm, ContactForm
+from .forms import ReservationForm, CustomSignupForm, CustomUserChangeForm, ContactForm, EditReservationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
@@ -121,7 +121,7 @@ def check_availability(request):
                     subject = f"Booking Enquiry: {number_of_guests} people - {formatted_reservation_date} - {reservation_time_str} - {reservation_length} hours - {table_location}"
                     subject_param = urlencode({'subject': subject})
                     alert_message = f"Unfortunately, we do not have a table available for your group of {number_of_guests} at the chosen time. Please <a href='{reverse('contact')}?{subject_param}&message={message}'>contact us using the contact form</a> for assistance, or try searching for another time or date."
-                available_tables = []
+                    # available_tables = []
 
 
 
@@ -397,3 +397,22 @@ def contact(request):
 
 def contact_success(request):
     return render(request, 'booking/contact_success.html')
+
+def edit_confirmed(request):
+    return render(request, 'booking/edit_confirmed.html')
+
+def edit_reservation(request, reservation_id):
+    reservation = get_object_or_404(Reservation, pk=reservation_id)
+    context = {
+        'reservation': reservation,
+    }
+
+    if request.method == 'POST':
+        form = EditReservationForm(request.POST, instance=reservation)
+        if form.is_valid():
+            updated_reservation = form.save()
+            return redirect('edit_confirmed', reservation_id=updated_reservation.pk)
+    else:
+        form = EditReservationForm(instance=reservation, initial={'reservation_id': reservation_id})
+
+    return render(request, 'booking/edit_reservation.html', {'form': form, 'reservation': reservation})
