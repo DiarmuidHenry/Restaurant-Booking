@@ -307,7 +307,7 @@ def make_reservation(request, table_id):
             )
             new_booking.save()
 
-            send_reservation_email(new_booking)
+            send_reservation_email(new_booking, 'create')
 
             return redirect('thank_you')
     else:
@@ -362,40 +362,41 @@ def cancel_reservation(request, reservation_id):
     reservation = Reservation.objects.get(reservation_id=reservation_id, user=request.user)
     if request.method == 'POST':
         reservation.delete()
-        send_reservation_email(reservation, is_creation=False)
+        send_reservation_email(reservation, 'cancel')
         return redirect('cancellation_confirmed')
     
     return render(request, 'booking/cancel_reservation.html', {'reservation': reservation})
 
-def send_reservation_email(reservation, is_creation=True):
+def send_reservation_email(reservation, action='create', previous_reservation=None):
 
-    print("is_creation: ", is_creation)
+    if action not in ['create', 'cancel', 'edit']:
+        raise ValueError("Invalid action provided. Valid actions are 'create', 'cancel', 'edit'.")
 
-    subject_guest = 'BigByte - Reservation Confirmation' if is_creation else 'BigByte - Reservation Cancellation'
-    subject_restaurant = 'New Reservation' if is_creation else 'Reservation Cancelled'
-    template_guest = 'booking/reservation_confirmation_guest.html' if is_creation else 'booking/reservation_cancellation_guest.html'
-    template_restaurant = 'booking/reservation_confirmation_restaurant.html' if is_creation else 'booking/reservation_cancellation_restaurant.html'
+    if action == 'create':
+        subject_guest = 'BigByte - Reservation Confirmation'
+        subject_restaurant = 'New Reservation'
+    if action == 'cancel':
+        subject_guest = 'BigByte - Reservation Cancellation'
+        subject_restaurant = 'Reservation Cancelled'
+    elif action == 'edit':
+        subject_guest = 'BigByte - Reservation Update'
+        subject_restaurant = 'Reservation Updated'
+
+    template_guest = f'booking/reservation_{action}_guest.html'
+    template_restaurant = f'booking/reservation_{action}_restaurant.html'
 
     # Format reservation length as "__ hours"
-    reservation_length_str = f"{reservation.reservation_length} hours"
+    reservation_length_str = f"{reservation['reservation_length']} hours"
 
-    # Format reservation time and end time as HH:MM
-    reservation_time_str = reservation.reservation_time.strftime('%H:%M')
-    reservation_end_time_str = reservation.reservation_end_time.strftime('%H:%M')
+    # Format reservation time as HH:MM
+    reservation_time_str = reservation['reservation_time'].strftime('%H:%M')
+    reservation_end_time_str = reservation['reservation_end_time'].strftime('%H:%M')
 
     # Context for guest and restaurant email
     context_email = {
-        'guest_first_name': reservation.first_name,
-        'guest_last_name': reservation.last_name,
-        'reservation_date': reservation.reservation_date,
-        'reservation_time': reservation_time_str,
-        'reservation_end_time': reservation_end_time_str,
-        'reservation_length': reservation_length_str,
-        'message': reservation.message,
-        'reservation': reservation
+        'previous_reservation': previous_reservation,
+        'reservation': reservation,
     }
-
-    print("Context Email:", context_email)
 
     html_message_guest = render_to_string(template_guest, context_email)
     html_message_restaurant = render_to_string(template_restaurant, context_email)
@@ -506,15 +507,96 @@ def contact_success(request):
 def update_confirmed(request):
     return render(request, 'booking/update_confirmed.html')
 
-def edit_reservation(request, reservation_id):
-    # Retrieve the reservation object based on the reservation_id
-    reservation = get_object_or_404(Reservation, reservation_id=reservation_id)
+# def edit_reservation(request, reservation_id):
+#     # Retrieve the reservation object based on the reservation_id
+#     reservation = get_object_or_404(Reservation, reservation_id=reservation_id)
+
+#     # Store previous reservation info
+#     previous_reservation = {
+#         'reservation_date': reservation.reservation_date,
+#         'reservation_time': reservation.reservation_time,
+#         'reservation_length': reservation.reservation_length,
+#         'first_name': reservation.first_name,
+#         'last_name': reservation.last_name,
+#         'number_of_guests': reservation.number_of_guests,
+#         'table_location': reservation.table_location,
+#         'message': reservation.message,
+#         'email': reservation.email
+#     }
     
+#     if request.method == 'POST':
+#         form = EditReservationForm(request.POST, instance=reservation)
+#         if form.is_valid():
+#             updated_reservation = form.save()
+
+#             new_reservation_info = {
+#                 'reservation_date': updated_reservation.reservation_date,
+#                 'reservation_time': updated_reservation.reservation_time,
+#                 'reservation_length': updated_reservation.reservation_length,
+#                 'first_name': updated_reservation.first_name,
+#                 'last_name': updated_reservation.last_name,
+#                 'number_of_guests': updated_reservation.number_of_guests,
+#                 'table_location': updated_reservation.table_location,
+#                 'message': updated_reservation.message,
+#                 'email': updated_reservation.email,
+#             }
+
+#             send_reservation_email(new_reservation_info, 'edit', previous_reservation)
+
+#             return redirect('update_confirmed')
+#     else:
+#         # If the request method is GET, initialize the form with the existing reservation data
+#         form = EditReservationForm(instance=reservation)
+
+#     # Render the edit_reservation.html template with the form and reservation context
+#     return render(request, 'booking/edit_reservation.html', {'form': form, 'reservation': reservation})
+    
+def edit_reservation(request, reservation_id=None, table_id=None):
+    # Retrieve the reservation object based on the reservation_id if provided
+    if reservation_id:
+        reservation = get_object_or_404(Reservation, reservation_id=reservation_id)
+    else:
+        reservation = None
+
+    # Store previous reservation info if reservation exists
+    previous_reservation = {}
+    if reservation:
+        previous_reservation = {
+            'reservation_date': reservation.reservation_date,
+            'reservation_time': reservation.reservation_time,
+            'reservation_length': reservation.reservation_length,
+            'first_name': reservation.first_name,
+            'last_name': reservation.last_name,
+            'number_of_guests': reservation.number_of_guests,
+            'table_location': reservation.table_location,
+            'table': reservation.table,
+            'message': reservation.message,
+            'email': reservation.email
+        }
+
     if request.method == 'POST':
         form = EditReservationForm(request.POST, instance=reservation)
         if form.is_valid():
             updated_reservation = form.save()
-            return redirect(request, 'booking/update_confirmed')
+
+            # Create new_reservation_info dictionary
+            new_reservation_info = {
+            'reservation_date': updated_reservation.reservation_date,
+            'reservation_time': updated_reservation.reservation_time,
+            'reservation_length': updated_reservation.reservation_length,
+            'first_name': updated_reservation.first_name,
+            'last_name': updated_reservation.last_name,
+            'number_of_guests': updated_reservation.number_of_guests,
+            'table_location': updated_reservation.table_location,
+            'table': updated_reservation.table,
+            'message': updated_reservation.message,
+            'email': updated_reservation.email
+            }
+
+            # Send email with both previous and new reservation info
+            send_reservation_email(new_reservation_info, 'edit', previous_reservation)
+
+            return redirect('update_confirmed')  # Redirect to confirmation page
     else:
         # If the request method is GET, initialize the form with the existing reservation data
         form = EditReservationForm(instance=reservation)
@@ -522,15 +604,16 @@ def edit_reservation(request, reservation_id):
     # Render the edit_reservation.html template with the form and reservation context
     return render(request, 'booking/edit_reservation.html', {'form': form, 'reservation': reservation})
 
-def update_reservation(request, table_id):
-    reservation_id = request.POST.get('reservation_id')
-    reservation = get_object_or_404(Reservation, reservation_id=reservation_id)
 
-    if request.method == 'POST':
-        form = EditReservationForm(request.POST, instance=reservation)
-        if form.is_valid():
-            form.save()
-            return redirect('update_confirmed')  # Redirect to update_confirmed view
+# def update_reservation(request, table_id):
+#     reservation_id = request.POST.get('reservation_id')
+#     reservation = get_object_or_404(Reservation, reservation_id=reservation_id)
 
-    # Handle cases where the form is not valid or it's a GET request
-    return redirect('edit_reservation', reservation_id=reservation_id)
+#     if request.method == 'POST':
+#         form = EditReservationForm(request.POST, instance=reservation)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('update_confirmed')  # Redirect to update_confirmed view
+
+#     # Handle cases where the form is not valid or it's a GET request
+#     return redirect('edit_reservation', reservation_id=reservation_id)

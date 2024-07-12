@@ -1,0 +1,18 @@
+<p>Dear Staff,</p>
+
+<p>The following reservation has just been made:</p>
+
+<ul>
+    <li>Guest: {{ reservation.first_name }} {{ reservation.last_name }}</li>
+    <li>Date: {{ reservation.reservation_date }}</li>
+    <li>Time: {{ reservation.reservation_time }}</li>
+    <li>Length: {{ reservation.reservation_length }}</li>
+    <li>Number of Guests: {{ reservation.number_of_guests }}</li>
+    <li>Table: {{ reservation.table }}</li>
+    <li>Message: {{ reservation.message }}</li>
+</ul>
+
+<p>The reservation database has been updated accordingly.</p>
+<p>If there are any issues with this, please contact a senior member of staff who can sort it out with the guest.</p>
+
+<p>BigByte Restaurant</p>

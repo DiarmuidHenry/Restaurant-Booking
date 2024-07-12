@@ -1,0 +1,32 @@
+<p>Dear Staff,</p>
+
+<p>The following reservation has just been updated:</p>
+
+<h3>Previous Reservation Information:</h3>
+    <ul>
+        <li>Name: {{ previous_reservation.first_name }} {{ previous_reservation.last_name }}</li>
+        <li>Date: {{ previous_reservation.reservation_date }}</li>
+        <li>Time: {{ previous_reservation.reservation_time }}</li>
+        <li>Length: {{ previous_reservation.reservation_length }}</li>
+        <li>Guests: {{ previous_reservation.number_of_guests }}</li>
+        <li>Table: {{ previous_reservation.table }}</li>
+        <li>Email: {{ previous_reservation.email }}</li>
+        <li>Message: {{ previous_reservation.message }}</li>
+    </ul>
+    
+<h3>New Reservation Information:</h3>
+    <ul>
+        <li>Date: {{ reservation.reservation_date }}</li>
+        <li>Time: {{ reservation.reservation_time }}</li>
+        <li>Length: {{ reservation.reservation_length }}</li>
+        <li>Name: {{ reservation.first_name }} {{ reservation.last_name }}</li>
+        <li>Guests: {{ reservation.number_of_guests }}</li>
+        <li>Table: {{ reservation.table }}</li>
+        <li>Email: {{ reservation.email }}</li>
+        <li>Message: {{ reservation.message }}</li>
+    </ul>
+
+<p>The reservation database has been updated accordingly.</p>
+<p>If there are any issues with this, please contact a senior member of staff who can sort it out with the guest.</p>
+
+<p>BigByte Restaurant</p>

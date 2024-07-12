@@ -18,7 +18,7 @@
             {% for table in available_tables %}
                 <li>
                     Table {{ table.table_number }} ({{ table.capacity }} people)
-                    <form method="post" action="{% url 'update_reservation' table.id %}">
+                    <form method="post" action="{% url 'edit_reservation' reservation.reservation_id table.id %}">
                         {% csrf_token %}
                         <input type="hidden" name="reservation_date" value="{{ form.reservation_date.value }}">
                         <input type="hidden" name="reservation_time" value="{{ form.reservation_time.value }}">
@@ -40,6 +40,7 @@
     {% if alert_message %}
         <p id="alertMessage">{{ alert_message | safe }}</p>
     {% endif %}
+
 
     <script>        
         const reservationTime = "{% if reservation.reservation_time %}{{ reservation.reservation_time|time:'H:i' }}{% endif %}";

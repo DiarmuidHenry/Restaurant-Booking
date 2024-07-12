@@ -3,12 +3,13 @@
 <p>The following reservation has just been CANCELLED:</p>
 
 <ul>
-    <li>Guest: {{ guest_first_name }} {{ guest_last_name }}</li>
-    <li>Date: {{ reservation_date }}</li>
-    <li>Time: {{ reservation_time }}</li>
-    <li>Length: {{ reservation_length }}</li>
+    <li>Guest: {{ reservation.first_name }} {{ reservation.last_name }}</li>
+    <li>Date: {{ reservation.reservation_date }}</li>
+    <li>Time: {{ reservation.reservation_time }}</li>
+    <li>Length: {{ reservation.reservation_length }}</li>
     <li>Number of Guests: {{ reservation.number_of_guests }}</li>
-    <li>Message: {{ message }}</li>
+    <li>Table: {{ reservation.table }}</li>
+    <li>Message: {{ reservation.message }}</li>
 </ul>
 
 <p>The reservation database has been updated accordingly.</p>
