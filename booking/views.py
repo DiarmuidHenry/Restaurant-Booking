@@ -43,55 +43,44 @@ def thank_you(request):
 def home(request):
     return render(request, 'booking/index.html')
 
-def check_availability(request, current_reservation_id=None):
-    # Initialise variables 
+def check_availability(request, reservation_id=None):
+    # Initialize variables 
     available_tables = []
     alert_message = ""
     max_capacity = 0
-    current_reservation_id = request.POST.get('current_reservation_id')
+    reservation = None
+
+    # Determine if this is an edit operation
+    is_edit = request.POST.get('is_edit') == 'true'
+
+    if is_edit and reservation_id:
+        try:
+            reservation = Reservation.objects.get(reservation_id=reservation_id)
+        except Reservation.DoesNotExist:
+            return render(request, 'booking/booking_form.html', {
+                'form': ReservationForm(),  # Provide a new form instance
+                'available_tables': available_tables,
+                'max_capacity': max_capacity,
+                'alert_message': "Reservation does not exist.",
+            })
 
     if request.method == 'POST':
-        form = ReservationForm(request.POST)
+        form = ReservationForm(request.POST, instance=reservation)
+
         if form.is_valid():
             reservation_date = form.cleaned_data['reservation_date']
             reservation_time_str = form.cleaned_data['reservation_time']
-            print("reservation_time_str:", reservation_time_str)
-            print("reservation_time_str TYPE :", type(reservation_time_str))
             reservation_time = datetime.strptime(reservation_time_str, "%H:%M").time()
-            print("reservation_time TYPE :", type(reservation_time))
             reservation_length = form.cleaned_data['reservation_length']
-            print("reservation_length check: ", reservation_length)
             table_location = form.cleaned_data['table_location']
-            print("table location: ", table_location)
-            first_name = form.cleaned_data['first_name']
-            last_name = form.cleaned_data['last_name']
-            email = form.cleaned_data['email']
             number_of_guests = form.cleaned_data['number_of_guests']
-            print("number of guests: ", number_of_guests)
             message = form.cleaned_data.get('message', '')
 
-            # Convert reservation_time from string to time object
-            # reservation_time = datetime.strptime(reservation_time_str, '%H:%M').time()
             reservation_datetime = datetime.combine(reservation_date, reservation_time)
             end_datetime = reservation_datetime + timedelta(hours=reservation_length)
 
-            
             available_tables = RestaurantTable.objects.filter(table_location=table_location, capacity__gte=number_of_guests)
-            print("Available tables:", available_tables)
 
-            # available_tables = RestaurantTable.objects
-            # print("Available tables: ", available_tables)
-
-            # # Find all tables in the specified location
-            # available_tables = available_tables.filter(table_location=table_location)
-            # print("Available tables: ", available_tables)
-
-            # # Filter out tables wiht capacity is less than the number of guests
-            # available_tables = available_tables.filter(capacity__gte=number_of_guests)
-
-            # print("Available tables: ", available_tables)
-
-            # Check for overlapping bookings and exclude tables with such bookings
             overlapping_bookings = Reservation.objects.filter(
                 reservation_date=reservation_date,
                 table__in=available_tables,
@@ -100,22 +89,16 @@ def check_availability(request, current_reservation_id=None):
                 reservation_end_time__gt=reservation_time,
             )
 
-            if current_reservation_id:
-                print("ID IS BEING RECEIVED")
-                overlapping_bookings = overlapping_bookings.exclude(reservation_id=current_reservation_id)
+            if is_edit and reservation:
+                overlapping_bookings = overlapping_bookings.exclude(reservation_id=reservation.reservation_id)
 
             available_tables = available_tables.exclude(id__in=overlapping_bookings.values_list('table_id', flat=True))
-            
-            # Initialize variables for finding the smallest available table that fits the group size
+
             min_capacity = number_of_guests
-            print("MIN_CAPACITY: ", min_capacity)
             max_capacity = RestaurantTable.objects.aggregate(max_capacity=Max('capacity'))['max_capacity']
-            print("MAX_CAPACITY: ", max_capacity)
 
             found_tables = False
 
-            # Check if number of guests exceeds the largest table capacity or no tables are available
-            # Determine availability message
             if number_of_guests > max_capacity or not available_tables.exists():
                 formatted_reservation_date = formats.date_format(reservation_date, "d F Y")
                 if number_of_guests > max_capacity:
@@ -126,11 +109,7 @@ def check_availability(request, current_reservation_id=None):
                     subject = f"Booking Enquiry: {number_of_guests} people - {formatted_reservation_date} - {reservation_time_str} - {reservation_length} hours - {table_location}"
                     subject_param = urlencode({'subject': subject})
                     alert_message = f"Unfortunately, we do not have a table available for your group of {number_of_guests} at the chosen time. Please <a href='{reverse('contact')}?{subject_param}&message={message}'>contact us using the contact form</a> for assistance, or try searching for another time or date."
-                    # available_tables = []
 
-
-
-            # Iterate from group size up to max_capacity to find the smallest available table
             for capacity in range(min_capacity, max_capacity + 1):
                 filtered_tables = available_tables.filter(capacity=capacity)
                 if filtered_tables.exists():
@@ -138,38 +117,159 @@ def check_availability(request, current_reservation_id=None):
                     found_tables = True
                     break
 
-            
-
-
-            # for booking in overlapping_bookings:
-            #     available_tables = available_tables.exclude(id=booking.table.id)
-
-            return render(request, 'booking/booking_form.html', {
+            template_name = 'booking/edit_reservation.html' if is_edit else 'booking/booking_form.html'
+            return render(request, template_name, {
                 'form': form,
                 'available_tables': available_tables,
                 'max_capacity': max_capacity,
                 'alert_message': alert_message,
+                'reservation': reservation,
             })
 
         else:
             print("Form is invalid")
             print(form.errors)
 
-        # return render(request, 'booking/booking_form.html', {
-        #     'form': form,
-        #     'available_tables': available_tables,
-        #     'max_capacity': max_capacity  # Pass max_capacity to the template
-        # })
-
     else:
-        form = ReservationForm()
+        form = ReservationForm(instance=reservation)
 
     return render(request, 'booking/booking_form.html', {
         'form': form,
         'available_tables': available_tables,
         'max_capacity': max_capacity,
         'alert_message': alert_message,
+        'reservation': reservation,
     })
+
+# def check_availability(request, reservation_id=None):
+#     # Initialise variables 
+#     available_tables = []
+#     alert_message = ""
+#     max_capacity = 0
+#     reservation_id = request.POST.get('reservation_id')
+#     is_edit = request.POST.get('is_edit') == 'true'
+
+
+#     if request.method == 'POST':
+#         form = ReservationForm(request.POST)
+#         if form.is_valid():
+#             reservation_date = form.cleaned_data['reservation_date']
+#             reservation_time_str = form.cleaned_data['reservation_time']
+#             print("reservation_time_str:", reservation_time_str)
+#             print("reservation_time_str TYPE :", type(reservation_time_str))
+#             reservation_time = datetime.strptime(reservation_time_str, "%H:%M").time()
+#             print("reservation_time TYPE :", type(reservation_time))
+#             reservation_length = form.cleaned_data['reservation_length']
+#             print("reservation_length check: ", reservation_length)
+#             table_location = form.cleaned_data['table_location']
+#             print("table location: ", table_location)
+#             first_name = form.cleaned_data['first_name']
+#             last_name = form.cleaned_data['last_name']
+#             email = form.cleaned_data['email']
+#             number_of_guests = form.cleaned_data['number_of_guests']
+#             print("number of guests: ", number_of_guests)
+#             message = form.cleaned_data.get('message', '')
+
+#             # Convert reservation_time from string to time object
+#             # reservation_time = datetime.strptime(reservation_time_str, '%H:%M').time()
+#             reservation_datetime = datetime.combine(reservation_date, reservation_time)
+#             end_datetime = reservation_datetime + timedelta(hours=reservation_length)
+
+            
+#             available_tables = RestaurantTable.objects.filter(table_location=table_location, capacity__gte=number_of_guests)
+#             print("Available tables:", available_tables)
+
+#             # available_tables = RestaurantTable.objects
+#             # print("Available tables: ", available_tables)
+
+#             # # Find all tables in the specified location
+#             # available_tables = available_tables.filter(table_location=table_location)
+#             # print("Available tables: ", available_tables)
+
+#             # # Filter out tables wiht capacity is less than the number of guests
+#             # available_tables = available_tables.filter(capacity__gte=number_of_guests)
+
+#             # print("Available tables: ", available_tables)
+
+#             # Check for overlapping bookings and exclude tables with such bookings
+#             overlapping_bookings = Reservation.objects.filter(
+#                 reservation_date=reservation_date,
+#                 table__in=available_tables,
+#             ).filter(
+#                 reservation_time__lt=end_datetime.time(),
+#                 reservation_end_time__gt=reservation_time,
+#             )
+
+#             if reservation_id:
+#                 print("ID IS BEING RECEIVED")
+#                 overlapping_bookings = overlapping_bookings.exclude(reservation_id=reservation_id)
+
+#             available_tables = available_tables.exclude(id__in=overlapping_bookings.values_list('table_id', flat=True))
+            
+#             # Initialize variables for finding the smallest available table that fits the group size
+#             min_capacity = number_of_guests
+#             print("MIN_CAPACITY: ", min_capacity)
+#             max_capacity = RestaurantTable.objects.aggregate(max_capacity=Max('capacity'))['max_capacity']
+#             print("MAX_CAPACITY: ", max_capacity)
+
+#             found_tables = False
+
+#             # Check if number of guests exceeds the largest table capacity or no tables are available
+#             # Determine availability message
+#             if number_of_guests > max_capacity or not available_tables.exists():
+#                 formatted_reservation_date = formats.date_format(reservation_date, "d F Y")
+#                 if number_of_guests > max_capacity:
+#                     subject = f"Booking Enquiry: {number_of_guests} people - {formatted_reservation_date} - {reservation_time_str} - {reservation_length} hours - {table_location}"
+#                     subject_param = urlencode({'subject': subject})
+#                     alert_message = f"If you wish to book a table for {number_of_guests} people, please <a href='{reverse('contact')}?{subject_param}&message={message}'>contact us using the contact form</a>."
+#                 else:
+#                     subject = f"Booking Enquiry: {number_of_guests} people - {formatted_reservation_date} - {reservation_time_str} - {reservation_length} hours - {table_location}"
+#                     subject_param = urlencode({'subject': subject})
+#                     alert_message = f"Unfortunately, we do not have a table available for your group of {number_of_guests} at the chosen time. Please <a href='{reverse('contact')}?{subject_param}&message={message}'>contact us using the contact form</a> for assistance, or try searching for another time or date."
+#                     # available_tables = []
+
+
+
+#             # Iterate from group size up to max_capacity to find the smallest available table
+#             for capacity in range(min_capacity, max_capacity + 1):
+#                 filtered_tables = available_tables.filter(capacity=capacity)
+#                 if filtered_tables.exists():
+#                     available_tables = filtered_tables
+#                     found_tables = True
+#                     break
+
+#             template_name = 'booking/edit_reservation.html' if is_edit else 'booking/booking_form.html'
+
+#             return render(request, template_name, {
+#                 'form': form,
+#                 'available_tables': available_tables,
+#                 'max_capacity': max_capacity,
+#                 'alert_message': alert_message,
+#                 'reservation': Reservation.objects.get(reservation_id=reservation_id) if is_edit else None
+#             })
+
+#         else:
+#             print("Form is invalid")
+#             print(form.errors)
+
+#         # return render(request, 'booking/booking_form.html', {
+#         #     'form': form,
+#         #     'available_tables': available_tables,
+#         #     'max_capacity': max_capacity  # Pass max_capacity to the template
+#         # })
+
+#     else:
+#         form = ReservationForm()
+
+#     template_name = 'booking/edit_reservation.html' if is_edit else 'booking/booking_form.html'
+
+#     return render(request, template_name, {
+#         'form': form,
+#         'available_tables': available_tables,
+#         'max_capacity': max_capacity,
+#         'alert_message': alert_message,
+#         'reservation': Reservation.objects.get(reservation_id=reservation_id) if is_edit else None
+#     })
 
 def make_reservation(request, table_id):
     if request.method == 'POST':
@@ -403,21 +503,34 @@ def contact(request):
 def contact_success(request):
     return render(request, 'booking/contact_success.html')
 
-def edit_confirmed(request):
-    return render(request, 'booking/edit_confirmed.html')
+def update_confirmed(request):
+    return render(request, 'booking/update_confirmed.html')
 
 def edit_reservation(request, reservation_id):
+    # Retrieve the reservation object based on the reservation_id
     reservation = get_object_or_404(Reservation, reservation_id=reservation_id)
-    # context = {
-    #     'reservation': reservation,
-    # }
-
+    
     if request.method == 'POST':
         form = EditReservationForm(request.POST, instance=reservation)
         if form.is_valid():
             updated_reservation = form.save()
-            return redirect('edit_confirmed', reservation_id=updated_reservation.id)
+            return redirect(request, 'booking/update_confirmed')
     else:
+        # If the request method is GET, initialize the form with the existing reservation data
         form = EditReservationForm(instance=reservation)
 
+    # Render the edit_reservation.html template with the form and reservation context
     return render(request, 'booking/edit_reservation.html', {'form': form, 'reservation': reservation})
+
+def update_reservation(request, table_id):
+    reservation_id = request.POST.get('reservation_id')
+    reservation = get_object_or_404(Reservation, reservation_id=reservation_id)
+
+    if request.method == 'POST':
+        form = EditReservationForm(request.POST, instance=reservation)
+        if form.is_valid():
+            form.save()
+            return redirect('update_confirmed')  # Redirect to update_confirmed view
+
+    # Handle cases where the form is not valid or it's a GET request
+    return redirect('edit_reservation', reservation_id=reservation_id)

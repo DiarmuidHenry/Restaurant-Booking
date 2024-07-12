@@ -120,7 +120,7 @@ class Reservation(models.Model):
     table = models.ForeignKey(RestaurantTable, on_delete=models.CASCADE)
     created_on = models.DateTimeField(auto_now_add=True)
     reservation_date = models.DateField()
-    reservation_length = models.FloatField(choices=LENGTH_CHOICES, default=2)
+    reservation_length = models.FloatField(choices=LENGTH_CHOICES, default=2.0)
     reservation_time = models.TimeField(blank=False)
     number_of_guests = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(50)])
     table_location = models.CharField(choices=LOCATION_CHOICES, default='Inside', max_length=50)

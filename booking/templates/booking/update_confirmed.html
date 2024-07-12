@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+    <div class="thank-you-message">
+        <h1>Thanks for updating your reservation. You will shortly receive a confirmation email. We look forward to your visit</h1>
+        <a href="{% url 'home' %}" class="btn btn-primary">Back to Home</a>
+    </div>
+
+{% endblock %}
