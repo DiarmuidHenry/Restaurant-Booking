@@ -18,7 +18,7 @@
             {% for table in available_tables %}
                 <li>
                     Table {{ table.table_number }} ({{ table.capacity }} people)
-                    <form method="post" action="{% url 'edit_reservation' reservation.reservation_id table.id %}">
+                    <form method="post" action="{% url 'process_edit_reservation_update' reservation_id=reservation.reservation_id table_id=table.id %}">
                         {% csrf_token %}
                         <input type="hidden" name="reservation_date" value="{{ form.reservation_date.value }}">
                         <input type="hidden" name="reservation_time" value="{{ form.reservation_time.value }}">

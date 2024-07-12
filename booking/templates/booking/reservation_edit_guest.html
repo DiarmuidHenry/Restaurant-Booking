@@ -1,12 +1,32 @@
-{% extends "base.html" %}
+<p>Dear {{ reservation.first_name }} {{ reservation.last_name }},</p>
 
-{% block content %}
+<p>Thank you for updating your reservation. Here are your reservation details:</p>
 
-{% load static %}
+<h3>Previous Reservation Information:</h3>
+    <ul>
+        <li>Name: {{ previous_reservation.first_name }} {{ previous_reservation.last_name }}</li>
+        <li>Date: {{ previous_reservation.reservation_date }}</li>
+        <li>Time: {{ previous_reservation.reservation_time }}</li>
+        <li>Length: {{ previous_reservation.reservation_length }} hours</li>
+        <li>Guests: {{ previous_reservation.number_of_guests }}</li>
+        <li>Table: {{ previous_reservation.table }}</li>
+        <li>Email: {{ previous_reservation.email }}</li>
+        <li>Message: {{ previous_reservation.message }}</li>
+    </ul>
+    
+<h3>New Reservation Information:</h3>
+    <ul>
+        <li>Name: {{ reservation.first_name }} {{ reservation.last_name }}</li>
+        <li>Date: {{ reservation.reservation_date }}</li>
+        <li>Time: {{ reservation.reservation_time }}</li>
+        <li>Length: {{ reservation.reservation_length }} hours</li>
+        <li>Guests: {{ reservation.number_of_guests }}</li>
+        <li>Table: {{ reservation.table }}</li>
+        <li>Email: {{ reservation.email }}</li>
+        <li>Message: {{ reservation.message }}</li>
+    </ul>
 
-    <div class="thank-you-message">
-        <h1>Thanks for updating your reservation. You will shortly receive a confirmation email. We look forward to your visit</h1>
-        <a href="{% url 'home' %}" class="btn btn-primary">Back to Home</a>
-    </div>
+<p>We look forward to serving you.</p>
 
-{% endblock %}
+<p>Best regards,</p>
+<p>BigByte Restaurant</p>

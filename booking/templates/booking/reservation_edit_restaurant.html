@@ -7,7 +7,7 @@
         <li>Name: {{ previous_reservation.first_name }} {{ previous_reservation.last_name }}</li>
         <li>Date: {{ previous_reservation.reservation_date }}</li>
         <li>Time: {{ previous_reservation.reservation_time }}</li>
-        <li>Length: {{ previous_reservation.reservation_length }}</li>
+        <li>Length: {{ previous_reservation.reservation_length }} hours</li>
         <li>Guests: {{ previous_reservation.number_of_guests }}</li>
         <li>Table: {{ previous_reservation.table }}</li>
         <li>Email: {{ previous_reservation.email }}</li>
@@ -16,10 +16,10 @@
     
 <h3>New Reservation Information:</h3>
     <ul>
+        <li>Name: {{ reservation.first_name }} {{ reservation.last_name }}</li>
         <li>Date: {{ reservation.reservation_date }}</li>
         <li>Time: {{ reservation.reservation_time }}</li>
-        <li>Length: {{ reservation.reservation_length }}</li>
-        <li>Name: {{ reservation.first_name }} {{ reservation.last_name }}</li>
+        <li>Length: {{ reservation.reservation_length }} hours</li>
         <li>Guests: {{ reservation.number_of_guests }}</li>
         <li>Table: {{ reservation.table }}</li>
         <li>Email: {{ reservation.email }}</li>
