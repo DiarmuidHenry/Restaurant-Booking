@@ -123,14 +123,5 @@ document.addEventListener('DOMContentLoaded', function () {
         changeReservationInput();
     }
 
-    // Validate the form before submission
-    // reservationForm.addEventListener('submit', function (event) {
-    //     const selectedTime = reservationTimeField.value;
-    //     if (selectedTime === '' || selectedTime === 'CLOSED') {
-    //         console.log("NO TIME DETECTED");
-    //         alert('Please select a valid reservation time.');
-    //         event.preventDefault(); // Prevent form submission if validation fails
-    //     }
-    // });
 });
 
