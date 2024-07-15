@@ -5,16 +5,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let selectedTime = localStorage.getItem('selectedTime') || ''; // Retrieve selected time from localStorage
 
-    // Check if we are on the edit_reservation.html page
-    const editMode = document.getElementById('edit-reservation-page') !== null;
-
-    // If edit mode, set selectedTime to reservation_time from the server
-    if (editMode) {
-        // Retrieve reservation_time from the rendered context
-        const reservationTime = reservationTimeField.value;
-        selectedTime = reservationTime;
-    }
-
     function changeReservationInput() {
         const selectedDate = reservationDateField.value;
         const reservationLength = parseFloat(reservationLengthField.textContent);
