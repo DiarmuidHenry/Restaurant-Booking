@@ -9,6 +9,7 @@ from crispy_forms.layout import Submit
 from django.core.validators import RegexValidator
 from django.shortcuts import render, redirect, get_object_or_404
 
+
 class ReservationForm(forms.ModelForm):
     class Meta:
         model = Reservation
@@ -28,8 +29,8 @@ class ReservationForm(forms.ModelForm):
             'min': today,
             'max': today + timezone.timedelta(days=365)
         })
-        self.fields['reservation_time'].widget = forms.Select(attrs={'required': True})
-
+        self.fields['reservation_time'].widget = (
+            forms.Select(attrs={'required': True}))
 
     def clean(self):
         cleaned_data = super().clean()
@@ -41,6 +42,7 @@ class ReservationForm(forms.ModelForm):
 
         return cleaned_data
 
+
 class CustomSignupForm(SignupForm):
     first_name = forms.CharField(max_length=25)
     last_name = forms.CharField(max_length=25)
@@ -50,13 +52,14 @@ class CustomSignupForm(SignupForm):
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']
         user.save()
-        
         return user
+
 
 class CustomUserChangeForm(UserChangeForm):
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'email')
+
 
 class ContactForm(forms.Form):
     first_name = forms.CharField(max_length=100, label='First Name')
@@ -76,6 +79,7 @@ class ContactForm(forms.Form):
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Send'))
+
 
 class EditReservationForm(forms.ModelForm):
 
@@ -104,10 +108,11 @@ class EditReservationForm(forms.ModelForm):
         reservation = kwargs.get('instance')
         if reservation:
             initial_length = reservation.reservation_length
-            self.fields['reservation_length'].initial = self.format_reservation_length(initial_length)
+            self.fields['reservation_length'].initial = (
+                self.format_reservation_length(initial_length))
             if reservation.reservation_time:
-                self.fields['reservation_time'].initial = reservation.reservation_time.strftime('%H:%M')
-
+                self.fields['reservation_time'].initial = (
+                    reservation.reservation_time.strftime('%H:%M'))
 
         today = timezone.now().date()
         self.fields['reservation_date'].widget = forms.DateInput(attrs={
@@ -115,8 +120,9 @@ class EditReservationForm(forms.ModelForm):
             'min': today,
             'max': today + timezone.timedelta(days=365)
         })
-        self.fields['reservation_time'].widget = forms.Select(attrs={'required': True})
-        
+        self.fields['reservation_time'].widget = (
+            forms.Select(attrs={'required': True}))
+
     def format_reservation_length(self, length):
         for value, label in self.LENGTH_CHOICES:
             if value == length:
@@ -125,5 +131,4 @@ class EditReservationForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        # Implement additional validation logic as needed
         return cleaned_data

@@ -2,17 +2,16 @@ document.addEventListener('DOMContentLoaded', function () {
     const reservationDateField = document.getElementById('id_reservation_date');
     const reservationLengthField = document.getElementById('id_reservation_length');
     const reservationTimeField = document.getElementById('id_reservation_time');
-    const reservationForm = document.getElementById('reservation_form');
 
     let selectedTime = localStorage.getItem('selectedTime') || ''; // Retrieve selected time from localStorage
-     
+
     // Check if we are on the edit_reservation.html page
     const editMode = document.getElementById('edit-reservation-page') !== null;
-    console.log("edit mode");
-    console.log(editMode);
 
     // If edit mode, set selectedTime to reservation_time from the server
     if (editMode) {
+        // Retrieve reservation_time from the rendered context
+        const reservationTime = reservationTimeField.value;
         selectedTime = reservationTime;
     }
 
@@ -28,12 +27,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function fetchOpeningHours(date, length) {
-        const initialTime = reservationTimeField.getAttribute('data-initial-time'); // Get initial time 
-        console.log(`Fetching opening hours for date: ${date}`);
         fetch(`/booking/reservation/get_opening_hours/?date=${date}`)
             .then(response => response.json())
             .then(data => {
-                console.log('Received data:', data);
                 if (data.error) {
                     console.error(data.error);
                     clearTimeOptions();
@@ -49,10 +45,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function populateTimeOptions(openingTime, closingTime, length, preloadedTime) {
         if (openingTime === "00:00" && closingTime === "00:00") {
-            console.log("CLOSED");
             reservationTimeField.innerHTML = null;
         } else {
-            console.log(`Populating time options from ${openingTime} to ${length} hours before ${closingTime}`);
             const reservationLength = length;
             const [openingHour, openingMinute] = openingTime.split(':').map(Number);
             const [closingHour, closingMinute] = closingTime.split(':').map(Number);
@@ -85,7 +79,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }).join('');
             scrollToAvailableTables();
             scrollToAlertMessage();
-            console.log('Time options populated:', times);
         }
     }
 
@@ -96,20 +89,26 @@ document.addEventListener('DOMContentLoaded', function () {
     function scrollToAvailableTables() {
         const availableTablesSection = document.getElementById('availableTables');
         if (availableTablesSection) {
-            availableTablesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            availableTablesSection.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
         }
     }
 
     function scrollToAlertMessage() {
         const alertMessageSection = document.getElementById('alertMessage');
         if (alertMessageSection) {
-            alertMessageSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            alertMessageSection.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
         }
     }
 
 
     // Event listener for time field changes
-    reservationTimeField.addEventListener('change', function() {
+    reservationTimeField.addEventListener('change', function () {
         selectedTime = reservationTimeField.value;
         localStorage.setItem('selectedTime', selectedTime); // Store selected time in localStorage
     });
@@ -124,4 +123,3 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 });
-

@@ -6,7 +6,7 @@ import shutil
 from django.conf import settings
 from django.conf.urls.static import static
 
-# Create your models here.
+
 class MenuItem(models.Model):
     SECTION_CHOICES = [
         ('starters', 'Starters'),
@@ -18,7 +18,8 @@ class MenuItem(models.Model):
 
     dish_name = models.TextField()
     description = models.TextField()
-    section = models.CharField(choices=SECTION_CHOICES, default='mains', max_length=50)
+    section = models.CharField(
+        choices=SECTION_CHOICES, default='mains', max_length=50)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     gluten = models.BooleanField(default=False)
     crustaceans = models.BooleanField(default=False)
@@ -41,9 +42,9 @@ class MenuItem(models.Model):
 
     def __str__(self):
         return f"{self.dish_name} | {self.section}"
-    
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.dish_name)
-        
+
         super().save(*args, **kwargs)
