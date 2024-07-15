@@ -19,8 +19,15 @@ class ReservationAdmin(SummernoteModelAdmin):
     summernote_fields = ('reservation_id',)
     exclude = ('reservation_length',)
 
+@admin.register(RestaurantTable)
+class RestaurantTableAdmin(SummernoteModelAdmin):
+
+    list_display = (
+        'table_number', 'capacity', 'table_location',)
+    search_fields = ['table_number', 'location',]
+    list_filter = ('capacity', 'table_location',)
+
 
 # Register your models here.
-admin.site.register(RestaurantTable)
 admin.site.register(NormalOpeningHours)
 admin.site.register(ExceptionalOpeningHours)
