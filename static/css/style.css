@@ -10,48 +10,142 @@ body {
     height: 100vh; /* Ensure full viewport height */
     overflow-x: hidden; /* Hide horizontal overflow */
     position: relative; /* Ensure stacking context */
+
 }
+
+h1 {
+    text-align: center;
+    margin: 3%;
+}
+
+.btn {
+    margin: 1vh auto;
+    
+    background-color: brown;
+    font-size: 100%;
+    border-color: white;
+    font-weight: bolder;
+}
+
+.form-check-input:checked {
+    background-color: brown;
+    border-color: brown;
+}
+
+.btn-primary {
+    margin: 4vh auto;
+    display: flex;
+    align-self: center;
+    
+    font-size: 120%; 
+
+}
+
+
+
 
 /* Translucent overlay for background */
 .main-bg {
-    background-color: rgba(255, 255, 255, 0.9); /* Adjust opacity as needed */
-    position: relative; /* Ensure stacking context */
-    z-index: 1; /* Ensure content is above hero image */
-    padding-top: 25vh; /* Adjust to position content 25% down the page */
+    background-color: rgba(244, 237, 228, 0.9); /* Light beige color */
+    width: 70%;
+    margin: 8vh auto; /* Center align the content */
+    /* padding-top: 25vh; */
+    position: relative;
+    z-index: 1;
+    border-radius: 10px; 
+    overflow: hidden; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
-#main-bg-home {
-    padding-top: 40vh;
+@media (max-width: 1200px) {
+    .main-bg {
+        width: 80%;
+        margin: 4vh auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-bg {
+        width: 95%;
+        margin: 2vh auto;
+    }
 }
 
 .main-bg > main {
-    padding-top: 0;
+    padding-top: 0vh;
 } 
+
+#allergen-form {
+    width: 95%
+}
+/* Navbar styles */
+.navbar {
+    background-color: rgba(244, 237, 228, 1); /* Adjust navbar background opacity */
+    backdrop-filter: blur(10px); /* Apply backdrop blur effect */
+    /* position: fixed; Fixed position to remain at top */
+    width: 80%;
+    margin: 0 auto;
+    z-index: 2; /* Ensure navbar is above hero image */
+}
+
+@media (max-width: 1200px) {
+    .navbar {
+        width: 90%;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        width: 100%;
+    }
+}
+
+form {
+    width: 80%;
+    margin: 0 auto;
+}
 
 /* Center content vertically on hero image */
 .container-hero {
     text-align: center;
-    color: white; /* Adjust text color to ensure visibility */
-    padding-top: 20vh; /* Adjust to position content vertically */
+    color: white;
+    /* padding-top: 20vh; */
+    font-family: 'Lato', sans-serif; /* Professional font for "welcome" text */
 }
 
-/* Navbar styles */
-.navbar {
-    background-color: rgba(255, 255, 255, 0.8); /* Adjust navbar background opacity */
-    backdrop-filter: blur(10px); /* Apply backdrop blur effect */
-    /* position: fixed; Fixed position to remain at top */
-    width: 100%; /* Full width */
-    z-index: 2; /* Ensure navbar is above hero image */
+/* Footer styles */
+footer {
+    background-color: rgba(244, 237, 228, 1);
+    margin: 0;
 }
 
-#popup_message {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #fff;
-    border: 1px solid #ccc;
-    padding: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000; /* Ensure it's above other content */
+/* Table styling */
+.table {
+    background-color: rgba(244, 237, 228, 1);
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.table th,
+.table td {
+    padding: 12px;
+    text-align: left;
+}
+
+.table thead th {
+    background-color: green
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: blue;
+}
+
+/* .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+} */
+
+.link-to-reservation {
+    display: flex;
+    align-self: center;
 }

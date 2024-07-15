@@ -128,26 +128,30 @@ def check_availability(request, reservation_id=None):
                     available_tables.exists()):
                 formatted_reservation_date = (
                     formats.date_format(reservation_date, "d F Y"))
+                subject = (
+                        f"Booking Enquiry: {number_of_guests} people "
+                        f"- {formatted_reservation_date} - "
+                        f"{reservation_time_str} "
+                        f"- {reservation_length} hours - {table_location}")
+                subject_param = urlencode({'subject': subject})
+                print("MESSAGE: ", message)
                 if number_of_guests > max_capacity:
-                    subject = f"Booking Enquiry: {number_of_guests} people"
-                    " - {formatted_reservation_date} - {reservation_time_str}"
-                    " - {reservation_length} hours - {table_location}"
-                    subject_param = urlencode({'subject': subject})
-                    alert_message = f"If you wish to book a table for"
-                    " {number_of_guests} people, please "
-                    "<a href='{reverse('contact')}?{subject_param}&"
-                    "message={message}'>contact us using the contact form</a>."
+                    alert_message = f"""
+                    If you wish to book a table for
+                     {number_of_guests} people, please 
+                    <a href='{reverse('contact')}?{(
+                        subject_param)}&message={message}'>contact us 
+                        using the contact form</a>.
+                    """
                 else:
-                    subject = f"Booking Enquiry: {number_of_guests} people"
-                    " - {formatted_reservation_date} - {reservation_time_str}"
-                    " - {reservation_length} hours - {table_location}"
-                    subject_param = urlencode({'subject': subject})
-                    alert_message = f"Unfortunately, we do not have a table"
-                    " available for your group of {number_of_guests} at the"
-                    " chosen time. Please <a href='{reverse('contact')}?"
-                    "{subject_param}&message={message}'>contact us using the"
-                    " contact form</a> for assistance, or try searching"
-                    " for another time or date."
+                    alert_message = f"""
+                    Unfortunately, we do not have a table 
+                    available for your group of {number_of_guests} at the 
+                    chosen time. Please <a href='{reverse('contact')}?
+                    {subject_param}&message={message}'>contact us using the 
+                    contact form</a> for assistance, or try searching 
+                    for another time or date.
+                    """
 
             for capacity in range(min_capacity, max_capacity + 1):
                 filtered_tables = available_tables.filter(capacity=capacity)

@@ -6,8 +6,7 @@
     <h1>Menu Items</h1>
 
     <div class="d-flex flex-column align-items-center justify-content-center">
-        <p class="fs-3 ml-3 mr-3 text-center">Like what you see? Click below to book a table with us!</p>
-        <a href="{% url 'reservation' %}" class="btn btn-secondary">Make a Reservation</a>
+        {% include 'allergens/like_what_you_see.html' %}
     </div>
 
     <form method="get" id="allergen-form">
@@ -15,16 +14,16 @@
             <!-- Allergens Section -->
             <div class="mb-4">
                 <h5 class="fw-bold">Remove items that include:</h5>
-                <div class="row">
+                <div class="row gy-2">
                     {% for allergen in allergens %}
-                        <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-2">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="{{ allergen }}" id="allergen-{{ allergen }}" {% if allergen in request.GET %}checked{% endif %}>
-                                <label class="form-check-label" for="allergen-{{ allergen }}">
-                                    {{ allergen }}
-                                </label>
-                            </div>
+                    <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="{{ allergen }}" id="allergen-{{ allergen }}" {% if allergen in request.GET %}checked{% endif %}>
+                            <label class="form-check-label" for="allergen-{{ allergen }}">
+                                <p class="fw-bold fs-6">{{ allergen }}</p>
+                            </label>
                         </div>
+                    </div>
                     {% endfor %}
                 </div>
             </div>
@@ -32,8 +31,8 @@
             <!-- Dietary Preferences Section -->
             <div>
                 <h5 class="fw-bold fs-4">Dietary Preferences:</h5>
-                <div class="row">
-                    <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-2">
+                <div class="row gy-2">
+                    <div class="col-6 col-sm-4 col-md-3 col-lg-2">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="vegan" id="diet-vegan" {% if request.GET.vegan %}checked{% endif %}>
                             <label class="form-check-label" for="diet-vegan">
@@ -41,7 +40,7 @@
                             </label>
                         </div>
                     </div>
-                    <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-2">
+                    <div class="col-6 col-sm-4 col-md-3 col-lg-2">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="vegetarian" id="diet-vegetarian" {% if request.GET.vegetarian %}checked{% endif %}>
                             <label class="form-check-label" for="diet-vegetarian">
@@ -53,12 +52,14 @@
             </div>
     
             <!-- Buttons -->
-            <div class="mt-auto">
-                <button class="btn btn-secondary" type="submit">Filter</button>
+            <div class="mt-4">
+                <button class="btn btn-secondary me-2" type="submit">Filter</button>
                 <a href="{% url 'menu_items_list' %}" class="btn btn-secondary">Clear Filters</a>
             </div>
         </div>
     </form>
+    
+    
     
     {% include 'allergens/menu_section.html' with section_title="Starters" items=starters filters=filters %}
     {% include 'allergens/menu_section.html' with section_title="Sides" items=sides filters=filters %}
@@ -67,8 +68,7 @@
     {% include 'allergens/menu_section.html' with section_title="Desserts" items=desserts filters=filters %}
 
     <div class="d-flex flex-column align-items-center justify-content-center">
-        <p class="fs-3 ml-3 mr-3 text-center">Like what you see? Click below to book a table with us!</p>
-        <a href="{% url 'reservation' %}" class="btn btn-secondary">Make a Reservation</a>
+        {% include 'allergens/like_what_you_see.html' %}
     </div>
 
 {% endblock %}

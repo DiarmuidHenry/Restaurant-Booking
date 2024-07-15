@@ -3,40 +3,58 @@
 {% block content %}
     {% load static %}
     {% load crispy_forms_tags %}
-    <h1>Make a Reservation</h1>
-    <form method="post" action="{% url 'check_availability' %}">
-        {% csrf_token %}
-        {{ form | crispy }}
-        <button type="submit">Check Availability</button>
-    </form>
-
-    {% if available_tables %}
-        <h2 id="availableTables">Available Tables</h2>
-        <ul>
-            {% for table in available_tables %}
-                <li>
-                    Table {{ table.table_number }} ({{ table.capacity }} people)
-                    <form method="post" action="{% url 'process_make_reservation' table_id=table.id %}">
-                        {% csrf_token %}
-                        <input type="hidden" name="reservation_date" value="{{ form.reservation_date.value }}">
-                        <input type="hidden" name="reservation_time" value="{{ form.reservation_time.value }}">
-                        <input type="hidden" name="reservation_length" value="{{ form.reservation_length.value }}">
-                        <input type="hidden" name="first_name" value="{{ form.first_name.value }}">
-                        <input type="hidden" name="last_name" value="{{ form.last_name.value }}">
-                        <input type="hidden" name="number_of_guests" value="{{ form.number_of_guests.value }}">
-                        <input type="hidden" name="table_location" value="{{ form.table_location.value }}">
-                        <input type="hidden" name="message" value="{{ form.message.value }}">
-                        <input type="hidden" name="email" value="{{ form.email.value }}">
-                        <button type="submit">Reserve Table</button>
-                    </form>
-                </li>
-            {% endfor %}
-        </ul>
-    {% endif %}
     
-    {% if alert_message %}
-        <p id="alertMessage">{{ alert_message | safe }}</p>
-    {% endif %}
+    <div class="container">
+        <h1 class="text-center">Make a Reservation</h1>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <form method="post" action="{% url 'check_availability' %}">
+                    {% csrf_token %}
+                    {{ form | crispy }}
+                    <button class="btn btn-primary mt-3" type="submit">Check Availability</button>
+                </form>
+            </div>
+        </div>
+
+        {% if available_tables %}
+            <h2 class="text-center mt-4" id="availableTables">Available Tables</h2>
+            <ul class="list-unstyled mt4">
+                    {% for table in available_tables %}
+                        <li class="ms-3 fs-5">
+                            Table {{ table.table_number }} ({{ table.capacity }} people)
+                            <form method="post" action="{% url 'process_make_reservation' table_id=table.id %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="reservation_date" value="{{ form.reservation_date.value }}">
+                                <input type="hidden" name="reservation_time" value="{{ form.reservation_time.value }}">
+                                <input type="hidden" name="reservation_length" value="{{ form.reservation_length.value }}">
+                                <input type="hidden" name="first_name" value="{{ form.first_name.value }}">
+                                <input type="hidden" name="last_name" value="{{ form.last_name.value }}">
+                                <input type="hidden" name="number_of_guests" value="{{ form.number_of_guests.value }}">
+                                <input type="hidden" name="table_location" value="{{ form.table_location.value }}">
+                                <input type="hidden" name="message" value="{{ form.message.value }}">
+                                <input type="hidden" name="email" value="{{ form.email.value }}">
+                                <button class="btn btn-secondary" type="submit">Reserve Table</button>
+                            </form>
+                        </li>
+                    {% endfor %}
+                </ul>
+        {% endif %}
+        
+
+
+        {% if alert_message %}
+            <p id="alertMessage" class="mt-4 text-center">{{ alert_message | safe }}</p>
+        {% endif %}
+
+        <div class="row mt-4">
+            <h3 class="text-center">Table Layout</h3>
+            <div class="col-lg-12">
+                <img class="mx-auto d-block my-3" src="{% static 'images/table_map.png' %}" alt="Restaurant Map" class="img-fluid">
+            </div>
+        </div>
+        
+    </div>
 
     <script src="{% static 'js/get_opening_hours.js' %}"></script>
 {% endblock %}

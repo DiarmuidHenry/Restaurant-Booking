@@ -1,0 +1,8 @@
+<h5 class="mb-3">Opening Hours</h5>
+<ul class="list-unstyled">
+    {% for entry in opening_hours %}
+        <li>{{ entry }}</li>
+    {% empty %}
+        <li>No opening hours available.</li>
+    {% endfor %}
+</ul>

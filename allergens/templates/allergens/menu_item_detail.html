@@ -1,16 +1,17 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="container d-flex flex-column align-items-center justify-content-center">
     <h1>{{ item.dish_name }}</h1>
     {% if item.image %}
-        <img src="{{ item.image.url }}" alt="{{ item.dish_name }}" width="200">
+        <img src="{{ item.image.url }}" alt="{{ item.dish_name }}" class="rounded mx-auto d-block w-50">
     {% else %}
-        <p>No image available</p>
+        <p class="fs-4">No image available</p>
     {% endif %}
-    <p>{{ item.description }}</p>
-    <p>€{{ item.price }}</p>
-    <p>Like what you see? Click below to book a table with us</p>
-    <a href="{% url 'reservation' %}" class="btn btn-secondary make-reservation">Make a Reservation</a>
+    <p class=" m-3 fs-5">{{ item.description }}</p>
+    <p class="fs-4">€{{ item.price }}</p>
+    {% include 'allergens/like_what_you_see.html' %}
     <br>
     <a href="{% url 'menu_items_list' %}?{{ filters }}" class="btn btn-secondary">Back to the Menu</a>
+</div>
 {% endblock %}

@@ -3,20 +3,20 @@
 {% block content %}
     {% load static %}
     {% load crispy_forms_tags %}
-    <h1>Edit Reservation YES</h1>
+    <h1>Edit Reservation</h1>
     <form method="post" action="{% url 'check_availability_edit' reservation.reservation_id %}">
         {% csrf_token %}
         {{ form | crispy }}
         <input type="hidden" name="is_edit" value="true">
-        <button type="submit">Check Availability</button>
+        <button class="btn btn-primary "type="submit">Check Availability</button>
     </form>
     <div type="hidden" id="edit-reservation-page"></div>
 
     {% if available_tables %}
-        <h2 id="availableTables">Available Tables EDIT</h2>
-        <ul>
+        <h2 class="text-center mt-4" id="availableTables">Available Tables</h2>
+        <ul class="list-unstyled mt4">
             {% for table in available_tables %}
-                <li>
+                <li class="ms-3 fs-5">
                     Table {{ table.table_number }} ({{ table.capacity }} people)
                     <form method="post" action="{% url 'process_edit_reservation_update' reservation_id=reservation.reservation_id table_id=table.id %}">
                         {% csrf_token %}
@@ -29,7 +29,7 @@
                         <input type="hidden" name="table_location" value="{{ form.table_location.value }}">
                         <input type="hidden" name="message" value="{{ form.message.value }}">
                         <input type="hidden" name="email" value="{{ form.email.value }}">
-                        <button type="submit">Update Reservation</button>
+                        <button class="btn btn-secondary" type="submit">Update Reservation</button>
                         <input type="hidden" name="reservation_id" value="{{ reservation.reservation_id }}">
                     </form>
                 </li>
@@ -40,6 +40,13 @@
     {% if alert_message %}
         <p id="alertMessage">{{ alert_message | safe }}</p>
     {% endif %}
+
+    <div class="row mt-4">
+        <h3 class="text-center">Table Layout</h3>
+        <div class="col-lg-12">
+            <img class="mx-auto d-block my-3" src="{% static 'images/table_map.png' %}" alt="Restaurant Map" class="img-fluid">
+        </div>
+    </div>
 
 
     <script>        
