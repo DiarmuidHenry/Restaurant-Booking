@@ -498,6 +498,12 @@ def process_reservation(
                     round(float(reservation_length)) - 1), minutes=59))
             reservation_end_time = reservation_end_datetime.time()
 
+            # Set the reservation_end_time before saving the form
+            reservation = form.save(commit=False)
+            reservation.reservation_end_time = reservation_end_time
+            reservation.table_id = table_id
+            reservation.save()
+
             # If creating a new reservation, save it
             if action == 'new':
                 table = RestaurantTable.objects.get(id=table_id)
@@ -515,6 +521,7 @@ def process_reservation(
                     number_of_guests=number_of_guests,
                     message=message,
                 )
+                print("NEW BOOKING INFO: ", new_booking)
                 new_booking.save()
                 send_reservation_email(new_booking, 'create')
                 return redirect('thank_you')  # Redirect to thank_you page
@@ -531,10 +538,12 @@ def process_reservation(
                     'last_name': updated_reservation.last_name,
                     'number_of_guests': updated_reservation.number_of_guests,
                     'table_location': updated_reservation.table_location,
-                    'table': updated_reservation.table,
+                    'table': table_id,
+                    'reservation_end_time': reservation_end_time,
                     'message': updated_reservation.message,
                     'email': updated_reservation.email
                 }
+                print("UPDATED RESERVATION INFO: ", new_reservation_info)
                 send_reservation_email(
                     new_reservation_info,
                     'edit',
