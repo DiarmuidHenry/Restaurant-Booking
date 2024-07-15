@@ -5,140 +5,70 @@
 {% load static %}
     <h1>Menu Items</h1>
 
-    <div>
-        <p>Like what you see? Click below to book a table with us</p>
-        <a href="{% url 'reservation' %}" class="btn btn-primary">Make a Reservation</a>
+    <div class="d-flex flex-column align-items-center justify-content-center">
+        <p class="fs-3 ml-3 mr-3 text-center">Like what you see? Click below to book a table with us!</p>
+        <a href="{% url 'reservation' %}" class="btn btn-secondary">Make a Reservation</a>
     </div>
 
-    <form method="get">
-        <div>
-            <label>Remove items that include:</label><br>
-            {% for allergen in allergens %}
-                <label>
-                    <input type="checkbox" name="{{ allergen }}" {% if allergen in request.GET %}checked{% endif %}>
-                    {{ allergen }}
-                </label><br>
-            {% endfor %}
+    <form method="get" id="allergen-form">
+        <div class="container">
+            <!-- Allergens Section -->
+            <div class="mb-4">
+                <h5 class="fw-bold">Remove items that include:</h5>
+                <div class="row">
+                    {% for allergen in allergens %}
+                        <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="{{ allergen }}" id="allergen-{{ allergen }}" {% if allergen in request.GET %}checked{% endif %}>
+                                <label class="form-check-label" for="allergen-{{ allergen }}">
+                                    {{ allergen }}
+                                </label>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+    
+            <!-- Dietary Preferences Section -->
+            <div>
+                <h5 class="fw-bold fs-4">Dietary Preferences:</h5>
+                <div class="row">
+                    <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="vegan" id="diet-vegan" {% if request.GET.vegan %}checked{% endif %}>
+                            <label class="form-check-label" for="diet-vegan">
+                                Vegan
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="vegetarian" id="diet-vegetarian" {% if request.GET.vegetarian %}checked{% endif %}>
+                            <label class="form-check-label" for="diet-vegetarian">
+                                Vegetarian
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Buttons -->
+            <div class="mt-auto">
+                <button class="btn btn-secondary" type="submit">Filter</button>
+                <a href="{% url 'menu_items_list' %}" class="btn btn-secondary">Clear Filters</a>
+            </div>
         </div>
-        <div>
-            <label>Dietary Preferences:</label><br>
-            <label>
-                <input type="checkbox" name="vegan" {% if request.GET.vegan %}checked{% endif %}>
-                Vegan
-            </label><br>
-            <label>
-                <input type="checkbox" name="vegetarian" {% if request.GET.vegetarian %}checked{% endif %}>
-                Vegetarian
-            </label><br>
-        </div>
-        <button type="submit">Filter</button>
-        <a href="{% url 'menu_items_list' %}" class="btn btn-secondary">Clear Filters</a>
     </form>
+    
+    {% include 'allergens/menu_section.html' with section_title="Starters" items=starters filters=filters %}
+    {% include 'allergens/menu_section.html' with section_title="Sides" items=sides filters=filters %}
+    {% include 'allergens/menu_section.html' with section_title="Mains" items=mains filters=filters %}
+    {% include 'allergens/menu_section.html' with section_title="Kids" items=kids filters=filters %}
+    {% include 'allergens/menu_section.html' with section_title="Desserts" items=desserts filters=filters %}
 
-    <ul>
-        <h2>Starters</h2>
-        {% for item in starters %}
-        <li>
-            <a href="{% url 'menu_item_detail' slug=item.slug %}?{{ filters }}">
-                <h3>{{ item.dish_name }}</h3>
-                {% if item.image %}
-                    <img src="{{ item.image.url }}" alt="{{ item.dish_name }}" width="200">
-                {% else %}
-                    <p>No image available</p>
-                {% endif %}
-            </a>
-            <p>{{ item.description }}</p>
-            <p>€{{ item.price }}</p>
-        </li>
-        {% empty %}
-            <li>No starters available.</li>
-        {% endfor %}
-    </ul>
-    
-    <ul>
-        <h2>Mains</h2>
-        {% for item in mains %}
-        <li>
-            <a href="{% url 'menu_item_detail' slug=item.slug %}?{{ filters }}">
-                <h3>{{ item.dish_name }}</h3>
-                {% if item.image %}
-                    <img src="{{ item.image.url }}" alt="{{ item.dish_name }}" width="200">
-                {% else %}
-                    <p>No image available</p>
-                {% endif %}
-            </a>
-            <p>{{ item.description }}</p>
-            <p>€{{ item.price }}</p>
-        </li>
-        {% empty %}
-            <li>No mains available.</li>
-        {% endfor %}
-    </ul>
-    
-    <ul>
-        <h2>Kids</h2>
-        {% for item in kids %}
-        <li>
-            <a href="{% url 'menu_item_detail' slug=item.slug %}?{{ filters }}">
-                <h3>{{ item.dish_name }}</h3>
-                {% if item.image %}
-                    <img src="{{ item.image.url }}" alt="{{ item.dish_name }}" width="200">
-                {% else %}
-                    <p>No image available</p>
-                {% endif %}
-            </a>
-            <p>{{ item.description }}</p>
-            <p>€{{ item.price }}</p>
-        </li>
-        {% empty %}
-            <li>No kids items available.</li>
-        {% endfor %}
-    </ul>
-    
-    <ul>
-        <h2>Sides</h2>
-        {% for item in sides %}
-            <li>
-                <li>
-                    <a href="{% url 'menu_item_detail' slug=item.slug %}?{{ filters }}">
-                        <h3>{{ item.dish_name }}</h3>
-                        {% if item.image %}
-                            <img src="{{ item.image.url }}" alt="{{ item.dish_name }}" width="200">
-                        {% else %}
-                            <p>No image available</p>
-                        {% endif %}
-                    </a>
-                    <p>{{ item.description }}</p>
-                    <p>€{{ item.price }}</p>
-                </li>
-        {% empty %}
-            <li>No sides available.</li>
-        {% endfor %}
-    </ul>
-    
-    <ul>
-        <h2>Desserts</h2>
-        {% for item in desserts %}
-        <li>
-            <a href="{% url 'menu_item_detail' slug=item.slug %}?{{ filters }}">
-                <h3>{{ item.dish_name }}</h3>
-                {% if item.image %}
-                    <img src="{{ item.image.url }}" alt="{{ item.dish_name }}" width="200">
-                {% else %}
-                    <p>No image available</p>
-                {% endif %}
-            </a>
-            <p>{{ item.description }}</p>
-            <p>€{{ item.price }}</p>
-        </li>
-        {% empty %}
-            <li>No desserts available.</li>
-        {% endfor %}
-    </ul>
-
-    <div>
-        <p>Like what you see? Click below to book a table with us</p>
-        <a href="{% url 'reservation' %}" class="btn btn-primary">Make a Reservation</a>
+    <div class="d-flex flex-column align-items-center justify-content-center">
+        <p class="fs-3 ml-3 mr-3 text-center">Like what you see? Click below to book a table with us!</p>
+        <a href="{% url 'reservation' %}" class="btn btn-secondary">Make a Reservation</a>
     </div>
 
 {% endblock %}
