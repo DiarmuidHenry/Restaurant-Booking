@@ -13,14 +13,14 @@
         <div class="container">
             <!-- Allergens Section -->
             <div class="mb-4">
-                <h5 class="fw-bold">Remove items that include:</h5>
+                <h5 class="fw-bold fs-4">Remove items that include:</h5>
                 <div class="row gy-2">
                     {% for allergen in allergens %}
                     <div class="col-6 col-sm-4 col-md-3 col-lg-2">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="{{ allergen }}" id="allergen-{{ allergen }}" {% if allergen in request.GET %}checked{% endif %}>
                             <label class="form-check-label" for="allergen-{{ allergen }}">
-                                <p class="fw-bold fs-6">{{ allergen }}</p>
+                                <p class="fs-6">{{ allergen }}</p>
                             </label>
                         </div>
                     </div>
@@ -36,7 +36,7 @@
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="vegan" id="diet-vegan" {% if request.GET.vegan %}checked{% endif %}>
                             <label class="form-check-label" for="diet-vegan">
-                                Vegan
+                                <p class="fs-6">Vegan</p>
                             </label>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="vegetarian" id="diet-vegetarian" {% if request.GET.vegetarian %}checked{% endif %}>
                             <label class="form-check-label" for="diet-vegetarian">
-                                Vegetarian
+                                <p class="fs-6">Vegetarian</p>
                             </label>
                         </div>
                     </div>

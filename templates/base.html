@@ -33,12 +33,12 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'home' %}">BigByte</a>
+        <a class="navbar-brand fs-4 fw-bold" href="{% url 'home' %}">BigByte</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="collapse navbar-collapse fs-5" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link {% if request.path == home %}disabled text-muted{% endif %}" 
@@ -90,20 +90,11 @@
     </div>
 </main>
 
-<!-- Footer -->
-<!-- <footer class="footer mt-auto py-3 bg-light">
-    <div class="container text-center">
-        <p class="m-0">
-            <a href="https://github.com/yourprofile" target="_blank" class="ms-3 text-blue"><i class="fab fa-github"></i></a>
-        </p>
-        <p class="m-0">Designed by Diarmuid Henry</p>
-    </div>
-</footer> -->
-<footer class="footer mt-auto py-3">
+<footer class="footer mt-auto pt-4">
     <div class="container">
         <div class="row">
             <!-- Contact Details Column (Medium and Larger Devices) -->
-            <div class="col-md-6 mb-4">
+            <div class="col-md-6 mb-2">
                 <h5 class="mb-3 text-center fw-bold">Contact Details</h5>
                 <p class="text-center">
                     <strong>Address:</strong><br>
@@ -120,7 +111,7 @@
             </div>
 
             <!-- Opening Hours Column (Medium and Larger Devices) -->
-            <div class="col-md-6 mb-4">
+            <div class="col-md-6 mb-2">
                 <h5 class="mb-3 text-center fw-bold">Opening Hours</h5>
                 <ul class="list-unstyled">
                     {% for opening_hour in opening_hours %}
@@ -134,7 +125,7 @@
 
         <!-- Social Media Links (Centered) -->
         <div class="row justify-content-center">
-            <div class="col-lg-12 mb-4 text-center">
+            <div class="col-lg-12 my-2 text-center">
                 <ul class="list-unstyled list-inline">
                     <li class="list-inline-item"><a href="https://www.facebook.com/" target="_blank"><i class="bi bi-facebook"></i></a></li>
                     <li class="list-inline-item"><a href="https://www.instagram.com/" target="_blank"><i class="bi bi-instagram"></i></a></li>
