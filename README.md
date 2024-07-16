@@ -131,7 +131,8 @@ MY RESERVATIONS
 
 ### Images
 
-BACKGROUND IMAGE
+![Background Image](/media/readme-images/background_image.jpg)
+
 
 This image was used to show the stylish interior of the restaurant, in order to give the user an impression of the ambience and feel of the place. This paired with the translucent page gives an overall sleek look to the site.
 
@@ -141,107 +142,29 @@ These are used simply to show the user what each dish looks like. It also adds c
 
 ### Colour Scheme
 
-IMAGE OF COLOUR PALETTE
+![Colour Palette](/media/readme-images/restaurant_colours.png)
 
 I chose a simple, muted beige colour scheme. I wanted to create a calming effect, so fewer more subtle colours was the way to acheive this. The auburn/brown colour is used only for buttons, to highlight their position.
 
 ## Data Models
 
-I created 2 separate apps in this project: _Booking_ and _Allergens_.
-
-_Booking_ handled all of the data and logic involved in reservations. _Allergens_ handled all of the data and logic involved in the menu.
-
-### Booking
-
-ERD - BOOKING
-
-The _Booking_ app manages the reservation system, including table availability, opening hours, and user bookings. Below is a breakdown of the models, their attributes, CRUD implementation, and superuser privileges/abilities.
-
-#### Booking - Models
-
-**NormalOpeningHours**
-  - **Attributes**:
-      - `day`: CharField (choices: Monday-Sunday)
-      - `is_open`: BooleanField (default: False)
-      - `opening_time`: TimeField
-      - `closing_time`: TimeField
-
-  - **CRUD Implementation**:
-      - **Create**: Superusers can set regular opening hours for each day of the week.
-      - **Read**: Users can view normal opening hours to know standard booking times.
-      - **Update**: Superusers can update regular opening hours as needed.
-      - **Delete**: Superusers can remove or change specific opening time entries.
-
-  - **Usage**: NormalOpeningHours defines daily opening hours for the restaurant. If ExceptionalOpeningHours for a specific date isn't defined, the system defaults to NormalOpeningHours.
-
-**ExceptionalOpeningHours**
-  - **Attributes**:
-      - `date`: DateField (unique)
-      - `is_open`: BooleanField (default: False)
-      - `opening_time`: TimeField (nullable)
-      - `closing_time`: TimeField (nullable)
-
-  - **CRUD Implementation**:
-      - **Create**: Superusers can set exceptional opening hours for specific dates.
-      - **Read**: Through the booking portal, users can view exceptional opening hours for special dates.
-      - **Update**: Superusers can update exceptional opening hours as needed.
-      - **Delete**: Superusers can remove or change specific hours.
-
-  - **Usage**: ExceptionalOpeningHours allows defining special opening hours for specific dates, overriding NormalOpeningHours if present.
-
-**RestaurantTable**
-  - **Attributes**:
-      - `table_number`: PositiveIntegerField (unique)
-      - `capacity`: PositiveIntegerField (validators: MinValueValidator(1))
-      - `table_location`: CharField (choices: Inside, Outside, default: Inside)
-
-  - **CRUD Implementation**:
-      - **Create**: Superusers can add new tables with specific seat numbers.
-      - **Read**: Users can see available tables and their capacity when making a reservation.
-      - **Update**: Superusers can update table details (e.g., number of seats, location).
-      - **Delete**: Superusers can remove tables no longer in use.
-
-  - **Usage**: RestaurantTable defines the available tables, their location and their capacities for seating guests.
-
-**Reservation**
-  - **Attributes**:
-      - `reservation_id`: AutoField (primary_key)
-      - `user`: ForeignKey (to User model, nullable)
-      - `first_name`: CharField (max_length: 25, default: '')
-      - `last_name`: CharField (max_length: 25, default: '')
-      - `email`: EmailField (default: '')
-      - `table`: ForeignKey (to RestaurantTable)
-      - `created_on`: DateTimeField (auto_now_add)
-      - `reservation_date`: DateField
-      - `reservation_length`: FloatField (choices: 1.0-3.0, default: 2.0)
-      - `reservation_time`: TimeField
-      - `number_of_guests`: PositiveIntegerField (validators: MinValueValidator(1), MaxValueValidator(50))
-      - `table_location`: CharField (choices: Inside, Outside, default: Inside)
-      - `reservation_end_time`: TimeField (nullable)
-      - `message`: TextField (max_length: 200, blank=True, null=True)
-
-  - **CRUD Implementation**:
-      - **Create**: Users can create reservations by filling in a form.
-      - **Read**: Users and superusers can view reservation details.
-      - **Update**: Users can update their own reservations; superusers can update any reservation.
-      - **Delete**: Users can cancel their own reservations; superusers can delete any reservation.
-
-  - **Usage**: Reservation stores details about each booking, including guest information, table selection, and timing.
-
-**Relationships**
-
-- **NormalOpeningHours** and **ExceptionalOpeningHours**: Exceptional opening hours take precedence over Normal opening hours if defined for a specific date.
-- **RestaurantTable** and **Reservation**: Ensures that tables are booked appropriately and no double bookings occur.
+I created 2 separate apps in this project: _Allergens_ and _Booking_.
 
 ### Allergens
 
-ERD - ALLERGENS
+![ERD Allergens](/media/readme-images/erd_allergens.png)
 
 The _Allergens_ app manages menu items and their associated allergen information, allowing users to filter menu options based on dietary restrictions. Below is a breakdown of the models, their attributes, CRUD implementation, and user-friendly data input capabilities through the admin panel.
 
-#### Allergen - Model
 
-**MenuItem**
+<details>
+  <summary><b>Allergens - Model</b></summary>
+<br>
+
+<details>
+  <summary><b>MenuItem</b></summary>
+<br>
+
   - **Attributes**:
       - `dish_name`: TextField
       - `description`: TextField
@@ -273,6 +196,117 @@ The _Allergens_ app manages menu items and their associated allergen information
       - **Delete**: Superusers can delete menu items no longer offered.
 
   - **Usage**: MenuItem stores details about each dish, including its name, description, price, allergens, and dietary preferences.
+</details>
+<br>
+
+</details>
+
+### Booking
+
+![ERD Booking](/media/readme-images/erd_booking.png)
+
+The _Booking_ app manages the reservation system, including table availability, opening hours, and user bookings. Below is a breakdown of the models, their attributes, CRUD implementation, and superuser privileges/abilities.
+
+<details>
+  <summary><b>Booking - Models</b></summary>
+<br>
+
+<details>
+  <summary><b>NormalOpeningHours</b></summary>
+<br>
+
+  - **Attributes**:
+      - `day`: CharField (choices: Monday-Sunday)
+      - `is_open`: BooleanField (default: False)
+      - `opening_time`: TimeField
+      - `closing_time`: TimeField
+
+  - **CRUD Implementation**:
+      - **Create**: Superusers can set regular opening hours for each day of the week.
+      - **Read**: Users can view normal opening hours to know standard booking times.
+      - **Update**: Superusers can update regular opening hours as needed.
+      - **Delete**: Superusers can remove or change specific opening time entries.
+
+  - **Usage**: NormalOpeningHours defines daily opening hours for the restaurant. If ExceptionalOpeningHours for a specific date isn't defined, the system defaults to NormalOpeningHours.
+</details>
+<br>
+
+<details>
+  <summary><b>ExceptionalOpeningHours</b></summary>
+<br>
+
+  - **Attributes**:
+      - `date`: DateField (unique)
+      - `is_open`: BooleanField (default: False)
+      - `opening_time`: TimeField (nullable)
+      - `closing_time`: TimeField (nullable)
+
+  - **CRUD Implementation**:
+      - **Create**: Superusers can set exceptional opening hours for specific dates.
+      - **Read**: Through the booking portal, users can view exceptional opening hours for special dates.
+      - **Update**: Superusers can update exceptional opening hours as needed.
+      - **Delete**: Superusers can remove or change specific hours.
+
+  - **Usage**: ExceptionalOpeningHours allows defining special opening hours for specific dates, overriding NormalOpeningHours if present.
+</details>
+<br>
+
+<details>
+  <summary><b>RestaurantTables</b></summary>
+<br>
+
+  - **Attributes**:
+      - `table_number`: PositiveIntegerField (unique)
+      - `capacity`: PositiveIntegerField (validators: MinValueValidator(1))
+      - `table_location`: CharField (choices: Inside, Outside, default: Inside)
+
+  - **CRUD Implementation**:
+      - **Create**: Superusers can add new tables with specific seat numbers.
+      - **Read**: Users can see available tables and their capacity when making a reservation.
+      - **Update**: Superusers can update table details (e.g., number of seats, location).
+      - **Delete**: Superusers can remove tables no longer in use.
+
+  - **Usage**: RestaurantTable defines the available tables, their location and their capacities for seating guests.
+</details>
+<br>
+
+<details>
+  <summary><b>Reservation</b></summary>
+<br>
+
+  - **Attributes**:
+      - `reservation_id`: AutoField (primary_key)
+      - `user`: ForeignKey (to User model, nullable)
+      - `first_name`: CharField (max_length: 25, default: '')
+      - `last_name`: CharField (max_length: 25, default: '')
+      - `email`: EmailField (default: '')
+      - `table`: ForeignKey (to RestaurantTable)
+      - `created_on`: DateTimeField (auto_now_add)
+      - `reservation_date`: DateField
+      - `reservation_length`: FloatField (choices: 1.0-3.0, default: 2.0)
+      - `reservation_time`: TimeField
+      - `number_of_guests`: PositiveIntegerField (validators: MinValueValidator(1), MaxValueValidator(50))
+      - `table_location`: CharField (choices: Inside, Outside, default: Inside)
+      - `reservation_end_time`: TimeField (nullable)
+      - `message`: TextField (max_length: 200, blank=True, null=True)
+
+  - **CRUD Implementation**:
+      - **Create**: Users can create reservations by filling in a form.
+      - **Read**: Users and superusers can view reservation details.
+      - **Update**: Users can update their own reservations; superusers can update any reservation.
+      - **Delete**: Users can cancel their own reservations; superusers can delete any reservation.
+
+  - **Usage**: Reservation stores details about each booking, including guest information, table selection, and timing.
+</details>
+<br>
+
+**Relationships**
+
+- **NormalOpeningHours** and **ExceptionalOpeningHours**: Exceptional opening hours take precedence over Normal opening hours if defined for a specific date.
+- **RestaurantTable** and **Reservation**: Ensures that tables are booked appropriately and no double bookings occur.
+</details>
+
+I also integrated the standard **Django Auth** module to create the User aspect, allowing users to sign in and out. This allowed me to link each reservation with the user that created it. More importantly, it alloewd me to add an authentication check when editing a reservation, to ensure that the only one who could edit a reservation (other than a superuser) is the person that created it.
 
 ## Logic
 
@@ -284,7 +318,7 @@ The main use of logic in the _Booking_ app is in the `check_availability` view. 
 
 Below is a flowchart showing how the `check_availability` view functions.
 
-FLOWCHART HERE
+![check_availibility Flowchart](/media/readme-images/check_availability_flowchart.png)
 
 All other views and functions in this app are fairly straightforward, and are mainly concerned about managing the input from the user correctly. Since editing and making a reservation are similar processes, I combined these two functions into one view - `process_reservation` - with extra paramaters to distinguish each case.
 
@@ -308,6 +342,7 @@ The only logic used in this app is simply filtering menu items based on the bool
 - **W3C Validator**: Tools for validating HTML, CSS, and web standards used in website development.
 - **dbdiagram.io**: ERD design.
 - **Draw.io**: Flow chart design.
+- **Pexels**: Royalty free images.
 - **Microsoft Designer**: Creating the menu dish images.
 
 ## Deployment
@@ -339,8 +374,31 @@ In the corresponding `VALUE` field, enter the value for these variables. For exa
 
 ### Resolved
 
-- List of bugs
-- Screenshots included (collapsable?)
+<details>
+  <summary><b>Chosen allergens being reset on page reload</b></summary>
+
+  ![Chosen allergens reset](/media/readme-images/bug_filter_choices_lost_1.png)
+
+  When a user navigated to the enlarged image and information of a menu item and then clicked _Back to Menu_, the chosen allergens/dietary requirements were erased, meaning they needed to be selected again.
+
+  The solution to this was to store the chosen allergens in the url of both the main menu page, but also the detailed image/information page, meaning that the allergen/dietary requirement information could eaily be passed back and forth, meaning the user would not hav to re-input their choices.
+
+  ![Chosen allergens stored](/media/readme-images/bug_filter_choices_lost_2.png)
+
+</details>
+<br>
+<details>
+  <summary><b>Chosen allergens being reset on page reload</b></summary>
+
+  ![Chosen allergens reset](/media/readme-images/bug_filter_choices_lost_1.png)
+
+  When a user navigated to the enlarged image and information of a menu item and then clicked _Back to Menu_, the chosen allergens/dietary requirements were erased, meaning they needed to be selected again.
+
+  The solution to this was to store the chosen allergens in the url of both the main menu page, but also the detailed image/information page, meaning that the allergen/dietary requirement information could eaily be passed back and forth, meaning the user would not hav to re-input their choices.
+
+</details>
+<br>
+
 
 ### Unresolved
 
@@ -363,13 +421,21 @@ Run finished project through validator, include screenshot.
 
 ### CSS
 
-Run finished project through validator, include screenshot.
+__style.css__
+
+![CSS Validation](/media/readme-images/css_validation.png)
 
 ### JS
+
+__get_opening_hours.js__
 
 ![JSHint Validation](/media/readme-images/js_authentication.png)
 
 ### Python
+
+<details>
+  <summary>Allergens</summary>
+
 
 __allergens/admin.py__
 
@@ -386,29 +452,37 @@ __allergens/urls.py__
 __allergens/views.py__
 
 ![Python Validation allergens/views.py](/media/readme-images/lint_allergens_views.png)
+</details>
+<br>
+<details>
+  <summary>Booking</summary>
 
-__booking/admin.py__
-
-![Python Validation booking/admin.py](/media/readme-images/lint_booking_admin.png)
-
-__booking/admin.py__
-
-![Python Validation booking/admin.py](/media/readme-images/lint_booking_admin.png)
-
-__booking/admin.py__
+  __booking/admin.py__
 
 ![Python Validation booking/admin.py](/media/readme-images/lint_booking_admin.png)
 
-__booking/admin.py__
+__booking/context_processors.py__
 
-![Python Validation booking/admin.py](/media/readme-images/lint_booking_admin.png)
+![Python Validation booking/context_processors.py](/media/readme-images/lint_booking_context_processors.png)
 
-__booking/admin.py__
+__booking/forms.py__
 
-![Python Validation booking/admin.py](/media/readme-images/lint_booking_admin.png)
-__booking/admin.py__
+![Python Validation booking/forms.py](/media/readme-images/lint_booking_forms.png)
 
-![Python Validation booking/admin.py](/media/readme-images/lint_booking_admin.png)
+__booking/models.py__
+
+![Python Validation booking/models.py](/media/readme-images/lint_booking_models.png)
+
+__booking/urls.py__
+
+![Python Validation booking/urls.py](/media/readme-images/lint_booking_urls.png)
+
+__booking/views.py__
+
+![Python Validation booking/views.py](/media/readme-images/lint_booking_views.png)
+</details>
+
+
 
 ## Future Improvements/Developments
 
