@@ -16,11 +16,11 @@
                 <h5 class="fw-bold fs-4">Remove items that include:</h5>
                 <div class="row gy-2">
                     {% for allergen in allergens %}
-                    <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                    <div class="col-6 col-sm-4 col-md-4 col-lg-3">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="{{ allergen }}" id="allergen-{{ allergen }}" {% if allergen in request.GET %}checked{% endif %}>
                             <label class="form-check-label" for="allergen-{{ allergen }}">
-                                <p class="fs-6">{{ allergen }}</p>
+                                <p class="fs-5 fw-bold">{{ allergen }}</p>
                             </label>
                         </div>
                     </div>
@@ -32,11 +32,11 @@
             <div>
                 <h5 class="fw-bold fs-4">Dietary Preferences:</h5>
                 <div class="row gy-2">
-                    <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+                    <div class="col-6 col-sm-4 col-md-4 col-lg-3 fs-6">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="vegan" id="diet-vegan" {% if request.GET.vegan %}checked{% endif %}>
                             <label class="form-check-label" for="diet-vegan">
-                                <p class="fs-6">Vegan</p>
+                                <p class="fs-5 fw-bold">Vegan</p>
                             </label>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="vegetarian" id="diet-vegetarian" {% if request.GET.vegetarian %}checked{% endif %}>
                             <label class="form-check-label" for="diet-vegetarian">
-                                <p class="fs-6">Vegetarian</p>
+                                <p class="fs-5 fw-bold">Vegetarian</p>
                             </label>
                         </div>
                     </div>
@@ -58,8 +58,6 @@
             </div>
         </div>
     </form>
-    
-    
     
     {% include 'allergens/menu_section.html' with section_title="Starters" items=starters filters=filters %}
     {% include 'allergens/menu_section.html' with section_title="Sides" items=sides filters=filters %}
