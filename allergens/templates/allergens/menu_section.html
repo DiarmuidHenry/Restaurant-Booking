@@ -13,7 +13,7 @@
                     </a>
                     <div class="card-body">
                         <a href="{% url 'menu_item_detail' slug=item.slug %}?{{ filters }}" class="text-decoration-none">
-                            <h5 class="card-title">{{ item.dish_name }}</h5>
+                            <h5 class="card-title text-brown">{{ item.dish_name }}</h5>
                         </a>
                         <p class="card-text">{{ item.description }}</p>
                         <p class="card-text">€{{ item.price }}</p>

@@ -13,14 +13,14 @@
         <div class="container">
             <!-- Allergens Section -->
             <div class="mb-4">
-                <h5 class="fw-bold fs-4">Remove items that include:</h5>
+                <h5 class="fw-bold fs-4 text-brown">Remove items that include:</h5>
                 <div class="row gy-2">
                     {% for allergen in allergens %}
                     <div class="col-6 col-sm-4 col-md-4 col-lg-3">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="{{ allergen }}" id="allergen-{{ allergen }}" {% if allergen in request.GET %}checked{% endif %}>
                             <label class="form-check-label" for="allergen-{{ allergen }}">
-                                <p class="fs-5 fw-bold">{{ allergen }}</p>
+                                <span class="fs-5 fw-bold">{{ allergen }}</span>
                             </label>
                         </div>
                     </div>
@@ -30,13 +30,13 @@
     
             <!-- Dietary Preferences Section -->
             <div>
-                <h5 class="fw-bold fs-4">Dietary Preferences:</h5>
+                <h5 class="fw-bold fs-4 text-brown">Dietary Preferences:</h5>
                 <div class="row gy-2">
                     <div class="col-6 col-sm-4 col-md-4 col-lg-3 fs-6">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="vegan" id="diet-vegan" {% if request.GET.vegan %}checked{% endif %}>
                             <label class="form-check-label" for="diet-vegan">
-                                <p class="fs-5 fw-bold">Vegan</p>
+                                <span class="fs-5 fw-bold">Vegan</span>
                             </label>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="vegetarian" id="diet-vegetarian" {% if request.GET.vegetarian %}checked{% endif %}>
                             <label class="form-check-label" for="diet-vegetarian">
-                                <p class="fs-5 fw-bold">Vegetarian</p>
+                                <span class="fs-5 fw-bold">Vegetarian</span>
                             </label>
                         </div>
                     </div>
@@ -58,6 +58,7 @@
             </div>
         </div>
     </form>
+    
     
     {% include 'allergens/menu_section.html' with section_title="Starters" items=starters filters=filters %}
     {% include 'allergens/menu_section.html' with section_title="Sides" items=sides filters=filters %}

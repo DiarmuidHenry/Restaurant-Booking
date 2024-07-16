@@ -201,3 +201,8 @@ img {
         font-size: 1rem;
     }
 }
+
+
+.text-brown {
+    color: brown; /* Bootstrap's default secondary color */
+}
