@@ -1,51 +1,66 @@
-/* Body styling */
+/* General reset and body styles */
 body {
     font-family: 'Inter', sans-serif;
     margin: 0;
     padding: 0;
+    height: 100vh;
     background-image: url('https://res.cloudinary.com/drrywrvwv/image/upload/v1721092663/toa-heftiba-6bKpHAun4d8-unsplash_lbjyez.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    height: 100vh; /* Ensure full viewport height */
-    overflow-x: hidden; /* Hide horizontal overflow */
-    position: relative; /* Ensure stacking context */
-
+    overflow-x: hidden;
+    position: relative;
 }
 
+/* Header styles */
 h1 {
     text-align: center;
     margin: 3%;
 }
 
+/* Button styles */
 .btn {
     margin: 1vh auto;
-    
     background-color: brown;
     font-size: 100%;
     border-color: white;
     font-weight: bolder;
 }
 
+.btn-primary {
+    margin: 4vh auto;
+    font-size: 120%;
+    display: flex;
+    align-self: center;
+}
+
+/* Form and input styles */
 .form-check-input:checked {
     background-color: brown;
     border-color: brown;
 }
 
-.btn-primary {
-    margin: 4vh auto;
-    display: flex;
-    align-self: center;
-    font-size: 120%; 
-}
-
-
+/* Table styles */
 .table {
     margin-top: 20px;
+    background-color: rgba(244, 237, 228, 1);
+    border-collapse: collapse;
+    width: 100%;
 }
 
 .table th, .table td {
+    padding: 12px;
+    text-align: left;
     vertical-align: middle;
+}
+
+.table-striped>tbody>tr:nth-child(odd)>td,
+.table-striped>tbody>tr:nth-child(odd)>th {
+    background-color: brown;
+}
+
+.thead-dark {
+    background-color: rgba(165, 42, 42, 0.5);
 }
 
 @media (max-width: 768px) {
@@ -54,27 +69,16 @@ h1 {
     }
 }
 
-.thead-dark {
-    background-color: rgba(165, 42, 42, 0.5); 
-}
-
-.table-striped>tbody>tr:nth-child(odd)>td, 
-.table-striped>tbody>tr:nth-child(odd)>th {
-   background-color: brown;
- }
-
-
-/* Translucent overlay for background */
+/* Background overlay styles */
 .main-bg {
-    background-color: rgba(244, 237, 228, 0.9); /* Light beige color */
+    background-color: rgba(244, 237, 228, 0.9);
     width: 70%;
-    margin: 8vh auto; /* Center align the content */
-    /* padding-top: 25vh; */
+    margin: 8vh auto;
     position: relative;
     z-index: 1;
-    border-radius: 10px; 
-    overflow: hidden; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 @media (max-width: 1200px) {
@@ -93,19 +97,15 @@ h1 {
 
 .main-bg > main {
     padding-top: 0vh;
-} 
-
-#allergen-form {
-    width: 95%
 }
+
 /* Navbar styles */
 .navbar {
-    background-color: rgba(244, 237, 228, 1); /* Adjust navbar background opacity */
-    backdrop-filter: blur(10px); /* Apply backdrop blur effect */
-    /* position: fixed; Fixed position to remain at top */
+    background-color: rgba(244, 237, 228, 1);
+    backdrop-filter: blur(10px);
     width: 80%;
     margin: 0 auto;
-    z-index: 2; /* Ensure navbar is above hero image */
+    z-index: 2;
 }
 
 @media (max-width: 1200px) {
@@ -120,6 +120,7 @@ h1 {
     }
 }
 
+/* Form container styles */
 form {
     width: 80%;
     margin: 0 auto;
@@ -129,8 +130,7 @@ form {
 .container-hero {
     text-align: center;
     color: white;
-    /* padding-top: 20vh; */
-    font-family: 'Lato', sans-serif; /* Professional font for "welcome" text */
+    font-family: 'Lato', sans-serif;
 }
 
 /* Footer styles */
@@ -139,36 +139,17 @@ footer {
     margin: 0;
 }
 
-/* Table styling */
-.table {
-    background-color: rgba(244, 237, 228, 1);
-    border-collapse: collapse;
-    width: 100%;
-}
-
-.table th,
-.table td {
-    padding: 12px;
-    text-align: left;
-}
-
-
-/* .table-responsive {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-} */
-
+/* Additional styles */
 .link-to-reservation {
     display: flex;
     align-self: center;
 }
 
-/* Custom styles for social media icons */
 .bi {
-    color: brown; /* Default color */
-    font-size: 24px; /* Adjust size as needed */
-    margin-right: 20px; /* Adjust spacing between icons */
-    transition: color 0.3s ease; /* Smooth transition on color change */
+    color: brown;
+    font-size: 24px;
+    margin-right: 20px;
+    transition: color 0.3s ease;
 }
 
 .home-page h1 {
@@ -196,13 +177,11 @@ img {
     .home-page h1 {
         font-size: 2.5rem;
     }
-
     .home-page p {
         font-size: 1rem;
     }
 }
 
-
 .text-brown {
-    color: brown; /* Bootstrap's default secondary color */
+    color: brown;
 }
