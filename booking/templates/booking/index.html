@@ -1,19 +1,50 @@
 {% extends "base.html" %}
 
+{% load static %}
+
 {% block homepage_id %}main-bg-home{% endblock %}
 
 {% block content %}
 
-{% load static %}
-
-{% url 'account_login' as login_url %}
-{% url 'account_signup' as signup_url %}
-{% url 'account_logout' as logout_url %}
-
-    <div class="home-page">
+<div class="container my-5">
+    <div class="text-center mb-5">
         <h1>BigByte Restaurant</h1>
-
+        <p class="lead">Experience the fusion of tradition and modernity with our exquisite dishes, crafted with the finest ingredients to bring you an unforgettable culinary journey.</p>
     </div>
 
-    <!-- index.html content ends here -->
+    <div class="row">
+        <!-- First Row -->
+        <div class="col-md-6 mb-4">
+            <img src="https://res.cloudinary.com/drrywrvwv/image/upload/v1721092640/rod-long-I79Pgmhmy5M-unsplash_ap8bre.jpg" class="img-fluid rounded" alt="Coffee Counter">
+        </div>
+        <div class="col-md-6 mb-4 d-flex align-items-center">
+            <p>Enjoy a cup of our freshly brewed coffee at our beautifully designed coffee counter. It's the perfect place to start your day or take a relaxing break.</p>
+        </div>
+
+        <!-- Second Row -->
+        <div class="col-md-6 mb-4 d-flex align-items-center">
+            <p>Our signature dishes are a blend of culinary artistry and the finest ingredients. Each dish is crafted to perfection, offering a visual and gastronomic delight.</p>
+        </div>
+        <div class="col-md-6 mb-4">
+            <img src="https://res.cloudinary.com/drrywrvwv/image/upload/v1721092654/pexels-flodahm-541216_eaberb.jpg" class="img-fluid rounded" alt="Overhead Table">
+        </div>
+
+        <!-- Third Row -->
+        <div class="col-md-6 mb-4">
+            <img src="https://res.cloudinary.com/drrywrvwv/image/upload/v1721092661/pexels-ketut-subiyanto-4350089_bohipz.jpg" class="img-fluid rounded" alt="Staff at Computer">
+        </div>
+        <div class="col-md-6 mb-4 d-flex align-items-center">
+            <p>Our dedicated staff are always ready to assist you. Whether it's taking your order or ensuring your dining experience is top-notch, we strive to provide excellent service.</p>
+        </div>
+
+        <!-- Fourth Row -->
+        <div class="col-md-6 mb-4 d-flex align-items-center">
+            <p>Our friendly staff are always ready to serve you with a smile. Their goal is to make your visit as enjoyable and memorable as possible.</p>
+        </div>
+        <div class="col-md-6 mb-4">
+            <img src="https://res.cloudinary.com/drrywrvwv/image/upload/v1721092617/pexels-tim-douglas-6205635_cjgjq0.jpg" class="img-fluid rounded" alt="Waiter Smiling">
+        </div>
+    </div>
+</div>
+
 {% endblock %}

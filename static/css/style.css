@@ -3,7 +3,7 @@ body {
     font-family: 'Roboto', sans-serif; /* Example font family */
     margin: 0;
     padding: 0;
-    background-image: url('../images/hero_image.jpeg');
+    background-image: url('https://res.cloudinary.com/drrywrvwv/image/upload/v1721092663/toa-heftiba-6bKpHAun4d8-unsplash_lbjyez.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -42,6 +42,28 @@ h1 {
 }
 
 
+.table {
+    margin-top: 20px;
+}
+
+.table th, .table td {
+    vertical-align: middle;
+}
+
+@media (max-width: 768px) {
+    .table-responsive {
+        border: 0;
+    }
+}
+
+.thead-dark {
+    background-color: rgba(165, 42, 42, 0.5); 
+}
+
+.table-striped>tbody>tr:nth-child(odd)>td, 
+.table-striped>tbody>tr:nth-child(odd)>th {
+   background-color: brown;
+ }
 
 
 /* Translucent overlay for background */
@@ -132,13 +154,6 @@ footer {
     text-align: left;
 }
 
-.table thead th {
-    background-color: green
-}
-
-.table tbody tr:nth-child(even) {
-    background-color: blue;
-}
 
 /* .table-responsive {
     overflow-x: auto;
@@ -148,4 +163,43 @@ footer {
 .link-to-reservation {
     display: flex;
     align-self: center;
+}
+
+/* Custom styles for social media icons */
+.bi {
+    color: brown; /* Default color */
+    font-size: 24px; /* Adjust size as needed */
+    margin-right: 20px; /* Adjust spacing between icons */
+    transition: color 0.3s ease; /* Smooth transition on color change */
+}
+
+.home-page h1 {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    color: #333;
+}
+
+.home-page p {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    color: #666;
+}
+
+img {
+    border-radius: 10px;
+}
+
+.carousel .carousel-item img {
+    max-height: 500px;
+    object-fit: cover;
+}
+
+@media (max-width: 768px) {
+    .home-page h1 {
+        font-size: 2.5rem;
+    }
+
+    .home-page p {
+        font-size: 1rem;
+    }
 }

@@ -43,9 +43,9 @@ class NormalOpeningHours(models.Model):
 
     def __str__(self):
         if self.is_open:
-            return f"{self.day} | {self.opening_time} - {self.closing_time}"
+            return f"{self.day.capitalize()} | {self.opening_time} - {self.closing_time}"
         else:
-            return f"{self.day} - CLOSED"
+            return f"{self.day.capitalize()} - CLOSED"
 
 
 class ExceptionalOpeningHours(models.Model):
