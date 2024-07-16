@@ -5,11 +5,11 @@
 {% load static %}
 
 <h1>Cancel Reservation</h1>
-    <p>Are you sure you want to cancel this reservation?</p>
-    <form method="post">
+    <p class="text-center container">Are you sure you want to cancel this reservation?</p>
+    <form  class="text-center container" method="post">
         {% csrf_token %}
-        <button type="submit">Yes, Cancel</button>
-        <a href="{% url 'current_reservations' %}">No, Go Back</a>
+        <button class="btn btn-secondary" type="submit">Yes, Cancel</button>
+        <a class="btn btn-secondary" href="{% url 'current_reservations' %}">No, Go Back</a>
     </form>
 
 {% endblock %}

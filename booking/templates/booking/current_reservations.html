@@ -6,6 +6,9 @@
 
 <h1>My Reservations</h1>
 
+<div class="text-center container">
+    <a href="{% url 'reservation' %}" class="btn btn-secondary make-reservation">Make a Reservation</a>
+</div>
 {% if reservations %}
 <div class="table-responsive">
     <table class="table table-hover">
