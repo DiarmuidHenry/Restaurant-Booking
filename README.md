@@ -16,35 +16,6 @@ IMAGE OF WEBSITE ON DIFFERENT DEVICES
   - [Wireframes](#wireframes)
   - [Images](#images)
   - [Colour Scheme](#colour-scheme)
-  - [Other Features](#other-features)
-- [Data Model](#data-model)
-- [Logic](#logic)
-- [Technology & Resources](#technology--resources)
-- [Deployment](#deployment)
-- [Issues/Bugs](#issuesbugs)
-  - [Resolved](#resolved)
-  - [Unresolved](#unresolved)
-- [Testing & Validation](#testing--validation)
-  - [Functional Testing](#functional-testing)
-  - [WAVE Testing](#wave-testing)
-  - [PageSpeed Testing](#pagespeed-testing)
-  - [HTML Validation](#html-validation)
-  - [CSS Validation](#html-validation)
-  - [JS Validation](#html-validation)
-  - [Python Validation](#html-validation) 
-- [Future Improvements/Developments](#future-improvementsdevelopments)
-- [Acknowledgments](#acknowledgments)
-
-## Table of Contents
-
-- [Goals](#goals)
-- [Key Features](#key-features)
-- [Potential Users](#potential-users)
-- [UX Design & Development](#ux-design--development)
-  - [Agile Development](#agile-development)
-  - [Wireframes](#wireframes)
-  - [Images](#images)
-  - [Colour Scheme](#colour-scheme)
 - [Data Model](#data-model)
   - [Booking](#booking)
   - [Allergens](#allergens)
@@ -148,29 +119,31 @@ I initially created a small number of epics, each of which consisted of multiple
 
 [The Kanban board for this project can be seen here.](https://github.com/users/DiarmuidHenry/projects/2)
 
-All __must have__ user stories were acheived, as well as all but one __should have__. The only __could have__ task was not completed, as the amount of time and resources needed in order to fulfill it would vastly outweigh the minor benefit it would bring.
+All __must have__ user stories were acheived, as well as almost all __should have__ user stories. The only __could have__ task was not completed, as the amount of time and resources needed in order to fulfill it would vastly outweigh the minor benefit it would bring.
 
 ### Wireframes
 
 HOME PAGE 
-MAKE A RESERVATION
+MAKE/EDIT A RESERVATION
 MENU
 CONTACT
 MY RESERVATIONS
 
 ### Images
 
-- Hero/Background Image
+BACKGROUND IMAGE
 
 This image was used to show the stylish interior of the restaurant, in order to give the user an impression of the ambience and feel of the place. This paired with the translucent page gives an overall sleek look to the site.
 
-- Example/s of food images
+EXAMPLE OF FOOD IMAGE
 
-These are used simply to show the user what each dish looks like.
+These are used simply to show the user what each dish looks like. It also adds colour and vibrance to the page.
 
 ### Colour Scheme
 
-Pastel colours, that match the styling and ambience of the restaurant, SOMETHING SOMETHING
+IMAGE OF COLOUR PALETTE
+
+I chose a simple, muted beige colour scheme. I wanted to create a calming effect, so fewer more subtle colours was the way to acheive this. The auburn/brown colour is used only for buttons, to highlight their position.
 
 ## Data Models
 
@@ -305,11 +278,19 @@ The _Allergens_ app manages menu items and their associated allergen information
 
 ### Booking
 
-Flowchart, for the process of making and cancelling a booking (and how data from different models is called).
+This is the primary app used on the site, and contains all the functionality involved with the restaurant's reservations.
+
+The main use of logic in the _Booking_ app is in the `check_availability` view. This takes the information that the user has entered into the _Make a Reservation_/_Edit Reservation_ form and returns all tables (if any) that match the user's input. It also prioritises smaller tables, to avoid (for example) a group of 2 booking a table for 8. In this case that no table is available, an alert message appears, directing the user to the _Contact_ page, where the information from the user's booking form (as well as their information stored in the User database) is prepopulated.
+
+Below is a flowchart showing how the `check_availability` view functions.
+
+FLOWCHART HERE
+
+All other views and functions in this app are fairly straightforward, and are mainly concerned about managing the input from the user correctly. Since editing and making a reservation are similar processes, I combined these two functions into one view - `process_reservation` - with extra paramaters to distinguish each case.
 
 ### Allergens
 
-Flowchart, for the process of using filters, as well as making new entries in the database.
+The only logic used in this app is simply filtering menu items based on the boolean attributes stored in their corresponding entry in the _Menu Items_ database. When the user clicks on one or more allergens, the _Filter_ buttons removes any items containing these allergens from the HTML code that populates the _Menu_ page. The same logic applies to the dietary requirements, but in an opposite way: for example, clicking on _Vegetarian_ will only show dishes that **ARE** vegetarian.
 
 ## Technology & Resources
 
@@ -325,6 +306,9 @@ Flowchart, for the process of using filters, as well as making new entries in th
 - **PEP8**: Python style guide used to ensure code readability and consistency.
 - **WAVE Accessibility Tool**: Web accessibility evaluation tool for ensuring accessibility inclusive design practices.
 - **W3C Validator**: Tools for validating HTML, CSS, and web standards used in website development.
+- **dbdiagram.io**: ERD design.
+- **Draw.io**: Flow chart design.
+- **Microsoft Designer**: Creating the menu dish images.
 
 ## Deployment
 
@@ -343,8 +327,8 @@ Flowchart, for the process of using filters, as well as making new entries in th
 1. Log in to [Heroku](https://www.heroku.com/). If you do not already have an account, you can [sign up here](https://signup.heroku.com/).
 2. Click **Create new app** on the Heroku Dashboard. Give the app a unique name. Select your region, click **Create app**.
 3. Go to the **Settings** tab, click on **Reveal Config Vars**
-4. In the **KEY** field, enter the secret/sensitive variable names that you have/will store in your `env.py` file. For example, `DATABASE_URL`. \
-In the corresponding `VALUE` field, enter the value for these variables. For example, `postgres://<sensitive_information_included_here>/<your_database_name>`.
+4. In the **KEY** field, enter the secret/sensitive variable names that you have/will store in your `env.py` file. For example, `DATABASE_URL`, `DEFAULT_FROM_EMAIL`. \
+In the corresponding `VALUE` field, enter the value for these variables. For example, `postgres://<sensitive_information_included_here>/<your_database_name>`, `thisis@myemail.com`.
 5. Go to the **Deploy** tab. Beside **Deployment method**, click **GitHub**, then confirm by clicking **Connect to GitHub**.
 6. Under **Search for a repository to connect to**, type the name of the repo (whether that be the name of this repo, or of the one you have cloned). Click **Search**, then click **Connect** when the repo name appears. The Heroku app is now linked to the GitHub repo.
 7. If you would like Heroku to manually update the app every time you push chances to GitHub, click on **Enable Automatic Deploys**. (This is optional).
@@ -383,18 +367,56 @@ Run finished project through validator, include screenshot.
 
 ### JS
 
-Run finished project through validator, include screenshot.
+![JSHint Validation](/media/readme-images/js_authentication.png)
 
 ### Python
 
-Run finished project through validator, include screenshot.
+__allergens/admin.py__
+
+![Python Validation allergens/admin.py](/media/readme-images/lint_allergens_admin.png)
+
+__allergens/models.py__
+
+![Python Validation allergens/models.py](/media/readme-images/lint_allergens_models.png)
+
+__allergens/urls.py__
+
+![Python Validation allergens/urls.py](/media/readme-images/lint_allergens_urls.png)
+
+__allergens/views.py__
+
+![Python Validation allergens/views.py](/media/readme-images/lint_allergens_views.png)
+
+__booking/admin.py__
+
+![Python Validation booking/admin.py](/media/readme-images/lint_booking_admin.png)
+
+__booking/admin.py__
+
+![Python Validation booking/admin.py](/media/readme-images/lint_booking_admin.png)
+
+__booking/admin.py__
+
+![Python Validation booking/admin.py](/media/readme-images/lint_booking_admin.png)
+
+__booking/admin.py__
+
+![Python Validation booking/admin.py](/media/readme-images/lint_booking_admin.png)
+
+__booking/admin.py__
+
+![Python Validation booking/admin.py](/media/readme-images/lint_booking_admin.png)
+__booking/admin.py__
+
+![Python Validation booking/admin.py](/media/readme-images/lint_booking_admin.png)
 
 ## Future Improvements/Developments
 
-- Add possibility for user to select several tables when booking for a larger group.
-- Cascade for when the opening hours are changed, affecting an already existing reservation. SHOULD I DO THIS?
+- Add possibility for user to select several tables when booking for a larger group. Although the current logic deals with this instance (and is arguably better and more flexible from the restaurant's point of view), I feel this would be a nice touch, and would give larger parties even more control over their dining experience.
+- Cascade for when the opening hours are changed, affecting an already existing reservation. If, for example, the restaurant decides to begin closing early on Mondays or they decide to add an extra day to `ExceptionalClosingHours`, ideally a message should be sent to all future guests that have a reservation affected by this alteration (as well as to the restaurant to notify them of this). The current workaround would be to filter the existing reservations on the Django Admin panel and manually contact them (which is standard practise in most places), but an automated response would be more professional.
+
 
 ## Acknowledgments
 
-- Student Care
-- Mentor
+- **Student Care**: Quick responses and troubleshooting.
+- **Mentor**: Having a great skill for finding broken logic and pointing out areas that need improving!
