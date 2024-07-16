@@ -506,7 +506,6 @@ def process_reservation(
             reservation = form.save(commit=False)
             reservation.reservation_end_time = reservation_end_time
             reservation.table_id = table_id
-            reservation.save()
 
             # If creating a new reservation, save it
             if action == 'new':
