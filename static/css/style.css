@@ -34,6 +34,10 @@ h1 {
     align-self: center;
 }
 
+a {
+    color: brown;
+}
+
 /* Form and input styles */
 .form-check-input:checked {
     background-color: brown;
@@ -182,6 +186,6 @@ img {
     }
 }
 
-.text-brown {
+.text-brown{
     color: brown;
 }
