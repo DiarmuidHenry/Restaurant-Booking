@@ -436,6 +436,12 @@ After examining it further, the reason that it failed is due to the way the info
 
 ### PageSpeed Testing
 
+I have attached 2 images from PageSpeed testing that represent the scores that the website received. As there are a lot of different parts to the website, I have only included 2.
+
+![PageSpeed Result - Home](/media/readme-images/pagespeed_home.png)
+
+![PageSpeed Result - Allergens](/media/readme-images/pagespeed_allergens.png)
+
 ### WAVE Testing
 
 Web Accessibility Evaluation Tools revealed 0 errors.
