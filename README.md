@@ -47,12 +47,14 @@ IMAGE OF WEBSITE ON DIFFERENT DEVICES
 - To allow users to book a table for their desired time and date, using a user friendly form.\
 [EPIC: Reservations](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/20)\
 This should also take opening hours into consideration: both standard opening hours, but also special opening hours such as holidays.\
+It should also allow users to edit and delete their reservations simply.
 [EPIC: Opening Hours](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/11)
 - To show the user the restaurant's menu, including the ability to filter by allergens.\
 [EPIC: Online Menu](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/28)
-- To give the user a way of contacting the restaurant directly with any questions/queries.
+- To give the user a way of contacting the restaurant directly with any questions/queries.\
+[EPIC: Contact Form](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/35)
 - To allow users to create an account, allowing them to see any current reservations they have.
-- To also allow users to edit and delete their reservations simply.
+
 
 ## Key Features
 
@@ -121,7 +123,46 @@ The project was planned, tracked and process using the AGILE methodology through
 
 I initially created a small number of epics, each of which consisted of multiple user stories. In turn, these user stories were defined and check based on multiple acceptance criteria, ensuring that the desired result from that user story was acheived.
 
-[The Kanban board for this project can be seen here.](https://github.com/users/DiarmuidHenry/projects/2)
+[The Kanban board for this project can be seen here.](https://github.com/users/DiarmuidHenry/projects/2) Below are direct links to all epics and the user stories they consist of:
+
+[EPIC: Admin/Housekeeping](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/34)
+
+ - [USER STORY: Project Creation](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/30)
+ - [USER STORY: README.md](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/31)
+ - [USER STORY: Heroku Deployment](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/32)
+ - [USER STORY: Testing](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/33)
+
+[EPIC: Opening Hours](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/11)
+
+ - [USER STORY: Establish Normal Opening Hours](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/13)
+ - [USER STORY: Establish Exceptional Opening Hours](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/14)
+
+[EPIC: Reservations](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/20)
+
+ - [USER STORY: Booking Form](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/17)
+ - [USER STORY: Choice of Table](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/18)
+ - [USER STORY: Confirmation Email](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/19)
+ - [USER STORY: Editing a Reservation](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/16)
+ - [USER STORY: Cancelling a Reservation](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/15)
+ - [USER STORY: Navigating to 'Make a Reservation'](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/21)
+ - [USER STORY: User Account](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/22)
+ - [USER STORY: Updating Restaurant Information](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/25)
+ - [USER STORY: Updating Databases on Website](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/26)
+ - [USER STORY: Filling out the Booking Form](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/27)
+
+[EPIC: Online Menu](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/28)
+
+ - [USER STORY: Viewing the Menu](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/23)
+ - [USER STORY: Allergens](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/24)
+ - [USER STORY: Updating Restaurant Information](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/25)
+ - [USER STORY: Updating Databases on Website](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/26)
+
+[EPIC: Contact Form](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/35)
+
+ - [USER STORY: Creating Contact Form](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/38)
+ - [USER STORY: Pre-populating User Information](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/36)
+ - [USER STORY: Pre-populating Relevant Subject/Message](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/37)
+
 
 All __must have__ user stories were acheived, as well as almost all __should have__ user stories. The only __could have__ task was not completed, as the amount of time and resources needed in order to fulfill it would vastly outweigh the minor benefit it would bring.
 
