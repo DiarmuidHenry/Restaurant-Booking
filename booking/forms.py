@@ -32,6 +32,8 @@ class ReservationForm(forms.ModelForm):
         self.fields['reservation_time'].widget = (
             forms.Select(attrs={'required': True}))
 
+        self.fields['reservation_time'].widget = forms.Select(choices=[("-", "Please select a date")])
+
     def clean(self):
         cleaned_data = super().clean()
         reservation_time = cleaned_data.get('reservation_time')
@@ -122,6 +124,8 @@ class EditReservationForm(forms.ModelForm):
         })
         self.fields['reservation_time'].widget = (
             forms.Select(attrs={'required': True}))
+
+        self.fields['reservation_time'].widget = forms.Select(choices=[("-", "Please select a date")])
 
     def format_reservation_length(self, length):
         for value, label in self.LENGTH_CHOICES:

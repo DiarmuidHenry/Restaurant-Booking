@@ -8,9 +8,9 @@
         {% csrf_token %}
         {{ form | crispy }}
         <input type="hidden" name="is_edit" value="true">
-        <button class="btn btn-primary "type="submit">Check Availability</button>
+        <button class="btn btn-primary" type="submit">Check Availability</button>
     </form>
-    <div type="hidden" id="edit-reservation-page"></div>
+    <div id="edit-reservation-page"></div>
 
     {% if available_tables %}
         <h2 class="text-center mt-4" id="availableTables">Available Tables</h2>
@@ -46,8 +46,6 @@
     <script>        
         const reservationTime = "{% if reservation.reservation_time %}{{ reservation.reservation_time|time:'H:i' }}{% endif %}";
         const reservationLength = "{% if reservation.reservation_length %}{{ reservation.reservation_length}}{% endif %}";
-        console.log(reservationLength)
-        console.log(reservationTime)
     </script>
     <script src="{% static 'js/get_opening_hours.js' %}"></script>
 

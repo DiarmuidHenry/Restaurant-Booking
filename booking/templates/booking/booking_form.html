@@ -19,36 +19,33 @@
 
         {% if available_tables %}
             <h2 class="text-center mt-4" id="availableTables">Available Tables</h2>
-            <ul class="list-unstyled mt4">
-                    {% for table in available_tables %}
-                        <li class="ms-3 fs-5">
-                            Table {{ table.table_number }} ({{ table.capacity }} people)
-                            <form method="post" action="{% url 'process_make_reservation' table_id=table.id %}">
-                                {% csrf_token %}
-                                <input type="hidden" name="reservation_date" value="{{ form.reservation_date.value }}">
-                                <input type="hidden" name="reservation_time" value="{{ form.reservation_time.value }}">
-                                <input type="hidden" name="reservation_length" value="{{ form.reservation_length.value }}">
-                                <input type="hidden" name="first_name" value="{{ form.first_name.value }}">
-                                <input type="hidden" name="last_name" value="{{ form.last_name.value }}">
-                                <input type="hidden" name="number_of_guests" value="{{ form.number_of_guests.value }}">
-                                <input type="hidden" name="table_location" value="{{ form.table_location.value }}">
-                                <input type="hidden" name="message" value="{{ form.message.value }}">
-                                <input type="hidden" name="email" value="{{ form.email.value }}">
-                                <button class="btn btn-secondary" type="submit">Reserve Table</button>
-                            </form>
-                        </li>
-                    {% endfor %}
-                </ul>
+            <ul class="list-unstyled mt-4">
+                {% for table in available_tables %}
+                    <li class="ms-3 fs-5">
+                        Table {{ table.table_number }} ({{ table.capacity }} people)
+                        <form method="post" action="{% url 'process_make_reservation' table_id=table.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="reservation_date" value="{{ form.reservation_date.value }}">
+                            <input type="hidden" name="reservation_time" value="{{ form.reservation_time.value }}">
+                            <input type="hidden" name="reservation_length" value="{{ form.reservation_length.value }}">
+                            <input type="hidden" name="first_name" value="{{ form.first_name.value }}">
+                            <input type="hidden" name="last_name" value="{{ form.last_name.value }}">
+                            <input type="hidden" name="number_of_guests" value="{{ form.number_of_guests.value }}">
+                            <input type="hidden" name="table_location" value="{{ form.table_location.value }}">
+                            <input type="hidden" name="message" value="{{ form.message.value }}">
+                            <input type="hidden" name="email" value="{{ form.email.value }}">
+                            <button class="btn btn-secondary" type="submit">Reserve Table</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
         {% endif %}
-        
-
 
         {% if alert_message %}
             <p id="alertMessage" class="mt-4 text-center">{{ alert_message | safe }}</p>
         {% endif %}
 
         {% include 'booking/table_layout.html' %}
-
     </div>
 
     <script src="{% static 'js/get_opening_hours.js' %}"></script>
