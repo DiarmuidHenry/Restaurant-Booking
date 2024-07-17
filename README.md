@@ -411,6 +411,23 @@ In the corresponding `VALUE` field, enter the value for these variables. For exa
 
 Manual testing table for every functionality in the website (lots of work, but most will be repeats of simple commands). Table format, use earlier project as template.
 
+### Automated Testing
+
+For this, I used the inbuilt testing module `Unittest`. I tested all views in the _Allergens_ app.
+
+#### MenuItemsList
+
+In order for an this test to pass, it needed the following:
+
+- Raise a `TypeError` if any of the inputs are not Boolean. The input into this function is a series of Boolean values stating whether certain allergens/dietary requirements apply or do not apply. If, for example, the function receives a float as one of the inputs, it should raise a `TypeError`.
+- Raise a `TypeError`if any of the inputs are of the type `None`, i.e. there is missing data. In order for the function to be accurate, an input must be received for each of the dietary criteria.
+- If the input for an allergen **a** is `True`, then the return **must not** include any entries from the _MenuItem_ database that have the attribute `a` value set to `True`.
+- If the input for an allergen **b** is `False`, then the return must not exclude any entries from the _MenuItem_ database based on their `b` value. For example, if you do **not** a _Peanut_ allergy, then the item's **Peanut** variable value is irrelevant; it must not affect the return. 
+- If the input for **Vegetarian** is `True`, then the return **must not** include any entries from the _MenuItem_ database that have the attribute `vegetarian` value `False`.
+- If the input for an **Vegetarian**** is `False`, then the return must not exclude any entries from the _MenuItem_ database based on their `vegetarian` value. If you are not a vegetarian, then the item's **Vegetarian** variable value is irrelevant; it must not affect the return. 
+- If the input for **Vegan** is `True`, then the return **must not** include any entries from the _MenuItem_ database that have the attribute `vegan` value `False`.
+- If the input for an **Vegan** is `False`, then the return must not exclude any entries from the _MenuItem_ database based on their `vegan` value. If you are not a vegan, then the item's **Vegan** variable value is irrelevant; it must not affect the return.
+
 ### PageSpeed Testing
 
 ### WAVE Testing
@@ -488,6 +505,7 @@ __booking/views.py__
 
 - Add possibility for user to select several tables when booking for a larger group. Although the current logic deals with this instance (and is arguably better and more flexible from the restaurant's point of view), I feel this would be a nice touch, and would give larger parties even more control over their dining experience.
 - Cascade for when the opening hours are changed, affecting an already existing reservation. If, for example, the restaurant decides to begin closing early on Mondays or they decide to add an extra day to `ExceptionalClosingHours`, ideally a message should be sent to all future guests that have a reservation affected by this alteration (as well as to the restaurant to notify them of this). The current workaround would be to filter the existing reservations on the Django Admin panel and manually contact them (which is standard practise in most places), but an automated response would be more professional.
+- Add logic to the _MenuItem_ database, so that any item with _Dairy_ or _Eggs_ set to `True`, automatically has _Vegan_ set to `False`. This should not be an issue if data is input correctly, but it gives the user less chance to introduce an error/inconsistency into the model.
 
 
 ## Acknowledgments

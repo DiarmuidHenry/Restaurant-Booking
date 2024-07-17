@@ -51,7 +51,6 @@ def menu_items_list(request):
 
     return render(request, 'allergens/menu_items_list.html', context)
 
-
 def menu_item_detail(request, slug):
     item = get_object_or_404(MenuItem, slug=slug)
     # Filters are passed on so they remain when user goes back to menu

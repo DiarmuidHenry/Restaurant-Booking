@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='menuitem',
             name='section',
-            field=models.CharField(choices=[('starters', 'Starters'), ('mains', 'Mains'), ('sides', 'Sides'), ('kids', 'Kids'), ('desserts', 'Desserts')], default='mains'),
+            field=models.CharField(choices=[('starters', 'Starters'), ('mains', 'Mains'), ('sides', 'Sides'), ('kids', 'Kids'), ('desserts', 'Desserts')], default='mains', max_length=20),
         ),
     ]
