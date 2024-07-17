@@ -1,8 +1,8 @@
 # BigByte Restaurant
 
-This project is a Django based website that handles bookings for a restaurant. Users sign up and can see and delete their reservations, with the database being updated accordingly. The website also allows users to see the menu, filtering the results by allergens and dietary preferences.
+This project is a Django based website that handles bookings for a restaurant. Users sign up and can see, edit and delete their reservations, with the database being updated accordingly. The website also allows users to see the menu, filtering the results by allergens and dietary preferences.
 
-IMAGE OF WEBSITE ON DIFFERENT DEVICES
+![Homepage on Different Devices](/media/readme-images/homepage_different_devices.png)
 
 [Deployed Website](https://restaurant--booking-465b6b7fd829.herokuapp.com/)
 
@@ -47,7 +47,7 @@ IMAGE OF WEBSITE ON DIFFERENT DEVICES
 - To allow users to book a table for their desired time and date, using a user friendly form.\
 [EPIC: Reservations](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/20)\
 This should also take opening hours into consideration: both standard opening hours, but also special opening hours such as holidays.\
-It should also allow users to edit and delete their reservations simply.
+It should also allow users to edit and delete their reservations simply. \
 [EPIC: Opening Hours](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/11)
 - To show the user the restaurant's menu, including the ability to filter by allergens.\
 [EPIC: Online Menu](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/28)
@@ -58,16 +58,45 @@ It should also allow users to edit and delete their reservations simply.
 
 ## Key Features
 
-- INCLUDE SCREENSHOTS
+- A clean, light _Home_ page with an image of the restaurant in the background. The background image remains in place when scrolling. The main content of each page appears in a container with soft, rounded corners. The navbar is fixed to the top, indicating to the user whether they are logged in or not. Note: _My Reservations_ only appears to those who are logged in.
 
-- Large, clear images of the restaurant to show the user the interior.
+![Home Page](/media/readme-images/homepage_top.png)
+
+- Stylish images, again with rounded corners, accompany text telling the user about the restaurant's ethos.
+
+![Home Page Images](/media/readme-images/homepage_images_text.png)
+
+- Footer containing basic contact details, links to social media sites, and a list of opening hours. These opening hours are updated from the `NormalOpeningHours` database using a context processor, every time the page refreshes/loads.
+
+![Footer](/media/readme-images/footer.png)
+
 - _Make a Reservation_ page, where users can make a reservation by filling out the booking form.
-- _My Reservations_ page, where users can see their reserevations, past and present.
+
+![Make a Reservation page](/media/readme-images/make_a_reservation.png)
+
+- _My Reservations_ page, where users can see their reservations, past and present. The link to this page is only seen by those who are logged in.
+
+![My Reservations page](/media/readme-images/my_reservations_after.png)
+
 - Thanks/Confirmation pages, to confirm to the user that their action has been completed.
-- Confirmation emails, as permanent evidence of such changes.
-- _Contact_ page, for users to directly contact the restaurant by filling out a simple message form.
-- _Menu_, where users can see the entire menu, as well as having the ability to filter the menu by the allergens that apply to them/their co-diners. Users can also click on each item to see an enlarged image.
-- _Make A Reservation_ buttons appearing regularly, giving the user an easy path to booking a table.
+
+![Reservation Confirmation page](/media/readme-images/reservation_creation_confirmation.png)
+
+- Confirmation emails (both to the restaurant and the user), as evidence/a reminder of the user's reservation.
+
+![Confirmation Email](/media/readme-images/reservation_creation_guest.png)
+
+- _Contact_ page, for users (both those who are signed in and those who are not) to directly contact the restaurant by filling out a simple message form. If the user is signed in, the _First Name_, _Last Name_ and _Email_ fields are automatically populated with information from their user account.
+
+![Contact Form](/media/readme-images/contact_form_signed_in.png)
+
+- _Menu_, where users can see the entire menu, as well as having the ability to filter the menu by the allergens that apply to them/their co-diners.
+
+![Menu Page](/media/readme-images/menu_items.png)
+
+- Users can also click on each item to see an enlarged image. _Make A Reservation_ buttons appearing regularly, giving the user an easy path to booking a table.
+
+![Menu Item Details](/media/readme-images/menu_item_detailed.png)
 
 ## Potential Users
 
@@ -178,12 +207,11 @@ MY RESERVATIONS
 
 ![Background Image](/media/readme-images/background_image.jpg)
 
+This image was used to show the stylish, relaxed interior of the restaurant, in order to give the user an impression of the ambience and feel of the place. This paired with the translucent page gives an overall sleek look to the site.
 
-This image was used to show the stylish interior of the restaurant, in order to give the user an impression of the ambience and feel of the place. This paired with the translucent page gives an overall sleek look to the site.
+![Menu Item Details](/media/readme-images/menu_item_detailed.png)
 
-EXAMPLE OF FOOD IMAGE
-
-These are used simply to show the user what each dish looks like. It also adds colour and vibrance to the page.
+These are used simply to show the user what each dish looks like. It also adds colour and vibrance to the page, and allows for easy booking with the _MAke a Reservation_ button.
 
 ### Colour Scheme
 
@@ -315,7 +343,6 @@ The _Booking_ app manages the reservation system, including table availability, 
 
   - **Usage**: Reservation stores details about each booking, including guest information, table selection, and timing.
 
-
 **Relationships**
 
 - **NormalOpeningHours** and **ExceptionalOpeningHours**: Exceptional opening hours take precedence over Normal opening hours if defined for a specific date.
@@ -330,13 +357,99 @@ I also integrated the standard **Django Auth** module to create the User aspect,
 
 This is the primary app used on the site, and contains all the functionality involved with the restaurant's reservations.
 
-The main use of logic in the _Booking_ app is in the `check_availability` view. This takes the information that the user has entered into the _Make a Reservation_/_Edit Reservation_ form and returns all tables (if any) that match the user's input. It also prioritises smaller tables, to avoid (for example) a group of 2 booking a table for 8. In this case that no table is available, an alert message appears, directing the user to the _Contact_ page, where the information from the user's booking form (as well as their information stored in the User database) is prepopulated.
+The main use of logic in the _Booking_ app is in the `check_availability` view. This takes the information that the user has entered into the _Make a Reservation_/_Edit Reservation_ form and returns all tables (if any) that match the user's input.
+
+In order to remove the issue of 1 minute overlaps (a reservation from 14:00 - 15:30 and another from 15:30 - 17:30 should not count as overlapping), each reservation has 1 minute removed from the end when stored in the database. In this case, the first reservation's end time would have a value of 15:29.
+
+It also prioritises smaller tables, to avoid (for example) a group of 2 booking a table for 8. In this case that no table is available, an alert message appears, directing the user to the _Contact_ page, where the information from the user's booking form (as well as their information stored in the User database) is prepopulated.
 
 Below is a flowchart showing how the `check_availability` view functions.
 
 ![check_availibility Flowchart](/media/readme-images/check_availability_flowchart.png)
 
 All other views and functions in this app are fairly straightforward, and are mainly concerned about managing the input from the user correctly. Since editing and making a reservation are similar processes, I combined these two functions into one view - `process_reservation` - with extra paramaters to distinguish each case.
+
+Here is the flow/path through making, editing and cancelling a reservation:
+
+- The user lands on the home page. In order to make a reservation, they click directly on the _My Reservations_ link in the navbar. After signing in (or signing up, and then signing in), they will be directed to the booking form.
+
+- The user's basic contact information is automatically populated in the first fields.
+
+- Since the restaurant is open at different hours on different days, the _Reservation Time_ slot is filled in dynamically. Once the user selects a _Reservation Date_ and a _Reservation Length_, the JavsaScript `get_opening_hours` runs and first finds the opening hours for that day, by first checking `ExceptionalOpeningHours` (e.g. if the chosen date is Christmas Day, New Years' Eve, there might be abnormal opening hours). If no entry for that date exists, the relevant weekday entry for `NormalOpeningHours` is retreived. This script is run any time the date or length are changed. The earliest available reservation time is that day's opening time, and the latest is exactly the closing time, minus the reservation length. For example, if the restaurant is open from 10:00 - 21:00, and your reservation length is 1.5 hours, you will be able to book a table (in 15 minute intervals) from 10:00 to 19:30.
+
+![Make A Reservation](/media/readme-images/make_a_reservation.png)
+
+- Once the user has entered their desired reservation details (and after data validation has asked them to correct any invalid inputs), they click _Check Availability_ and the available tables (as described in the flowchart above) are displayed, with a map of the restaurant directly under. 
+
+![Available Tables](/media/readme-images/available_tables.png)
+
+![Table Layout](/media/readme-images/table_layout.png)
+
+- If no such tables are available, or if the user requests a booking for a group larger than any of the tables can accommodate, a link apppears, that sends the user directly to the _Contact_ form.
+
+![Large party booking form](/media/readme-images/large_party_booking_form.png)
+
+![Large party alert message](/media/readme-images/large_party_alert_message.png)
+
+- The contact details of the user are prepopulated, the message from the reservation is fetched, and the subject line of the email is a summary of the requested reservation. The user can then add/edit the message, and send it directly to the restaurant.
+
+![LArge party contact form](/media/readme-images/large_party_contact_form.png)
+
+- In the case of a smaller patry size, if the user's search returns one or more avaiable tables, they can choose which one to book. In this example, the user chooses table 41.
+
+![Select available table](/media/readme-images/select_available_table.png)
+
+- When they click _Reserve Table_, a confirmation page appears.
+
+![Reservation Creation Confirmation](/media/readme-images/reservation_creation_confirmation.png)
+
+- Simultaneously, 2 emails are generated: one for the user, and one for restaurant. (Note: all sensitive information (email password, app password, as well as database information) are stored in an `env.py` file, and/or the Heroku Configuration Variables).
+
+![Reservation Creation Email Guest](/media/readme-images/reservation_creation_guest.png)
+
+![Reservation Creation Email Restaurant](/media/readme-images/reservation_creation_restaurant.png)
+
+- If the user wishes to edit their reservation, they can (if signed in) click on _My Reservations_. Here, a table populated with the user's reservation details appears.
+
+![My Reservations original](/media/readme-images/my_reservations_original.png)
+
+- When the user clicks on _Edit_, they are redirected to the _Edit My Reservation_ form, where the booking information (including the message, if any) is included. The user can then change their reservation information.
+
+In this example, the user has moved the reservation to 30 minutes earlier, made it 30 minutes longer, and they have added an extra message.
+
+![Change to reservation](/media/readme-images/changes_to_reservation.png)
+
+- When the user clicks on _Check Availability_, the same logic as before happens, with 1 noticable difference: the current reservation that the user is editing, is excluded from the list of reservations that are compared to the potential new one. This means that in this instance (and similar instances), the user's original table is shown as being available, because if they are editing their reservation, the original timeslot will not exist (note: the reservation entry remains, but the time is changed). However, in this case, the user has decided to change to table 12. When they click on _Update Reservation_, a confirmation page appears.
+
+![Reservation Update Confirmation](/media/readme-images/reservation_update_confirmation.png)
+
+- Simultaneously, 2 emails are generated: one for the user, and one for restaurant. Both the original reservation's details, and the new reservation's details are included in the email.
+
+![Reservation Updated Email Guest](/media/readme-images/reservation_updated_guest.png)
+
+![Reservation Updated Email Restaurant](/media/readme-images/reservation_updated_restaurant.png)
+
+- The changes to the reservation can be seen in _My Reservations_. 
+
+![My Reservation Updated](/media/readme-images/my_reservations_before.png)
+
+- If the user wishes to cancel their reservation, they can simply click on _Cancel_. A warning page comes up, in order to confirm that the guest does indeed wish to delete their reservation.
+
+![Cancel Reservation Check](/media/readme-images/cancel_reservation_confirm.png)
+
+- If the user clicks _Yes, Cancel_, the corresponding entry from the database is deleted and a confirmation message appears.
+
+![Cancel Reservation Confirmed](/media/readme-images/cancel_reservation_confirm_2.png)
+
+- Simultaneously, 2 emails are generated: one for the user, and one for restaurant. The reservation details are sent to the restaurant, and a heartfelt message is sent to the user.
+
+![Reservation Cancelled Guest](/media/readme-images/reservation_cancelled_guest.png)
+
+![Reservation Cancelled Restaurant](/media/readme-images/reservation_cancelled_restaurant.png)
+
+- The reservation is no longer seen in _My Reservations_.
+
+![My Reservations deleted](/media/readme-images/my_reservations_after.png)
 
 ### Allergens
 
@@ -401,11 +514,9 @@ In the corresponding `VALUE` field, enter the value for these variables. For exa
   ![Chosen allergens stored](/media/readme-images/bug_filter_choices_lost_2.png)
 
 
-
 ### Unresolved
 
-- Things that I want to develop in the future?
-- This whatever doesnt work
+- When the user clicks on a reservation to edit on their _My Reservations_ page, the data from their reservation loads into the form. However, the time slot instead loads to the last chosen time slot. This is due to the JavaScript overwriting the imported data. After many attempts at rewriting the JaveScript code, I couldn't come up with an elegant solution. It is a minor inconvenience, and a slighlty under-finctioning extra, so I don't consider it to be a major issue.
 
 ## Testing & Validation
 
