@@ -6,21 +6,17 @@ document.addEventListener('DOMContentLoaded', function () {
     let selectedTime = localStorage.getItem('selectedTime') || ''; // Retrieve selected time from localStorage
 
     function changeReservationInput() {
-        console.log("1")
         const selectedDate = reservationDateField.value;
         const reservationLength = parseFloat(reservationLengthField.textContent);
 
         if (selectedDate) {
-            console.log("2")
             fetchOpeningHours(selectedDate, reservationLength);
         } else {
-            console.log("3")
             clearTimeOptions();
         }
     }
 
     function fetchOpeningHours(date, length) {
-        console.log("4")
         fetch(`/booking/reservation/get_opening_hours/?date=${date}`)
             .then(response => response.json())
             .then(data => {
@@ -28,7 +24,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     console.error(data.error);
                     clearTimeOptions();
                 } else {
-                    console.log("5")
                     populateTimeOptions(data.opening_time, data.closing_time, length);
                 }
             })
@@ -39,12 +34,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function populateTimeOptions(openingTime, closingTime, length) {
-        console.log("6")
         if (openingTime === "00:00" && closingTime === "00:00") {
-            console.log("7")
             reservationTimeField.innerHTML = null;
         } else {
-            console.log("8")
             const reservationLength = length;
             const [openingHour, openingMinute] = openingTime.split(':').map(Number);
             const [closingHour, closingMinute] = closingTime.split(':').map(Number);
@@ -81,7 +73,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function clearTimeOptions() {
-        console.log("10")
         reservationTimeField.innerHTML = '<option value="">Select a time</option>';
     }
 
@@ -104,9 +95,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
     }
-
-    console.log("11")
-
 
     // Event listener for time field changes
     reservationTimeField.addEventListener('change', function () {
