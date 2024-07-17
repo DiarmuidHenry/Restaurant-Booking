@@ -44,8 +44,12 @@ IMAGE OF WEBSITE ON DIFFERENT DEVICES
 ## Goals
 
 - To build a functioning website for a restaurant.
-- To allow users to book a table for their desired time and date, using a user friendly form.
-- To show the user the restaurant's menu, including the ability to filter by allergens.
+- To allow users to book a table for their desired time and date, using a user friendly form.\
+[EPIC: Reservations](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/20)\
+This should also take opening hours into consideration: both standard opening hours, but also special opening hours such as holidays.\
+[EPIC: Opening Hours](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/11)
+- To show the user the restaurant's menu, including the ability to filter by allergens.\
+[EPIC: Online Menu](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/28)
 - To give the user a way of contacting the restaurant directly with any questions/queries.
 - To allow users to create an account, allowing them to see any current reservations they have.
 - To also allow users to edit and delete their reservations simply.
@@ -157,13 +161,7 @@ I created 2 separate apps in this project: _Allergens_ and _Booking_.
 The _Allergens_ app manages menu items and their associated allergen information, allowing users to filter menu options based on dietary restrictions. Below is a breakdown of the models, their attributes, CRUD implementation, and user-friendly data input capabilities through the admin panel.
 
 
-<details>
-  <summary><b>Allergens - Model</b></summary>
-<br>
-
-<details>
-  <summary><b>MenuItem</b></summary>
-<br>
+#### MenuItem
 
   - **Attributes**:
       - `dish_name`: TextField
@@ -196,10 +194,6 @@ The _Allergens_ app manages menu items and their associated allergen information
       - **Delete**: Superusers can delete menu items no longer offered.
 
   - **Usage**: MenuItem stores details about each dish, including its name, description, price, allergens, and dietary preferences.
-</details>
-<br>
-
-</details>
 
 ### Booking
 
@@ -207,13 +201,7 @@ The _Allergens_ app manages menu items and their associated allergen information
 
 The _Booking_ app manages the reservation system, including table availability, opening hours, and user bookings. Below is a breakdown of the models, their attributes, CRUD implementation, and superuser privileges/abilities.
 
-<details>
-  <summary><b>Booking - Models</b></summary>
-<br>
-
-<details>
-  <summary><b>NormalOpeningHours</b></summary>
-<br>
+#### NormalOpeningHours
 
   - **Attributes**:
       - `day`: CharField (choices: Monday-Sunday)
@@ -228,12 +216,8 @@ The _Booking_ app manages the reservation system, including table availability, 
       - **Delete**: Superusers can remove or change specific opening time entries.
 
   - **Usage**: NormalOpeningHours defines daily opening hours for the restaurant. If ExceptionalOpeningHours for a specific date isn't defined, the system defaults to NormalOpeningHours.
-</details>
-<br>
 
-<details>
-  <summary><b>ExceptionalOpeningHours</b></summary>
-<br>
+#### ExceptionalOpeningHours
 
   - **Attributes**:
       - `date`: DateField (unique)
@@ -248,12 +232,8 @@ The _Booking_ app manages the reservation system, including table availability, 
       - **Delete**: Superusers can remove or change specific hours.
 
   - **Usage**: ExceptionalOpeningHours allows defining special opening hours for specific dates, overriding NormalOpeningHours if present.
-</details>
-<br>
 
-<details>
-  <summary><b>RestaurantTables</b></summary>
-<br>
+#### RestaurantTables
 
   - **Attributes**:
       - `table_number`: PositiveIntegerField (unique)
@@ -267,12 +247,8 @@ The _Booking_ app manages the reservation system, including table availability, 
       - **Delete**: Superusers can remove tables no longer in use.
 
   - **Usage**: RestaurantTable defines the available tables, their location and their capacities for seating guests.
-</details>
-<br>
 
-<details>
-  <summary><b>Reservation</b></summary>
-<br>
+#### Reservation
 
   - **Attributes**:
       - `reservation_id`: AutoField (primary_key)
@@ -297,8 +273,7 @@ The _Booking_ app manages the reservation system, including table availability, 
       - **Delete**: Users can cancel their own reservations; superusers can delete any reservation.
 
   - **Usage**: Reservation stores details about each booking, including guest information, table selection, and timing.
-</details>
-<br>
+
 
 **Relationships**
 
@@ -343,7 +318,7 @@ The only logic used in this app is simply filtering menu items based on the bool
 - **dbdiagram.io**: ERD design.
 - **Draw.io**: Flow chart design.
 - **Pexels**: Royalty free images.
-- **Microsoft Designer**: Creating the menu dish images.
+- **Microsoft Designer**: Creating the menu dish images (due to lack of real photos available).
 
 ## Deployment
 
@@ -374,8 +349,7 @@ In the corresponding `VALUE` field, enter the value for these variables. For exa
 
 ### Resolved
 
-<details>
-  <summary><b>Chosen allergens being reset on page reload</b></summary>
+- **Chosen allergens being reset on page reload**
 
   ![Chosen allergens reset](/media/readme-images/bug_filter_choices_lost_1.png)
 
@@ -385,19 +359,6 @@ In the corresponding `VALUE` field, enter the value for these variables. For exa
 
   ![Chosen allergens stored](/media/readme-images/bug_filter_choices_lost_2.png)
 
-</details>
-<br>
-<details>
-  <summary><b>Chosen allergens being reset on page reload</b></summary>
-
-  ![Chosen allergens reset](/media/readme-images/bug_filter_choices_lost_1.png)
-
-  When a user navigated to the enlarged image and information of a menu item and then clicked _Back to Menu_, the chosen allergens/dietary requirements were erased, meaning they needed to be selected again.
-
-  The solution to this was to store the chosen allergens in the url of both the main menu page, but also the detailed image/information page, meaning that the allergen/dietary requirement information could eaily be passed back and forth, meaning the user would not hav to re-input their choices.
-
-</details>
-<br>
 
 
 ### Unresolved
@@ -409,18 +370,16 @@ In the corresponding `VALUE` field, enter the value for these variables. For exa
 
 ### Manual Functional Testing
 
-Manual testing table for every functionality in the website (lots of work, but most will be repeats of simple commands). Table format, use earlier project as template.
+Below are the records for the extensive manual testing of all functionalities of both the website and the database.
 
 ### Automated Testing
 
-For this, I used the inbuilt testing module `Unittest`. I tested all views in the _Allergens_ app.
-
-#### MenuItemsList
+For this, I used the inbuilt testing module `unittest`. I tested the `menu_item_list` view in the _Allergens_ app. This is the view that controls the filtering of dishes containing certain allergens and whether they are vegan/vegetarian.
 
 In order for an this test to pass, it needed the following:
 
-- Raise a `TypeError` if any of the inputs are not Boolean. The input into this function is a series of Boolean values stating whether certain allergens/dietary requirements apply or do not apply. If, for example, the function receives a float as one of the inputs, it should raise a `TypeError`.
-- Raise a `TypeError`if any of the inputs are of the type `None`, i.e. there is missing data. In order for the function to be accurate, an input must be received for each of the dietary criteria.
+- Fail if any of the inputs are not Boolean. The input into this function is a series of Boolean values stating whether certain allergens/dietary requirements apply or do not apply. If, for example, the function receives a float as one of the inputs, it should raise a `TypeError`.
+- Fail if any of the inputs are of the type `None`, i.e. there is missing data. In order for the function to be accurate, an input must be received for each of the dietary criteria.
 - If the input for an allergen **a** is `True`, then the return **must not** include any entries from the _MenuItem_ database that have the attribute `a` value set to `True`.
 - If the input for an allergen **b** is `False`, then the return must not exclude any entries from the _MenuItem_ database based on their `b` value. For example, if you do **not** a _Peanut_ allergy, then the item's **Peanut** variable value is irrelevant; it must not affect the return. 
 - If the input for **Vegetarian** is `True`, then the return **must not** include any entries from the _MenuItem_ database that have the attribute `vegetarian` value `False`.
@@ -428,13 +387,30 @@ In order for an this test to pass, it needed the following:
 - If the input for **Vegan** is `True`, then the return **must not** include any entries from the _MenuItem_ database that have the attribute `vegan` value `False`.
 - If the input for an **Vegan** is `False`, then the return must not exclude any entries from the _MenuItem_ database based on their `vegan` value. If you are not a vegan, then the item's **Vegan** variable value is irrelevant; it must not affect the return.
 
+Whilst testing, one of my tests (`test_dietary_requirement_not_ticked_filtering`) failed repeatedly.
+
+IMAGE HERE
+
+After examining it further, the reason that it failed is due to the way the information is being passed. Since `default=True` for all of the allergen/dietary variables, they are simply not included in the url, if they are not selected. Hence, my search for `'?vegan=false'` could not exist in the actual application of the view `menu_list_item`. The way I solved this issue was to change the approach taken by the test. After ensuring the SetUp included both `vegan=True` and `vegan=False` values, I simply checked that no applying the `vegan` filter resulted in both vegan and non-vegan dishes being included in the response. The test passed.
+
 ### PageSpeed Testing
 
 ### WAVE Testing
 
+Web Accessibility Evaluation Tools revealed 0 errors.
+
+![WAVE Result](/media/readme-images/wave_result.png)
+
+![WAVE Alerts](/media/readme-images/wave_alerts.png)
+
+The 2 alerts are for the following:
+
+- Skipped heading level: on some pages, there may be `<h1>` tags and `<h3>` tags, but no `<h2>` tags. Since this is part of the styling I have chosen, this is also by choice.
+- _Home_ appears in the navbar, even when on the _Home_ page. This is by choice, for consistency in the styling and appearance of the navbar.
+
 ### HTML
 
-Run finished project through validator, include screenshot.
+All locations on the site passed HTML validation with no errors. Due to the way  Below are a few examples
 
 ### CSS
 
@@ -450,9 +426,7 @@ __get_opening_hours.js__
 
 ### Python
 
-<details>
-  <summary>Allergens</summary>
-
+#### Allergens
 
 __allergens/admin.py__
 
@@ -469,12 +443,10 @@ __allergens/urls.py__
 __allergens/views.py__
 
 ![Python Validation allergens/views.py](/media/readme-images/lint_allergens_views.png)
-</details>
-<br>
-<details>
-  <summary>Booking</summary>
 
-  __booking/admin.py__
+#### Booking
+
+__booking/admin.py__
 
 ![Python Validation booking/admin.py](/media/readme-images/lint_booking_admin.png)
 
@@ -490,6 +462,10 @@ __booking/models.py__
 
 ![Python Validation booking/models.py](/media/readme-images/lint_booking_models.png)
 
+__booking/test.py__
+
+![Python Validation booking/test.py](/media/readme-images/lint_booking_test.png)
+
 __booking/urls.py__
 
 ![Python Validation booking/urls.py](/media/readme-images/lint_booking_urls.png)
@@ -497,8 +473,6 @@ __booking/urls.py__
 __booking/views.py__
 
 ![Python Validation booking/views.py](/media/readme-images/lint_booking_views.png)
-</details>
-
 
 
 ## Future Improvements/Developments
@@ -506,9 +480,11 @@ __booking/views.py__
 - Add possibility for user to select several tables when booking for a larger group. Although the current logic deals with this instance (and is arguably better and more flexible from the restaurant's point of view), I feel this would be a nice touch, and would give larger parties even more control over their dining experience.
 - Cascade for when the opening hours are changed, affecting an already existing reservation. If, for example, the restaurant decides to begin closing early on Mondays or they decide to add an extra day to `ExceptionalClosingHours`, ideally a message should be sent to all future guests that have a reservation affected by this alteration (as well as to the restaurant to notify them of this). The current workaround would be to filter the existing reservations on the Django Admin panel and manually contact them (which is standard practise in most places), but an automated response would be more professional.
 - Add logic to the _MenuItem_ database, so that any item with _Dairy_ or _Eggs_ set to `True`, automatically has _Vegan_ set to `False`. This should not be an issue if data is input correctly, but it gives the user less chance to introduce an error/inconsistency into the model.
+- Assuming this was a real restaurant, I would hire a professional photographer to take real photos of the food, as opposes to [using generated images](#technology--resources).
 
 
 ## Acknowledgments
 
-- **Student Care**: Quick responses and troubleshooting.
-- **Mentor**: Having a great skill for finding broken logic and pointing out areas that need improving!
+- **Student Care**: Quick responses and troubleshooting, especially when there were issues with the CI Database.
+- **Mentor**: Having the ability to find broken logic and quickly point out areas that need improving.
+
