@@ -2,7 +2,7 @@ from django import forms
 from django.views.generic.edit import FormView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.exceptions import ValidationError
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, Http404
 from django.urls import reverse
 from datetime import datetime, timedelta
 from .models import (
@@ -134,7 +134,6 @@ def check_availability(request, reservation_id=None):
                         f"{reservation_time_str} "
                         f"- {reservation_length} hours - {table_location}")
                 subject_param = urlencode({'subject': subject})
-                print("MESSAGE: ", message)
                 if number_of_guests > max_capacity:
                     alert_message = f"""
                     If you wish to book a table for
@@ -172,8 +171,7 @@ def check_availability(request, reservation_id=None):
             })
 
         else:
-            print("Form is invalid")
-            print(form.errors)
+            raise Http404
 
     else:
         form = ReservationForm(instance=reservation)
@@ -479,7 +477,6 @@ def process_reservation(
         if form.is_valid():
             # Extract cleaned data from the form
             reservation_date = form.cleaned_data['reservation_date']
-            # reservation_time_str = form.cleaned_data['reservation_time']
             reservation_time = form.cleaned_data['reservation_time']
             reservation_length = form.cleaned_data['reservation_length']
             table_location = form.cleaned_data['table_location']
