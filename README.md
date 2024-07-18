@@ -513,6 +513,54 @@ In the corresponding `VALUE` field, enter the value for these variables. For exa
 
   ![Chosen allergens stored](/media/readme-images/bug_filter_choices_lost_2.png)
 
+- **Heroku App crashes after running `pip3 freeze > requirements.txt`**
+
+  This occured a couple of times. After comparing the `requirements.txt` files on GitHub, I saw that the module `python-dateutil` was being removed when I ran the command. This may have been due to the virtual environment I was writing code in. Adding it manually to `requirements.txt` fixed this issue.
+
+- **Booking Form data lost when _Check Availability_ was being clicked**
+
+  The reason for this was the I originally had the _Available Tables_ (as well as the vooking form) load in a new url. This meant that (without adding a way of requesting the data from the previous page) the later page lost the booking information, and could therefore not read the data from the form it was supposed to use to calculate the available tables.
+
+  IMAGE
+
+  I fixed this by embedding the _Check Availability_ function in the same url page (and HTML file) as the _Make a Reservation_ form (and later the _Edit Reservation_ form).
+
+  IMAGE
+
+- **Mandatory Opening and Closing times, even when closed**
+
+  When I tried added an entry to the `ExceptionalOpeningHours` database (the restaurant is closed on Christmas Day), an error appeared stating that I had to add an opening and closing time
+
+  IMAGE
+
+  This was due to the definition of these attributes in my model.
+
+  IMAGE
+
+  After adding `null=True, blank=True` to the model, this fixed this issue, as it allowed me to leave these values blank in the case of a day when the restaurant was closed.
+
+- **Differnt formats of date and time**
+
+
+
+- **Opening Hours not fetch in footer**
+
+  IMAGE
+
+  After doing some reaserach (LINK HERE), I realised I needed a context processor, as I wanted to fetch information without having to call a function.
+
+  IMAGE
+
+  This fixed it
+
+- **Reservation times overlapping by 1 minute**
+
+
+
+- **Current table not showing as available whilst editing a reservation**
+  bug_reservation_id_lost
+
+
 
 ### Unresolved
 
