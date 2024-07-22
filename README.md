@@ -521,39 +521,41 @@ In the corresponding `VALUE` field, enter the value for these variables. For exa
 
   The reason for this was the I originally had the _Available Tables_ (as well as the vooking form) load in a new url. This meant that (without adding a way of requesting the data from the previous page) the later page lost the booking information, and could therefore not read the data from the form it was supposed to use to calculate the available tables.
 
-  IMAGE
+  ![Form Information Lost](/media/readme-images/bug_form_data_lost_when_check_availability_1.png)
 
-  I fixed this by embedding the _Check Availability_ function in the same url page (and HTML file) as the _Make a Reservation_ form (and later the _Edit Reservation_ form).
+  I fixed this by embedding the _Check Availability_ function in the same url page (and HTML file) as the _Make a Reservation_ form (and later the _Edit Reservation_ form). This fixed the issue.
 
-  IMAGE
+  ![Form Information No Longer Lost](/media/readme-images/bug_form_data_lost_when_check_availability_2.png)
 
 - **Mandatory Opening and Closing times, even when closed**
 
   When I tried added an entry to the `ExceptionalOpeningHours` database (the restaurant is closed on Christmas Day), an error appeared stating that I had to add an opening and closing time
 
-  IMAGE
+  ![Error when restaurant closed on special day](/media/readme-images/bug_missing_times_when_is_open_false_1.png)
 
   This was due to the definition of these attributes in my model.
 
-  IMAGE
+  ![Previous ExceptionalOpeningHours model](/media/readme-images/bug_missing_times_when_is_open_false_2.png)
 
   After adding `null=True, blank=True` to the model, this fixed this issue, as it allowed me to leave these values blank in the case of a day when the restaurant was closed.
+
+  ![New ExceptionalOpeningHours model](/media/readme-images/bug_missing_times_when_is_open_false_3.png)
 
 - **Differnt formats of date and time**
 
   I encountered problems when calculating `reservation_end_time`, due to `reservation_start_time` and `reservation_length` being in two different formats. A single line to convert them to the same type was enough to fix the problem.
 
-
 - **Opening Hours not fetch in footer**
 
-  IMAGE
+  Originally, I could not get the opening hours to load in the footer.
+
+  ![Opening Hours Not Loading](/media/readme-images/bug_opening_hours_not_fetched_footer_1.png)
 
   After doing some reaserach (LINK HERE), I realised I needed a context processor, as I wanted to fetch information without having to call a function.
 
-  IMAGE
+  ![Context Processor](/media/readme-images/bug_opening_hours_not_fetched_footer_2.png)
 
-  This fixed it
-
+  After creating this simple file and updating the `settings.py` accordingly, the problem was resolved.
 
 ### Unresolved
 
@@ -563,23 +565,116 @@ In the corresponding `VALUE` field, enter the value for these variables. For exa
 
 ### Manual Functional Testing
 
-Below are the records for the extensive manual testing of all functionalities of both the website and the database.
+Below are the records for the manual testing of all functionalities of the application.
 
 Navbar (including Sign In/UP changing)
 
+|Test Item|Test Carried Out|Result|Pass/Fail|
+|-------------|------------------|-----------|-------|
+|BigByte logo|Click|Homepage loads||
+|Home|Click|Homepage loads||
+|Make a Reservation|Click, whilst logged in|Reservation form appears||
+|Make a Reservation|Click, whilst NOT logged in|Sign In page appears||
+|See our Menu|Click|Menu and filters appear||
+|My Reservations|Is it visble whilst logged in?|YES||
+|My Reservations|Is it visble whilst NOT logged in?|NO||
+|Sign Up|Is it visible whilst logged in?|NO||
+|Sign Up|Is it visible whilst NOT logged in?|YES||
+|Sign Up|Click|Sign up page appears, asking the user to enter their email and create a secure password.|PASS|
+|Sign In|Is it visible whilst logged in?|NO||
+|Sign In|Is it visible whilst NOT logged in?|YES||
+|Sign In|Click|User is asked to enter their existing user info and log in. When logged in, Navbar is updated to show My Reservations, and Sign Up and Sign In are replaced with Sign Out||
+|Sign Out|Is it visible whilst logged in?|YES||
+|Sign Out|Is it visible whilst NOT logged in?|NO||
+|Sign Out|Click|User is asked for confirmation. When clicked, user is signed out. Navbar is updated to no longer show My Reservation, and Sign Out is replaces with Sign Up and Sign In||
+
+
 Footer (updates when times update, link to contact form)
+
+|Test Item|Test Carried Out|Result|Pass/Fail|
+|-------------|------------------|-----------|-------|
+|Email link|Click|Contact Form opens, prepoulated if user is logged in|PASS|
+|Opening Hours|Change data in database|New times are shown upon page reload|PASS|
+|Facebook|Click on logo|Facebook opens in a new tab||
+|Instagram|Click on logo|Instagram opens in a new tab||
+|GitHub|Click on logo|My GitHub profile opens in a new tab||
+|LinkedIn|Click on logo|My LinkedIn profile opens in a new tab||
 
 Make a Reservation Form (include error validation check availability (none available, available, too large, way too large, emails))
 
+|Test Item|Test Carried Out|Result|Pass/Fail|
+|-------------|------------------|-----------|-------|
+
 Edit Reservation Form (include error validation,same as above, emails)
 
-My reserations (edit leads to edit page, cancel, email)
+|Test Item|Test Carried Out|Result|Pass/Fail|
+|-------------|------------------|-----------|-------|
 
-See Our Menu (each allergen, clear filters, filter, detail, link to booking)
+My Reservations
+
+|Test Item|Test Carried Out|Result|Pass/Fail|
+|-------------|------------------|-----------|-------|
+|List of current reservations|Do the shown reservations accurately reflect the data in the database?|YES|PASS|
+|Edit button|Click|Edit Reservation form opens, with information prepopulated. [See note in Bugs](#issuesbugs)|YES|PASS|
+|Cancel button|Click|User is asked if they wish to cancel.|PASS|
+|Yes, Cancel|Click|Reservation is deleted from the database. The restaurant and the user both get an email confirming this.|PASS|
+
+See our Menu
+
+|Test Item|Test Carried Out|Result|Pass/Fail|
+|-------------|------------------|-----------|-------|
+|Filter|Click|Chosen allergens/preferences are applied to the search.||
+|Clear Filter|Click|All chosen allergens/preferences are unchecked.||
+|Gluten|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.||
+|Crustaceans|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.||
+|Eggs|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.||
+|Fish|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.||
+|Peanuts|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.||
+|Soy|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.||
+|Dairy|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.||
+|Nuts|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.||
+|Celery|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.||
+|Mustard|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.||
+|Sesame|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.||
+|Sulphites|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.||
+|Lupin|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.||
+|Molluscs|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.||
+|Vegan|Check box, click filter|All items from the menu that are NOT vegan are removed from the displayed items.||
+|Vegetarian|Check box, click filter|All items from the menu that are NOT vegetarian are removed from the displayed items.||
+|Menu item title|Click|Larger image and description opens in the same tab. The url name/slug is the name of the dish.||
+|Menu item image|Click|Larger image and description opens in the same tab. The url name/slug is the name of the dish.||
+|Back to Menu (under larger image)|Click|Return to menu, with previously chosen checkboxes still checked and applies.||
+|Make a Reservation (under larger image)|Click when logged in|Redirected to Make a Reservation page, user information prepopulated.||
+|Make a Reservation (under larger image)|Click when NOT logged in|Redirected to Sign Up page.||
+
 
 Contact us
 
+|Test Item|Test Carried Out|Result|Pass/Fail|
+|-------------|------------------|-----------|-------|
+|Contact Form in navbar|Click whilst user is logged in|Contact Form page loads, users information (First Name, Last Name, Email) is prepopulated, but can be altered.|PASS|
+|Contact Form in navbar|Click whilst user is NOT logged in|Unpopulated contact form loads.|PASS|
+|Contact Form - Large group, redirected from Make a Reservation/Edit Reservation|Attempt to make a reservation for a large group (e.g. 20). Click on link that appears.|Information entered in reservation form populated in contact form's subject line. Message from reservation form (if non-empty) populated into message field.||
+|Contact Form - No available table, redirected from Make a Reservation/Edit Reservation|Attempt to make/edit a reservation for a time when there are no available, feasible tables. Click on link that appears.|Information entered in reservation form populated in contact form's subject line. Message from reservation form (if non-empty) populated into message field.||
+
+Error Pages
+
+|Test Item|Test Carried Out|Result|Pass/Fail|
+|-------------|------------------|-----------|-------|
+|400 Error|Force a 400 error|400.html loads with link to Home page.|PASS|
+|403 Error|Force a 403 error|403.html loads with link to Home page.|PASS|
+|404 Error|Force a 404 error|404.html loads with link to Home page.|PASS|
+|500 Error|Force a 500 error|500.html loads with link to Home page.|PASS|
+
 Sign In/Sign Up
+
+|Test Item|Test Carried Out|Result|Pass/Fail|
+|-------------|------------------|-----------|-------|
+
+Django Admin Panel
+
+|Test Item|Test Carried Out|Result|Pass/Fail|
+|-------------|------------------|-----------|-------|
 
 ### Automated Testing
 
@@ -598,7 +693,7 @@ In order for an this test to pass, it needed the following:
 
 Whilst testing, one of my tests (`test_dietary_requirement_not_ticked_filtering`) failed repeatedly.
 
-IMAGE HERE
+![Test Fail](/media/readme-images/test_fail_2.png)
 
 After examining it further, the reason that it failed is due to the way the information is being passed. Since `default=True` for all of the allergen/dietary variables, they are simply not included in the url, if they are not selected. Hence, my search for `'?vegan=false'` could not exist in the actual application of the view `menu_list_item`. The way I solved this issue was to change the approach taken by the test. After ensuring the SetUp included both `vegan=True` and `vegan=False` values, I simply checked that no applying the `vegan` filter resulted in both vegan and non-vegan dishes being included in the response. The test passed.
 
