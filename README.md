@@ -541,6 +541,7 @@ In the corresponding `VALUE` field, enter the value for these variables. For exa
 
 - **Differnt formats of date and time**
 
+  I encountered problems when calculating `reservation_end_time`, due to `reservation_start_time` and `reservation_length` being in two different formats. A single line to convert them to the same type was enough to fix the problem.
 
 
 - **Opening Hours not fetch in footer**
@@ -553,14 +554,6 @@ In the corresponding `VALUE` field, enter the value for these variables. For exa
 
   This fixed it
 
-- **Reservation times overlapping by 1 minute**
-
-
-
-- **Current table not showing as available whilst editing a reservation**
-  bug_reservation_id_lost
-
-
 
 ### Unresolved
 
@@ -571,6 +564,22 @@ In the corresponding `VALUE` field, enter the value for these variables. For exa
 ### Manual Functional Testing
 
 Below are the records for the extensive manual testing of all functionalities of both the website and the database.
+
+Navbar (including Sign In/UP changing)
+
+Footer (updates when times update, link to contact form)
+
+Make a Reservation Form (include error validation check availability (none available, available, too large, way too large, emails))
+
+Edit Reservation Form (include error validation,same as above, emails)
+
+My reserations (edit leads to edit page, cancel, email)
+
+See Our Menu (each allergen, clear filters, filter, detail, link to booking)
+
+Contact us
+
+Sign In/Sign Up
 
 ### Automated Testing
 
@@ -616,7 +625,9 @@ The 2 alerts are for the following:
 
 ### HTML
 
-All locations on the site passed HTML validation with no errors. Due to the way  Below are a few examples
+All locations on the site passed HTML validation with no errors. Due to the large number of individual HTML pages/templates that are used, below are a few examples of test results.
+
+The only comment I get is WHATEVER THAT TEST ERROR RETURNED.
 
 ### CSS
 
