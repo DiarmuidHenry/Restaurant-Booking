@@ -551,7 +551,7 @@ In the corresponding `VALUE` field, enter the value for these variables. For exa
 
   ![Opening Hours Not Loading](/media/readme-images/bug_opening_hours_not_fetched_footer_1.png)
 
-  After doing some reaserach (LINK HERE), I realised I needed a context processor, as I wanted to fetch information without having to call a function.
+  [After doing some reaserach](https://docs.djangoproject.com/en/5.0/ref/templates/api/#:~:text=context_processors%20is%20a%20list%20of,be%20merged%20into%20the%20context.), I realised I needed a context processor, as I wanted to fetch information without having to call a function.
 
   ![Context Processor](/media/readme-images/bug_opening_hours_not_fetched_footer_2.png)
 
