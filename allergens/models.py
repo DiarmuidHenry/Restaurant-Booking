@@ -6,7 +6,7 @@ import shutil
 from django.conf import settings
 from django.conf.urls.static import static
 
-
+# Menu item description and allergen information
 class MenuItem(models.Model):
     SECTION_CHOICES = [
         ('starters', 'Starters'),
@@ -43,6 +43,7 @@ class MenuItem(models.Model):
     def __str__(self):
         return f"{self.dish_name} | {self.section}"
 
+    # Automatic slug creation for more readable url
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.dish_name)

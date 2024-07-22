@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
 from .models import MenuItem
 
+# Shows only relevant menu itmems base on filters
 def menu_items_list(request):
     # Retrieve all menu items
     menu_items = MenuItem.objects.all()

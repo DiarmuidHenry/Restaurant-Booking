@@ -64,6 +64,7 @@ def check_availability(request, reservation_id=None):
     # Determine if this is an edit operation
     is_edit = request.POST.get('is_edit') == 'true'
 
+    # Fetch reservation info, if in edit resrvation
     if is_edit and reservation_id:
         try:
             reservation = (
@@ -76,6 +77,7 @@ def check_availability(request, reservation_id=None):
                 'alert_message': "Reservation does not exist.",
             })
 
+    # Get info from form
     if request.method == 'POST':
         form = ReservationForm(request.POST, instance=reservation)
 
@@ -94,6 +96,7 @@ def check_availability(request, reservation_id=None):
             end_datetime = (
                 reservation_datetime + timedelta(hours=reservation_length))
 
+            # Filter/check all tables for a suitable match
             available_tables = (
                 RestaurantTable.objects.filter(
                     table_location=table_location,
@@ -107,6 +110,7 @@ def check_availability(request, reservation_id=None):
                 reservation_end_time__gt=reservation_time,
             )
 
+            # If editing reservation, exclude this from search
             if is_edit and reservation:
                 overlapping_bookings = (
                     overlapping_bookings.exclude(
@@ -117,6 +121,7 @@ def check_availability(request, reservation_id=None):
                     id__in=overlapping_bookings.values_list(
                         'table_id', flat=True)))
 
+            # Find smallest matching table
             min_capacity = number_of_guests
             max_capacity = (
                 RestaurantTable.objects.aggregate(
@@ -254,13 +259,13 @@ def cancel_reservation(request, reservation_id):
         'booking/cancel_reservation.html',
         {'reservation': reservation})
 
-
+# Controls all confirmation emails
 def send_reservation_email(
         reservation,
         action='create',
         previous_reservation=None):
 
-    # Initialize variables for reservation info
+    # Initialise variables for reservation info
     reservation_date = ''
     reservation_time_str = ''
     reservation_length = ''
@@ -377,7 +382,7 @@ def send_reservation_email(
         [to_restaurant],
         html_message=html_message_restaurant)
 
-
+# Contact form
 def contact(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)

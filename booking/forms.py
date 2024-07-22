@@ -9,12 +9,13 @@ from crispy_forms.layout import Submit
 from django.core.validators import RegexValidator
 from django.shortcuts import render, redirect, get_object_or_404
 
-
+# Reservation Form
 class ReservationForm(forms.ModelForm):
     class Meta:
         model = Reservation
         exclude = ['status', 'table', 'reservation_end_time', 'user']
 
+    # Autofill information from user
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         super(ReservationForm, self).__init__(*args, **kwargs)
@@ -62,7 +63,7 @@ class CustomUserChangeForm(UserChangeForm):
         model = User
         fields = ('first_name', 'last_name', 'email')
 
-
+# Contact Form
 class ContactForm(forms.Form):
     first_name = forms.CharField(max_length=100, label='First Name')
     last_name = forms.CharField(max_length=100, label='Last Name')
@@ -82,7 +83,7 @@ class ContactForm(forms.Form):
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Send'))
 
-
+# Edit Reservation Form
 class EditReservationForm(forms.ModelForm):
 
     LENGTH_CHOICES = [

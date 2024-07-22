@@ -136,6 +136,7 @@ class Reservation(models.Model):
     reservation_date = models.DateField()
     reservation_length = models.FloatField(choices=LENGTH_CHOICES, default=2.0)
     reservation_time = models.TimeField(blank=False)
+    # Limit booking size to 1-50
     number_of_guests = models.PositiveIntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(50)])
     table_location = models.CharField(
