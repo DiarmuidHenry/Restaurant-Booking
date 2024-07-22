@@ -505,13 +505,13 @@ In the corresponding `VALUE` field, enter the value for these variables. For exa
 
 - **Chosen allergens being reset on page reload**
 
-  ![Chosen allergens reset](/media/readme-images/bug_filter_choices_lost_1.png)
+  ![Chosen allergens reset](/media/readme-images/bug_filter_choices_lost_2.png)
 
   When a user navigated to the enlarged image and information of a menu item and then clicked _Back to Menu_, the chosen allergens/dietary requirements were erased, meaning they needed to be selected again.
 
   The solution to this was to store the chosen allergens in the url of both the main menu page, but also the detailed image/information page, meaning that the allergen/dietary requirement information could eaily be passed back and forth, meaning the user would not hav to re-input their choices.
 
-  ![Chosen allergens stored](/media/readme-images/bug_filter_choices_lost_2.png)
+  ![Chosen allergens stored](/media/readme-images/bug_filter_choices_lost_1.png)
 
 - **Heroku App crashes after running `pip3 freeze > requirements.txt`**
 
@@ -573,23 +573,23 @@ Navbar (including Sign In/UP changing)
 |-------------|------------------|-----------|-------|
 |BigByte logo|Click|Homepage loads||
 |Home|Click|Homepage loads||
-|Make a Reservation|Click, whilst logged in|Reservation form appears||
-|Make a Reservation|Click, whilst NOT logged in|Sign In page appears||
+|Make a Reservation|Click, whilst logged in|Reservation form appears, with user information prepopulated in First Name, Last Name and Email.||
+|Make a Reservation|Click, whilst NOT logged in|Sign In page appears, asking the user to sign up or sign in.||
 |See our Menu|Click|Menu and filters appear||
 |My Reservations|Is it visble whilst logged in?|YES||
-|My Reservations|Is it visble whilst NOT logged in?|NO||
-|Sign Up|Is it visible whilst logged in?|NO||
-|Sign Up|Is it visible whilst NOT logged in?|YES||
-|Sign Up|Click|Sign up page appears, asking the user to enter their email and create a secure password.|PASS|
+|Sign Up|Is it visble whilst NOT logged in?|NO||
+||Is it visible whilst logged in?|NO||
+||Is it visible whilst NOT logged in?|YES||
+||Click|Sign up page appears, asking the user to enter their email and create a secure password.|PASS|
 |Sign In|Is it visible whilst logged in?|NO||
-|Sign In|Is it visible whilst NOT logged in?|YES||
-|Sign In|Click|User is asked to enter their existing user info and log in. When logged in, Navbar is updated to show My Reservations, and Sign Up and Sign In are replaced with Sign Out||
+||Is it visible whilst NOT logged in?|YES||
+||Click|User is asked to enter their existing user info and log in. When logged in, Navbar is updated to show My Reservations, and Sign Up and Sign In are replaced with Sign Out||
 |Sign Out|Is it visible whilst logged in?|YES||
-|Sign Out|Is it visible whilst NOT logged in?|NO||
-|Sign Out|Click|User is asked for confirmation. When clicked, user is signed out. Navbar is updated to no longer show My Reservation, and Sign Out is replaces with Sign Up and Sign In||
+||Is it visible whilst NOT logged in?|NO||
+||Click|User is asked for confirmation. When clicked, user is signed out. Navbar is updated to no longer show My Reservation, and Sign Out is replaces with Sign Up and Sign In||
 
 
-Footer (updates when times update, link to contact form)
+Footer
 
 |Test Item|Test Carried Out|Result|Pass/Fail|
 |-------------|------------------|-----------|-------|
@@ -600,15 +600,20 @@ Footer (updates when times update, link to contact form)
 |GitHub|Click on logo|My GitHub profile opens in a new tab||
 |LinkedIn|Click on logo|My LinkedIn profile opens in a new tab||
 
-Make a Reservation Form (include error validation check availability (none available, available, too large, way too large, emails))
+Booking Form (Make a Reservation and Edit Reservation) (none available, available, too large, way too large, emails)
 
 |Test Item|Test Carried Out|Result|Pass/Fail|
 |-------------|------------------|-----------|-------|
+|Reservation Date calendar widget|Click|Calendar opens with todays date as the default. Any day from todays date to 1 year in the future can be chosen. If an invalid date is written in manually, clicking Check Availabilty will not work, it will instead scroll up back to the date field to highlight the mistake.|PASS|
+|Reservation Length select field|Click arrow at side of drop down box.|Selections of 1, 1.5, 2, 2.5 and 3 hours appear. Manual input is not possible.|PASS|
+|Reservation Time options field|Change Reservation Date and/or Reservation Length|Once the change to length/date is made, the js script is executed and populates only the feasible times based on the opening hours for that day and the reservation length.|PASS|
+|Number of Guest field|Type number of guests|Only numbers are accepted/read in this field, letters/symbols do not appear if typed. If 0 or anything larger than 50 is entered, an error message appears under the field once Check Availability it clicked.|PASS|
+|Tabe Location selection field|Click arrow at side of drop down box|The options Inside and Outside appear, with Inside the default. Manual input is not possible.|PASS|
+|Message field|Type|Anything typed is mirrored in the message box. The markings on the bottom right corner allow for the box to be enlarged if necessary.|PASS|
+|Booking Form is missing any of the above entry fields (excluding Message, which is optional)|Click Check Availablility|An error message appears under the relevant field, highlighting the cause of the error. The page scrolls up to show this error more clearly.|PASS|
+|Booking Form has entries for all fields, but Reservation Date has been manually written as a date outside of the next calendar year|Click Check Availability|The error is highlighted and the page scrolls up.|PASS|
+|Number of Guests field|A negative number is entered, then click Check Availability|An error message explains that the value must be greater than 0.||
 
-Edit Reservation Form (include error validation,same as above, emails)
-
-|Test Item|Test Carried Out|Result|Pass/Fail|
-|-------------|------------------|-----------|-------|
 
 My Reservations
 
@@ -617,14 +622,14 @@ My Reservations
 |List of current reservations|Do the shown reservations accurately reflect the data in the database?|YES|PASS|
 |Edit button|Click|Edit Reservation form opens, with information prepopulated. [See note in Bugs](#issuesbugs)|YES|PASS|
 |Cancel button|Click|User is asked if they wish to cancel.|PASS|
-|Yes, Cancel|Click|Reservation is deleted from the database. The restaurant and the user both get an email confirming this.|PASS|
+|Yes, Cancel button|Click|Reservation is deleted from the database. The restaurant and the user both get an email confirming this.|PASS|
 
 See our Menu
 
 |Test Item|Test Carried Out|Result|Pass/Fail|
 |-------------|------------------|-----------|-------|
-|Filter|Click|Chosen allergens/preferences are applied to the search.||
-|Clear Filter|Click|All chosen allergens/preferences are unchecked.||
+|Filter button|Click|Chosen allergens/preferences are applied to the search.||
+|Clear Filters button|Click|All chosen allergens/preferences are unchecked.||
 |Gluten|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.||
 |Crustaceans|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.||
 |Eggs|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.||
@@ -680,10 +685,10 @@ Django Admin Panel
 
 For this, I used the inbuilt testing module `unittest`. I tested the `menu_item_list` view in the _Allergens_ app. This is the view that controls the filtering of dishes containing certain allergens and whether they are vegan/vegetarian.
 
-In order for an this test to pass, it needed the following:
+In order for an this test to pass, it needs to do the following:
 
-- Fail if any of the inputs are not Boolean. The input into this function is a series of Boolean values stating whether certain allergens/dietary requirements apply or do not apply. If, for example, the function receives a float as one of the inputs, it should raise a `TypeError`.
-- Fail if any of the inputs are of the type `None`, i.e. there is missing data. In order for the function to be accurate, an input must be received for each of the dietary criteria.
+- FAIL if any of the inputs are not Boolean. The input into this function is a series of Boolean values stating whether certain allergens/dietary requirements apply or do not apply. If, for example, the function receives a float as one of the inputs, it should raise a `TypeError`.
+- FAIL if any of the inputs are of the type `None`, i.e. there is missing data. In order for the function to be accurate, an input must be received for each of the dietary criteria.
 - If the input for an allergen **a** is `True`, then the return **must not** include any entries from the _MenuItem_ database that have the attribute `a` value set to `True`.
 - If the input for an allergen **b** is `False`, then the return must not exclude any entries from the _MenuItem_ database based on their `b` value. For example, if you do **not** a _Peanut_ allergy, then the item's **Peanut** variable value is irrelevant; it must not affect the return. 
 - If the input for **Vegetarian** is `True`, then the return **must not** include any entries from the _MenuItem_ database that have the attribute `vegetarian` value `False`.
