@@ -1,6 +1,6 @@
 # BigByte Restaurant
 
-This project is a Django based website that handles bookings for a restaurant. Users sign up and can see, edit and delete their reservations, with the database being updated accordingly. The website also allows users to see the menu, filtering the results by allergens and dietary preferences.
+This project is a Django based website that handles bookings for a restaurant: BigByte. Users sign up and can see, edit and delete their reservations, with the database being updated accordingly. The website also allows users to see the menu, filtering the results by allergens and dietary preferences.
 
 ![Homepage on Different Devices](/media/readme-images/homepage_different_devices.png)
 
@@ -12,6 +12,7 @@ This project is a Django based website that handles bookings for a restaurant. U
 - [Key Features](#key-features)
 - [Potential Users](#potential-users)
 - [UX Design & Development](#ux-design--development)
+  - [5 Layers of UX](#5-layers-of-ux)
   - [Agile Development](#agile-development)
   - [Wireframes](#wireframes)
   - [Images](#images)
@@ -47,8 +48,8 @@ This project is a Django based website that handles bookings for a restaurant. U
 - To allow users to book a table for their desired time and date, using a user friendly form.\
 [EPIC: Reservations](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/20)\
 This should also take opening hours into consideration: both standard opening hours, but also special opening hours such as holidays.\
-It should also allow users to edit and delete their reservations simply. \
-[EPIC: Opening Hours](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/11)
+[EPIC: Opening Hours](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/11)\
+It should also allow users to edit and delete their reservations simply.
 - To show the user the restaurant's menu, including the ability to filter by allergens.\
 [EPIC: Online Menu](https://github.com/DiarmuidHenry/Restaurant-Booking/issues/28)
 - To give the user a way of contacting the restaurant directly with any questions/queries.\
@@ -94,7 +95,7 @@ It should also allow users to edit and delete their reservations simply. \
 
 ![Menu Page](/media/readme-images/menu_items.png)
 
-- Users can also click on each item to see an enlarged image. _Make A Reservation_ buttons appearing regularly, giving the user an easy path to booking a table.
+- Users can also click on each item to see an enlarged image. _Make A Reservation_ buttons appear regularly, giving the user an easy path to booking a table.
 
 ![Menu Item Details](/media/readme-images/menu_item_detailed.png)
 
@@ -150,7 +151,7 @@ Overall, the visual design is crafted to be responsive, ensuring that the websit
 
 The project was planned, tracked and process using the AGILE methodology throughout.
 
-I initially created a small number of epics, each of which consisted of multiple user stories. In turn, these user stories were defined and check based on multiple acceptance criteria, ensuring that the desired result from that user story was acheived.
+I initially created a small number of epics, each of which consisted of multiple user stories. In turn, these user stories were defined and checked based on multiple acceptance criteria, ensuring that the desired result from that user story was acheived.
 
 [The Kanban board for this project can be seen here.](https://github.com/users/DiarmuidHenry/projects/2) Below are direct links to all epics and the user stories they consist of:
 
@@ -197,11 +198,21 @@ All __must have__ user stories were acheived, as well as almost all __should hav
 
 ### Wireframes
 
-HOME PAGE 
-MAKE/EDIT A RESERVATION
-MENU
-CONTACT
-MY RESERVATIONS
+**Home Page**
+
+![Wireframe - Home](/media/readme-images/wireframe_home.png)
+
+**Make a Reservation**
+
+![Wireframe - Make a Reservation](/media/readme-images/wireframe_booking_form.png)
+
+**My Reservations**
+
+![Wireframe - My Reservations](/media/readme-images/wireframe_my_reservations.png)
+
+**Menu**
+
+![Wireframe - Home](/media/readme-images/wireframe_menu.png)
 
 ### Images
 
@@ -211,13 +222,13 @@ This image was used to show the stylish, relaxed interior of the restaurant, in 
 
 ![Menu Item Details](/media/readme-images/menu_item_detailed.png)
 
-These are used simply to show the user what each dish looks like. It also adds colour and vibrance to the page, and allows for easy booking with the _MAke a Reservation_ button.
+These are used simply to show the user what each dish looks like. It also adds colour and vibrance to the page, and allows for easy booking with the _Make a Reservation_ button.
 
 ### Colour Scheme
 
 ![Colour Palette](/media/readme-images/restaurant_colours.png)
 
-I chose a simple, muted beige colour scheme. I wanted to create a calming effect, so fewer more subtle colours was the way to acheive this. The auburn/brown colour is used only for buttons, to highlight their position.
+I chose a simple, muted beige/burgundy colour scheme. I wanted to create a calming effect, so fewer more subtle colours was the way to acheive this. The auburn/brown colour is used only for buttons, to highlight their position.
 
 ## Data Models
 
@@ -310,7 +321,7 @@ The _Booking_ app manages the reservation system, including table availability, 
       - `table_location`: CharField (choices: Inside, Outside, default: Inside)
 
   - **CRUD Implementation**:
-      - **Create**: Superusers can add new tables with specific seat numbers.
+      - **Create**: Superusers can add new tables with correspoding capacities.
       - **Read**: Users can see available tables and their capacity when making a reservation.
       - **Update**: Superusers can update table details (e.g., number of seats, location).
       - **Delete**: Superusers can remove tables no longer in use.
@@ -371,7 +382,7 @@ All other views and functions in this app are fairly straightforward, and are ma
 
 Here is the flow/path through making, editing and cancelling a reservation:
 
-- The user lands on the home page. In order to make a reservation, they click directly on the _My Reservations_ link in the navbar. After signing in (or signing up, and then signing in), they will be directed to the booking form.
+- The user lands on the home page. In order to make a reservation, they click directly on the _Make a Reservation_ link in the navbar (or on any of the _Make a Reservation_ buttons that appear regularly throughout the site). After signing in (or signing up, and then signing in), they will be directed to the booking form.
 
 - The user's basic contact information is automatically populated in the first fields.
 
@@ -586,6 +597,16 @@ In the corresponding `VALUE` field, enter the value for these variables. For exa
 
   ![Number of guests error message](/media/readme-images/bug_number_of_guests_error_message.png)
 
+- **HTML Validation Error**
+
+  Whilst doing HTML validation, I repeatedly encountered this error on the booking forms:
+
+  ![HTML Validation Error](/media/readme-images/html_validation_error.png)
+
+  This was due to the fact that the JS script that populates the Reservation Time options was only running once the date and reservation length were chosen/changed. This meant that upon loading, it was blank. The way I fixed this was just by adding a default value.
+
+  ![HTML Validation Error Fixed](/media/readme-images/html_validation_error_fixed.png)
+
 
 ### Unresolved
 
@@ -705,17 +726,6 @@ See our Menu
 
 I was unable to find a reliable way to test the 400 and 403 error pages. However, [after reading about default template names in Django's ducomentation](https://docs.djangoproject.com/en/5.0/ref/views/), coupled with the fact that the 404 and 500 error pages work, I am confident that they will also work.
 
-**Sign In/Sign Up**
-
-|Test Item|Test Carried Out|Result|Pass/Fail|
-|-------------|------------------|-----------|-------|
-
-
-**Django Admin Panel**
-
-|Test Item|Test Carried Out|Result|Pass/Fail|
-|-------------|------------------|-----------|-------|
-
 ### Automated Testing
 
 For this, I used the inbuilt testing module `unittest`. I tested the `menu_item_list` view in the _Allergens_ app. This is the view that controls the filtering of dishes containing certain allergens and whether they are vegan/vegetarian.
@@ -762,7 +772,11 @@ The 2 alerts are for the following:
 
 All locations on the site passed HTML validation with no errors. Due to the large number of individual HTML pages/templates that are used, below are a few examples of test results.
 
-The only comment I get is WHATEVER THAT TEST ERROR RETURNED.
+![HTML Validation - Home](/media/readme-images/html_pass_home.png)
+
+![HTML Validation - Current Reservations](/media/readme-images/html_pass_current_reservations.png)
+
+![HTML Validation - Checked Allergens Menu](/media/readme-images/html_check_allergens_menu.png)
 
 ### CSS
 
@@ -834,7 +848,6 @@ __booking/views.py__
 - Add logic to the _MenuItem_ database, so that any item with _Dairy_ or _Eggs_ set to `True`, automatically has _Vegan_ set to `False`. This should not be an issue if data is input correctly, but it gives the user less chance to introduce an error/inconsistency into the model.
 - Assuming this was a real restaurant, I would hire a professional photographer to take real photos of the food, as opposes to [using generated images](#technology--resources).
 - Add an email/SMS reminder 24 hours before a booking to remind a guest of their reservation.
-
 
 ## Acknowledgments
 
