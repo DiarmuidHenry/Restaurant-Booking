@@ -82,6 +82,16 @@ def check_availability(request, reservation_id=None):
         form = ReservationForm(request.POST, instance=reservation)
 
         if form.is_valid():
+            number_of_guests = form.cleaned_data['number_of_guests']
+            if not 1 <= number_of_guests <= 50:
+                form.add_error('number_of_guests', 'Number of guests must be between 1 and 50.')
+                return render(request, 'booking/booking_form.html', {
+                    'form': form,
+                    'available_tables': available_tables,
+                    'max_capacity': max_capacity,
+                    'alert_message': alert_message,
+                    'reservation': reservation,
+                })
             reservation_date = form.cleaned_data['reservation_date']
             reservation_time_str = form.cleaned_data['reservation_time']
             reservation_time = (
@@ -174,9 +184,6 @@ def check_availability(request, reservation_id=None):
                 'alert_message': alert_message,
                 'reservation': reservation,
             })
-
-        else:
-            raise Http404
 
     else:
         form = ReservationForm(instance=reservation)

@@ -4,6 +4,7 @@ from .models import Reservation
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserChangeForm
+from django.core.exceptions import ValidationError  
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from django.core.validators import RegexValidator
@@ -39,6 +40,9 @@ class ReservationForm(forms.ModelForm):
         cleaned_data = super().clean()
         reservation_time = cleaned_data.get('reservation_time')
         number_of_guests = cleaned_data.get('number_of_guests')
+
+        if not 1 <= number_of_guests <= 50:
+            raise ValidationError("Number of guests must be between 1 and 50.")
 
         # Format the reservation_time in HH:SS format
         cleaned_data['reservation_time'] = reservation_time.strftime('%H:%M')

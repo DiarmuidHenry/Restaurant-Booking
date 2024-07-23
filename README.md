@@ -558,9 +558,20 @@ In the corresponding `VALUE` field, enter the value for these variables. For exa
   After creating this simple file and updating the `settings.py` accordingly, the problem was resolved.
 
 
-Changing opening times shuffles order: add summernote ordering?
+- **Changing an opening time reorders the days in the footer**
 
-Making 
+  When I was testing the updating of opening hours in the footer, I noticed that if I edited a day, it went to the end of the list.
+
+  IMAGE 1
+
+  I initially tried ordering by `day`, but this ended up ordering them in alphabetical order (possibly due to `DAY_CHOICES` being unordered).
+
+  IMAGE 2
+
+  I solved this by attaching a numberical value to each day in the context processor, ensuring that no matter what order the information was fetched from the database, the result would be displayed from Monday to Sunday.
+
+  IMAGE 3
+
 
 ### Unresolved
 
