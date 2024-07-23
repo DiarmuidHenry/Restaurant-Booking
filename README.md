@@ -562,15 +562,29 @@ In the corresponding `VALUE` field, enter the value for these variables. For exa
 
   When I was testing the updating of opening hours in the footer, I noticed that if I edited a day, it went to the end of the list.
 
-  IMAGE 1
+  ![Days reordering after editing](/media/readme-images/bug_days_reordered_after_change.png)
 
   I initially tried ordering by `day`, but this ended up ordering them in alphabetical order (possibly due to `DAY_CHOICES` being unordered).
 
-  IMAGE 2
+  ![Days reordering alphaetically](/media/readme-images/bug_days_reordered_alphabetically.png)
 
   I solved this by attaching a numberical value to each day in the context processor, ensuring that no matter what order the information was fetched from the database, the result would be displayed from Monday to Sunday.
 
-  IMAGE 3
+  ![Days correctly ordered](/media/readme-images/bug_days_correct_order.png)
+
+- **Error 404 for tables sizes of 0 or >50**
+
+  Whilst testing, I noticed that entering 0 or above 50 as the number fo guest led to an error 404, even when `DEBUG` was set to true. After checking the code, I found that I had included errors with the form, but I had (at an earlier point in development) added the following lines, possibly to try and catch errors:
+
+  ![Number of guests bug cause](/media/readme-images/bug_number_of_guets_cause.png)
+
+  After deleting this line, the relevant error messages appeared when such a value was entered in the form.
+
+  ![Number of guests 0 error message](/media/readme-images/bug_number_of_guests_zero.png)
+
+  ![Number of guests over 50 error message](/media/readme-images/bug_number_of_guests_over_50.png)
+
+  ![Number of guests error message](/media/readme-images/bug_number_of_guests_error_message.png)
 
 
 ### Unresolved
@@ -583,40 +597,40 @@ In the corresponding `VALUE` field, enter the value for these variables. For exa
 
 Below are the records for the manual testing of all functionalities of the application.
 
-Navbar (including Sign In/UP changing)
+**Navbar**
 
 |Test Item|Test Carried Out|Result|Pass/Fail|
 |-------------|------------------|-----------|-------|
-|BigByte logo|Click|Homepage loads||
-|Home|Click|Homepage loads||
-|Make a Reservation|Click, whilst logged in|Reservation form appears, with user information prepopulated in First Name, Last Name and Email.||
-|Make a Reservation|Click, whilst NOT logged in|Sign In page appears, asking the user to sign up or sign in.||
-|See our Menu|Click|Menu and filters appear||
-|My Reservations|Is it visble whilst logged in?|YES||
-|Sign Up|Is it visble whilst NOT logged in?|NO||
-||Is it visible whilst logged in?|NO||
-||Is it visible whilst NOT logged in?|YES||
+|BigByte logo|Click|Homepage loads|PASS|
+|Home|Click|Homepage loads|PASS|
+|Make a Reservation|Click, whilst logged in|Reservation form appears, with user information prepopulated in First Name, Last Name and Email.|PASS|
+|Make a Reservation|Click, whilst NOT logged in|Sign In page appears, asking the user to sign up or sign in.|PASS|
+|See our Menu|Click|Menu and filters appear|PASS|
+|My Reservations|Is it visble whilst logged in?|YES|PASS|
+|Sign Up|Is it visble whilst NOT logged in?|NO|PASS|
+||Is it visible whilst logged in?|NO|PASS|
+||Is it visible whilst NOT logged in?|YES|PASS|
 ||Click|Sign up page appears, asking the user to enter their email and create a secure password.|PASS|
-|Sign In|Is it visible whilst logged in?|NO||
-||Is it visible whilst NOT logged in?|YES||
-||Click|User is asked to enter their existing user info and log in. When logged in, Navbar is updated to show My Reservations, and Sign Up and Sign In are replaced with Sign Out||
-|Sign Out|Is it visible whilst logged in?|YES||
-||Is it visible whilst NOT logged in?|NO||
-||Click|User is asked for confirmation. When clicked, user is signed out. Navbar is updated to no longer show My Reservation, and Sign Out is replaces with Sign Up and Sign In||
+|Sign In|Is it visible whilst logged in?|NO|PASS|
+||Is it visible whilst NOT logged in?|YES|PASS|
+||Click|User is asked to enter their existing user info and log in. When logged in, Navbar is updated to show My Reservations, and Sign Up and Sign In are replaced with Sign Out|PASS|
+|Sign Out|Is it visible whilst logged in?|YES|PASS|
+||Is it visible whilst NOT logged in?|NO|PASS|
+||Click|User is asked for confirmation. When clicked, user is signed out. Navbar is updated to no longer show My Reservation, and Sign Out is replaces with Sign Up and Sign In|PASS|
 
 
-Footer
+**Footer**
 
 |Test Item|Test Carried Out|Result|Pass/Fail|
 |-------------|------------------|-----------|-------|
 |Email link|Click|Contact Form opens, prepoulated if user is logged in|PASS|
 |Opening Hours|Change data in database|New times are shown upon page reload|PASS|
-|Facebook|Click on logo|Facebook opens in a new tab||
-|Instagram|Click on logo|Instagram opens in a new tab||
-|GitHub|Click on logo|My GitHub profile opens in a new tab||
-|LinkedIn|Click on logo|My LinkedIn profile opens in a new tab||
+|Facebook|Click on logo|Facebook opens in a new tab|PASS|
+|Instagram|Click on logo|Instagram opens in a new tab|PASS|
+|GitHub|Click on logo|My GitHub profile opens in a new tab|PASS|
+|LinkedIn|Click on logo|My LinkedIn profile opens in a new tab|PASS|
 
-Booking Form (Make a Reservation and Edit Reservation) (none available, available, too large, way too large, emails)
+**Booking Form (Make a Reservation and Edit Reservation)**
 
 |Test Item|Test Carried Out|Result|Pass/Fail|
 |-------------|------------------|-----------|-------|
@@ -628,15 +642,20 @@ Booking Form (Make a Reservation and Edit Reservation) (none available, availabl
 |Message field|Type|Anything typed is mirrored in the message box. The markings on the bottom right corner allow for the box to be enlarged if necessary.|PASS|
 |Booking Form is missing any of the above entry fields (excluding Message, which is optional)|Click Check Availablility|An error message appears under the relevant field, highlighting the cause of the error. The page scrolls up to show this error more clearly.|PASS|
 |Booking Form has entries for all fields, but Reservation Date has been manually written as a date outside of the next calendar year|Click Check Availability|The error is highlighted and the page scrolls up.|PASS|
-|Number of Guests field|A negative number is entered, then click Check Availability|An error message explains that the value must be greater than 0.||
+|Number of Guests field|A negative number is entered, then click Check Availability|An error message explains that the value must be greater than 0.|PASS|
+||0 is entered, then click Check Availability|An error message explains that the value must be between 1 and 50.|PASS|
+||A number greater than 50 is entered (e.g. 60), then click Check Availability|An error message explains that the value must be between 1 and 50.|PASS|
+||A number larger than the largest table size is entered, but less than 50 (e.g. 20)|The following appears: _"If you wish to book a table for 20 people, please contact us using the contact form"_. The second half of the message is a clickable link to a prepopulated contact form.|PASS|
+|Check Availability response|Valid information is entered, but no matching tables are available|The following appears: _"Unfortunately, we do not have a table available for your group of X at the chosen time. Please contact us using the contact form for assistance, or try searching for another time or date"_, where X is replaced by the number of guests entered in the form. The second half of the message is clickable and again leads to a prepopulated contact form.|PASS|
+||Valid information is entered and one or more tables are available|A list of all of the smallest tables that match the booking's requests are shown, each with an active _Reserve Table_ button in the case of making a reservation, and _Update Reservation_ in the case of editing a reservation.|PASS|
+|Reserve Table/Update Reservation buttons|Click|Thank you page opens. A confirmation email is sent to both the restaurant and the guest with the reservation details. In the case of an updated reservation, the email contains both the old and new reservation information.|PASS|
 
-
-My Reservations
+**My Reservations**
 
 |Test Item|Test Carried Out|Result|Pass/Fail|
 |-------------|------------------|-----------|-------|
 |List of current reservations|Do the shown reservations accurately reflect the data in the database?|YES|PASS|
-|Edit button|Click|Edit Reservation form opens, with information prepopulated. [See note in Bugs](#issuesbugs)|YES|PASS|
+|Edit button|Click|Edit Reservation form opens, with information prepopulated. [See note in Unresolved Bugs](#unresolved)|YES|PASS|
 |Cancel button|Click|User is asked if they wish to cancel.|PASS|
 |Yes, Cancel button|Click|Reservation is deleted from the database. The restaurant and the user both get an email confirming this.|PASS|
 
@@ -644,55 +663,55 @@ See our Menu
 
 |Test Item|Test Carried Out|Result|Pass/Fail|
 |-------------|------------------|-----------|-------|
-|Filter button|Click|Chosen allergens/preferences are applied to the search.||
-|Clear Filters button|Click|All chosen allergens/preferences are unchecked.||
-|Gluten|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.||
-|Crustaceans|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.||
-|Eggs|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.||
-|Fish|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.||
-|Peanuts|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.||
-|Soy|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.||
-|Dairy|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.||
-|Nuts|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.||
-|Celery|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.||
-|Mustard|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.||
-|Sesame|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.||
-|Sulphites|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.||
-|Lupin|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.||
-|Molluscs|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.||
-|Vegan|Check box, click filter|All items from the menu that are NOT vegan are removed from the displayed items.||
-|Vegetarian|Check box, click filter|All items from the menu that are NOT vegetarian are removed from the displayed items.||
-|Menu item title|Click|Larger image and description opens in the same tab. The url name/slug is the name of the dish.||
-|Menu item image|Click|Larger image and description opens in the same tab. The url name/slug is the name of the dish.||
-|Back to Menu (under larger image)|Click|Return to menu, with previously chosen checkboxes still checked and applies.||
-|Make a Reservation (under larger image)|Click when logged in|Redirected to Make a Reservation page, user information prepopulated.||
-|Make a Reservation (under larger image)|Click when NOT logged in|Redirected to Sign Up page.||
+|Filter button|Click|Chosen allergens/preferences are applied to the search.|PASS|
+|Clear Filters button|Click|All chosen allergens/preferences are unchecked.|PASS|
+|Gluten|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.|PASS|
+|Crustaceans|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.|PASS|
+|Eggs|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.|PASS|
+|Fish|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.|PASS|
+|Peanuts|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.|PASS|
+|Soy|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.|PASS|
+|Dairy|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.|PASS|
+|Nuts|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.|PASS|
+|Celery|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.|PASS|
+|Mustard|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.|PASS|
+|Sesame|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.|PASS|
+|Sulphites|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.|PASS|
+|Lupin|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.|PASS|
+|Molluscs|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.|PASS|
+|Vegan|Check box, click filter|All items from the menu that are NOT vegan are removed from the displayed items.|PASS|
+|Vegetarian|Check box, click filter|All items from the menu that are NOT vegetarian are removed from the displayed items.|PASS|
+|Menu item title|Click|Larger image and description opens in the same tab. The url name/slug is the name of the dish.|PASS|
+|Menu item image|Click|Larger image and description opens in the same tab. The url name/slug is the name of the dish.|PASS|
+|Back to Menu (under larger image)|Click|Return to menu, with previously chosen checkboxes still checked and applies.|PASS|
+|Make a Reservation (under larger image)|Click when logged in|Redirected to Make a Reservation page, user information prepopulated.|PASS|
+|Make a Reservation (under larger image)|Click when NOT logged in|Redirected to Sign Up page.|PASS|
 
-
-Contact us
+**Contact us**
 
 |Test Item|Test Carried Out|Result|Pass/Fail|
 |-------------|------------------|-----------|-------|
 |Contact Form in navbar|Click whilst user is logged in|Contact Form page loads, users information (First Name, Last Name, Email) is prepopulated, but can be altered.|PASS|
 |Contact Form in navbar|Click whilst user is NOT logged in|Unpopulated contact form loads.|PASS|
-|Contact Form - Large group, redirected from Make a Reservation/Edit Reservation|Attempt to make a reservation for a large group (e.g. 20). Click on link that appears.|Information entered in reservation form populated in contact form's subject line. Message from reservation form (if non-empty) populated into message field.||
-|Contact Form - No available table, redirected from Make a Reservation/Edit Reservation|Attempt to make/edit a reservation for a time when there are no available, feasible tables. Click on link that appears.|Information entered in reservation form populated in contact form's subject line. Message from reservation form (if non-empty) populated into message field.||
+|Contact Form - Large group, redirected from Make a Reservation/Edit Reservation|Attempt to make a reservation for a large group (e.g. 20). Click on link that appears.|Information entered in reservation form populated in contact form's subject line. Message from reservation form (if non-empty) populated into message field.|PASS|
+|Contact Form - No available table, redirected from Make a Reservation/Edit Reservation|Attempt to make/edit a reservation for a time when there are no available, feasible tables. Click on link that appears.|Information entered in reservation form populated in contact form's subject line. Message from reservation form (if non-empty) populated into message field.|PASS|
 
-Error Pages
-
-|Test Item|Test Carried Out|Result|Pass/Fail|
-|-------------|------------------|-----------|-------|
-|400 Error|Force a 400 error|400.html loads with link to Home page.|PASS|
-|403 Error|Force a 403 error|403.html loads with link to Home page.|PASS|
-|404 Error|Force a 404 error|404.html loads with link to Home page.|PASS|
-|500 Error|Force a 500 error|500.html loads with link to Home page.|PASS|
-
-Sign In/Sign Up
+**Error Pages**
 
 |Test Item|Test Carried Out|Result|Pass/Fail|
 |-------------|------------------|-----------|-------|
+|404 Error|Force a 404 error by adding `/doesnotexist` to url|404.html loads with link to Home page.|PASS|
+|500 Error|Force a 500 error by removing `ALLOWED_HOST` from `settings.py`|500.html loads with link to Home page.|PASS|
 
-Django Admin Panel
+I was unable to find a reliable way to test the 400 and 403 error pages. However, [after reading about default template names in Django's ducomentation](https://docs.djangoproject.com/en/5.0/ref/views/), coupled with the fact that the 404 and 500 error pages work, I am confident that they will also work.
+
+**Sign In/Sign Up**
+
+|Test Item|Test Carried Out|Result|Pass/Fail|
+|-------------|------------------|-----------|-------|
+
+
+**Django Admin Panel**
 
 |Test Item|Test Carried Out|Result|Pass/Fail|
 |-------------|------------------|-----------|-------|
@@ -810,10 +829,11 @@ __booking/views.py__
 
 ## Future Improvements/Developments
 
-- Add possibility for user to select several tables when booking for a larger group. Although the current logic deals with this instance (and is arguably better and more flexible from the restaurant's point of view), I feel this would be a nice touch, and would give larger parties even more control over their dining experience.
+- Add possibility for user to select several tables when booking for a larger group. Although the current logic (directing the user to the contact form) deals with this instance (and is arguably better and more flexible from the restaurant's point of view), I feel this would be a nice touch, and would give larger parties even more control over their dining experience.
 - Cascade for when the opening hours are changed, affecting an already existing reservation. If, for example, the restaurant decides to begin closing early on Mondays or they decide to add an extra day to `ExceptionalClosingHours`, ideally a message should be sent to all future guests that have a reservation affected by this alteration (as well as to the restaurant to notify them of this). The current workaround would be to filter the existing reservations on the Django Admin panel and manually contact them (which is standard practise in most places), but an automated response would be more professional.
 - Add logic to the _MenuItem_ database, so that any item with _Dairy_ or _Eggs_ set to `True`, automatically has _Vegan_ set to `False`. This should not be an issue if data is input correctly, but it gives the user less chance to introduce an error/inconsistency into the model.
 - Assuming this was a real restaurant, I would hire a professional photographer to take real photos of the food, as opposes to [using generated images](#technology--resources).
+- Add an email/SMS reminder 24 hours before a booking to remind a guest of their reservation.
 
 
 ## Acknowledgments
