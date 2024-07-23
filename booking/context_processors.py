@@ -1,6 +1,7 @@
 from .models import NormalOpeningHours
 from django.db.models import Case, When, Value, IntegerField
 
+
 def opening_hours(request):
     order = Case(
         When(day='monday', then=Value(1)),

@@ -4,11 +4,12 @@ from .models import Reservation
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserChangeForm
-from django.core.exceptions import ValidationError  
+from django.core.exceptions import ValidationError
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from django.core.validators import RegexValidator
 from django.shortcuts import render, redirect, get_object_or_404
+
 
 # Reservation Form
 class ReservationForm(forms.ModelForm):
@@ -34,7 +35,8 @@ class ReservationForm(forms.ModelForm):
         self.fields['reservation_time'].widget = (
             forms.Select(attrs={'required': True}))
 
-        self.fields['reservation_time'].widget = forms.Select(choices=[("-", "Please select a date")])
+        self.fields['reservation_time'].widget = forms.Select(
+            choices=[("-", "Please select a date")])
 
     def clean(self):
         cleaned_data = super().clean()
@@ -67,6 +69,7 @@ class CustomUserChangeForm(UserChangeForm):
         model = User
         fields = ('first_name', 'last_name', 'email')
 
+
 # Contact Form
 class ContactForm(forms.Form):
     first_name = forms.CharField(max_length=100, label='First Name')
@@ -86,6 +89,7 @@ class ContactForm(forms.Form):
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Send'))
+
 
 # Edit Reservation Form
 class EditReservationForm(forms.ModelForm):
@@ -130,7 +134,8 @@ class EditReservationForm(forms.ModelForm):
         self.fields['reservation_time'].widget = (
             forms.Select(attrs={'required': True}))
 
-        self.fields['reservation_time'].widget = forms.Select(choices=[("-", "Please select a date")])
+        self.fields['reservation_time'].widget = forms.Select(
+            choices=[("-", "Please select a date")])
 
     def format_reservation_length(self, length):
         for value, label in self.LENGTH_CHOICES:

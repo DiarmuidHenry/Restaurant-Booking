@@ -84,7 +84,9 @@ def check_availability(request, reservation_id=None):
         if form.is_valid():
             number_of_guests = form.cleaned_data['number_of_guests']
             if not 1 <= number_of_guests <= 50:
-                form.add_error('number_of_guests', 'Number of guests must be between 1 and 50.')
+                form.add_error(
+                    'number_of_guests',
+                    'Number of guests must be between 1 and 50.')
                 return render(request, 'booking/booking_form.html', {
                     'form': form,
                     'available_tables': available_tables,
@@ -152,19 +154,19 @@ def check_availability(request, reservation_id=None):
                 if number_of_guests > max_capacity:
                     alert_message = f"""
                     If you wish to book a table for
-                     {number_of_guests} people, please 
-                    <a href='{reverse('contact')}?{(
-                        subject_param)}&message={message}'>contact us 
-                        using the contact form</a>.
+                     {number_of_guests} people, please
+                     <a href='{reverse('contact')}?{(
+                     subject_param)}&message={message}'>contact us
+                     using the contact form</a>.
                     """
                 else:
                     alert_message = f"""
-                    Unfortunately, we do not have a table 
-                    available for your group of {number_of_guests} at the 
-                    chosen time. Please <a href='{reverse('contact')}?
-                    {subject_param}&message={message}'>contact us using the 
-                    contact form</a> for assistance, or try searching 
-                    for another time or date.
+                    Unfortunately, we do not have a table
+                     available for your group of {number_of_guests} at the
+                     chosen time. Please <a href='{reverse('contact')}?
+                    {subject_param}&message={message}'>contact us using the
+                     contact form</a> for assistance, or try searching
+                     for another time or date.
                     """
 
             for capacity in range(min_capacity, max_capacity + 1):
@@ -265,6 +267,7 @@ def cancel_reservation(request, reservation_id):
         request,
         'booking/cancel_reservation.html',
         {'reservation': reservation})
+
 
 # Controls all confirmation emails
 def send_reservation_email(
@@ -388,6 +391,7 @@ def send_reservation_email(
         from_email,
         [to_restaurant],
         html_message=html_message_restaurant)
+
 
 # Contact form
 def contact(request):
