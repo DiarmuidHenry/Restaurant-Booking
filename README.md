@@ -676,7 +676,7 @@ Below are the records for the manual testing of all functionalities of the appli
 |Test Item|Test Carried Out|Result|Pass/Fail|
 |-------------|------------------|-----------|-------|
 |List of current reservations|Do the shown reservations accurately reflect the data in the database?|YES|PASS|
-|Edit button|Click|Edit Reservation form opens, with information prepopulated. [See note in Unresolved Bugs](#unresolved)|YES|PASS|
+|Edit button|Click|Edit Reservation form opens, with information prepopulated. [See note in Unresolved Bugs](#unresolved)|PASS|
 |Cancel button|Click|User is asked if they wish to cancel.|PASS|
 |Yes, Cancel button|Click|Reservation is deleted from the database. The restaurant and the user both get an email confirming this.|PASS|
 
