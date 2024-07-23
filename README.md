@@ -557,6 +557,11 @@ In the corresponding `VALUE` field, enter the value for these variables. For exa
 
   After creating this simple file and updating the `settings.py` accordingly, the problem was resolved.
 
+
+Changing opening times shuffles order: add summernote ordering?
+
+Making 
+
 ### Unresolved
 
 - When the user clicks on a reservation to edit on their _My Reservations_ page, the data from their reservation loads into the form. However, the time slot instead loads to the last chosen time slot. This is due to the JavaScript overwriting the imported data. After many attempts at rewriting the JaveScript code, I couldn't come up with an elegant solution. It is a minor inconvenience, and a slighlty under-finctioning extra, so I don't consider it to be a major issue.

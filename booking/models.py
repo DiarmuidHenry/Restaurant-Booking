@@ -31,8 +31,11 @@ class NormalOpeningHours(models.Model):
 
     day = models.CharField(max_length=10, choices=DAY_CHOICES)
     is_open = models.BooleanField(default=False)
-    opening_time = models.TimeField()
-    closing_time = models.TimeField()
+    opening_time = models.TimeField(null=True, blank=True)
+    closing_time = models.TimeField(null=True, blank=True)
+
+    class Meta:
+        ordering = ['day']
 
     def clean(self):
         # Check that opening_time is before closing_time
