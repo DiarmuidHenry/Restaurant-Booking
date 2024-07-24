@@ -430,7 +430,11 @@ In this example, the user has moved the reservation to 30 minutes earlier, made 
 
 ![Change to reservation](/media/readme-images/changes_to_reservation.png)
 
-- When the user clicks on _Check Availability_, the same logic as before happens, with 1 noticable difference: the current reservation that the user is editing, is excluded from the list of reservations that are compared to the potential new one. This means that in this instance (and similar instances), the user's original table is shown as being available, because if they are editing their reservation, the original timeslot will not exist (note: the reservation entry remains, but the time is changed). However, in this case, the user has decided to change to table 12. When they click on _Update Reservation_, a confirmation page appears.
+- When the user clicks on _Check Availability_, the same logic as before happens, with 1 noticable difference: the current reservation that the user is editing, is excluded from the list of reservations that are compared to the potential new one. This means that in this instance (and similar instances), the user's original table is shown as being available, because if they are editing their reservation, the original timeslot will not exist (note: the reservation entry remains, but the time is changed). 
+
+![Edit Reservation Available Tables](/media/readme-images/available_tables_edit.png)
+
+- However, in this case (for the sake of being able to see the changes in _My Reservaitons_), the user has decided to change to table 12. When they click on _Update Reservation_, a confirmation page appears.
 
 ![Reservation Update Confirmation](/media/readme-images/reservation_update_confirmation.png)
 
@@ -501,7 +505,7 @@ The only logic used in this app is simply filtering menu items based on the bool
 
 1. Log in to [Heroku](https://www.heroku.com/). If you do not already have an account, you can [sign up here](https://signup.heroku.com/).
 2. Click **Create new app** on the Heroku Dashboard. Give the app a unique name. Select your region, click **Create app**.
-3. Go to the **Settings** tab, click on **Reveal Config Vars**
+3. Go to the **Settings** tab, click on **Reveal Config Vars**.
 4. In the **KEY** field, enter the secret/sensitive variable names that you have/will store in your `env.py` file. For example, `DATABASE_URL`, `DEFAULT_FROM_EMAIL`. \
 In the corresponding `VALUE` field, enter the value for these variables. For example, `postgres://<sensitive_information_included_here>/<your_database_name>`, `thisis@myemail.com`.
 5. Go to the **Deploy** tab. Beside **Deployment method**, click **GitHub**, then confirm by clicking **Connect to GitHub**.
@@ -540,7 +544,7 @@ In the corresponding `VALUE` field, enter the value for these variables. For exa
 
 - **Mandatory Opening and Closing times, even when closed**
 
-  When I tried added an entry to the `ExceptionalOpeningHours` database (the restaurant is closed on Christmas Day), an error appeared stating that I had to add an opening and closing time
+  When I tried added an entry to the `ExceptionalOpeningHours` database (e.g. that the restaurant is closed on Christmas Day), an error appeared stating that I had to add an opening and closing time.
 
   ![Error when restaurant closed on special day](/media/readme-images/bug_missing_times_when_is_open_false_1.png)
 
@@ -552,11 +556,11 @@ In the corresponding `VALUE` field, enter the value for these variables. For exa
 
   ![New ExceptionalOpeningHours model](/media/readme-images/bug_missing_times_when_is_open_false_3.png)
 
-- **Differnt formats of date and time**
+- **Different formats of date and time**
 
   I encountered problems when calculating `reservation_end_time`, due to `reservation_start_time` and `reservation_length` being in two different formats. A single line to convert them to the same type was enough to fix the problem.
 
-- **Opening Hours not fetch in footer**
+- **Opening Hours not being fetched in footer**
 
   Originally, I could not get the opening hours to load in the footer.
 
@@ -585,7 +589,7 @@ In the corresponding `VALUE` field, enter the value for these variables. For exa
 
 - **Error 404 for tables sizes of 0 or >50**
 
-  Whilst testing, I noticed that entering 0 or above 50 as the number fo guest led to an error 404, even when `DEBUG` was set to true. After checking the code, I found that I had included errors with the form, but I had (at an earlier point in development) added the following lines, possibly to try and catch errors:
+  Whilst testing, I noticed that entering 0 or above 50 as the number fo guest led to an error 404, even when `DEBUG` was set to `true`. After checking the code, I found that I had included errors with the form, but I had (at an earlier point in development) added the following lines, possibly to try and catch errors:
 
   ![Number of guests bug cause](/media/readme-images/bug_number_of_guets_cause.png)
 
@@ -605,12 +609,12 @@ In the corresponding `VALUE` field, enter the value for these variables. For exa
 
   This was due to the fact that the JS script that populates the Reservation Time options was only running once the date and reservation length were chosen/changed. This meant that upon loading, it was blank. The way I fixed this was just by adding a default value.
 
-  ![HTML Validation Error Fixed](/media/readme-images/html_validation_error_fixed.png)
+  ![HTML Validation Error Fixed](/media/readme-images/html_validation_error_fix.png)
 
 
 ### Unresolved
 
-- When the user clicks on a reservation to edit on their _My Reservations_ page, the data from their reservation loads into the form. However, the time slot instead loads to the last chosen time slot. This is due to the JavaScript overwriting the imported data. After many attempts at rewriting the JaveScript code, I couldn't come up with an elegant solution. It is a minor inconvenience, and a slighlty under-finctioning extra, so I don't consider it to be a major issue.
+- When the user clicks on a reservation to edit on their _My Reservations_ page, the data from their reservation loads into the form. However, the time slot instead loads to the last chosen time slot. This is due to the JavaScript overwriting the imported data. After many attempts at rewriting the JaveScript code, I couldn't come up with an elegant solution. It is a minor inconvenience, and a slighlty under-functioning extra, so I don't consider it to be a major issue.
 
 ## Testing & Validation
 
@@ -624,14 +628,14 @@ Below are the records for the manual testing of all functionalities of the appli
 |-------------|------------------|-----------|-------|
 |BigByte logo|Click|Homepage loads|PASS|
 |Home|Click|Homepage loads|PASS|
-|Make a Reservation|Click, whilst logged in|Reservation form appears, with user information prepopulated in First Name, Last Name and Email.|PASS|
-|Make a Reservation|Click, whilst NOT logged in|Sign In page appears, asking the user to sign up or sign in.|PASS|
+|Make a Reservation|Click, whilst logged in|Reservation form appears, with user information prepopulated in First Name, Last Name and Email|PASS|
+|Make a Reservation|Click, whilst NOT logged in|Sign In page appears, asking the user to sign up or sign in|PASS|
 |See our Menu|Click|Menu and filters appear|PASS|
 |My Reservations|Is it visble whilst logged in?|YES|PASS|
 |Sign Up|Is it visble whilst NOT logged in?|NO|PASS|
 ||Is it visible whilst logged in?|NO|PASS|
 ||Is it visible whilst NOT logged in?|YES|PASS|
-||Click|Sign up page appears, asking the user to enter their email and create a secure password.|PASS|
+||Click|Sign up page appears, asking the user to enter their email and create a secure password|PASS|
 |Sign In|Is it visible whilst logged in?|NO|PASS|
 ||Is it visible whilst NOT logged in?|YES|PASS|
 ||Click|User is asked to enter their existing user info and log in. When logged in, Navbar is updated to show My Reservations, and Sign Up and Sign In are replaced with Sign Out|PASS|
@@ -651,25 +655,27 @@ Below are the records for the manual testing of all functionalities of the appli
 |GitHub|Click on logo|My GitHub profile opens in a new tab|PASS|
 |LinkedIn|Click on logo|My LinkedIn profile opens in a new tab|PASS|
 
+
 **Booking Form (Make a Reservation and Edit Reservation)**
 
 |Test Item|Test Carried Out|Result|Pass/Fail|
 |-------------|------------------|-----------|-------|
-|Reservation Date calendar widget|Click|Calendar opens with todays date as the default. Any day from todays date to 1 year in the future can be chosen. If an invalid date is written in manually, clicking Check Availabilty will not work, it will instead scroll up back to the date field to highlight the mistake.|PASS|
-|Reservation Length select field|Click arrow at side of drop down box.|Selections of 1, 1.5, 2, 2.5 and 3 hours appear. Manual input is not possible.|PASS|
-|Reservation Time options field|Change Reservation Date and/or Reservation Length|Once the change to length/date is made, the js script is executed and populates only the feasible times based on the opening hours for that day and the reservation length.|PASS|
-|Number of Guest field|Type number of guests|Only numbers are accepted/read in this field, letters/symbols do not appear if typed. If 0 or anything larger than 50 is entered, an error message appears under the field once Check Availability it clicked.|PASS|
-|Tabe Location selection field|Click arrow at side of drop down box|The options Inside and Outside appear, with Inside the default. Manual input is not possible.|PASS|
-|Message field|Type|Anything typed is mirrored in the message box. The markings on the bottom right corner allow for the box to be enlarged if necessary.|PASS|
-|Booking Form is missing any of the above entry fields (excluding Message, which is optional)|Click Check Availablility|An error message appears under the relevant field, highlighting the cause of the error. The page scrolls up to show this error more clearly.|PASS|
-|Booking Form has entries for all fields, but Reservation Date has been manually written as a date outside of the next calendar year|Click Check Availability|The error is highlighted and the page scrolls up.|PASS|
-|Number of Guests field|A negative number is entered, then click Check Availability|An error message explains that the value must be greater than 0.|PASS|
-||0 is entered, then click Check Availability|An error message explains that the value must be between 1 and 50.|PASS|
-||A number greater than 50 is entered (e.g. 60), then click Check Availability|An error message explains that the value must be between 1 and 50.|PASS|
-||A number larger than the largest table size is entered, but less than 50 (e.g. 20)|The following appears: _"If you wish to book a table for 20 people, please contact us using the contact form"_. The second half of the message is a clickable link to a prepopulated contact form.|PASS|
-|Check Availability response|Valid information is entered, but no matching tables are available|The following appears: _"Unfortunately, we do not have a table available for your group of X at the chosen time. Please contact us using the contact form for assistance, or try searching for another time or date"_, where X is replaced by the number of guests entered in the form. The second half of the message is clickable and again leads to a prepopulated contact form.|PASS|
-||Valid information is entered and one or more tables are available|A list of all of the smallest tables that match the booking's requests are shown, each with an active _Reserve Table_ button in the case of making a reservation, and _Update Reservation_ in the case of editing a reservation.|PASS|
-|Reserve Table/Update Reservation buttons|Click|Thank you page opens. A confirmation email is sent to both the restaurant and the guest with the reservation details. In the case of an updated reservation, the email contains both the old and new reservation information.|PASS|
+|Reservation Date calendar widget|Click|Calendar opens with todays date as the default. Any day from todays date to 1 year in the future can be chosen. If an invalid date is written in manually, clicking Check Availabilty will not work, it will instead scroll up back to the date field to highlight the mistake|PASS|
+|Reservation Length select field|Click arrow at side of drop down box|Selections of 1, 1.5, 2, 2.5 and 3 hours appear. Manual input is not possible|PASS|
+|Reservation Time options field|Change Reservation Date and/or Reservation Length|Once the change to length/date is made, the js script is executed and populates only the feasible times based on the opening hours for that day and the reservation length|PASS|
+|Number of Guests field|Type number of guests|Only numbers are accepted/read in this field, letters/symbols do not appear if typed. If 0 or anything larger than 50 is entered, an error message appears under the field once Check Availability it clicked|PASS|
+|Tabe Location selection field|Click arrow at side of drop down box|The options Inside and Outside appear, with Inside the default. Manual input is not possible|PASS|
+|Message field|Type|Anything typed is mirrored in the message box. The markings on the bottom right corner allow for the box to be enlarged if necessary|PASS|
+|Booking Form is missing any of the above entry fields (excluding Message, which is optional)|Click Check Availablility|An error message appears under the relevant field, highlighting the cause of the error. The page scrolls up to show this error more clearly|PASS|
+|Booking Form has entries for all fields, but Reservation Date has been manually written as a date outside of the next calendar year|Click Check Availability|The error is highlighted and the page scrolls up|PASS|
+|Number of Guests field|A negative number is entered, then click Check Availability|An error message explains that the value must be greater than 0|PASS|
+||0 is entered, then click Check Availability|An error message explains that the value must be between 1 and 50|PASS|
+||A number greater than 50 is entered (e.g. 60), then click Check Availability|An error message explains that the value must be between 1 and 50|PASS|
+||A number larger than the largest table size is entered, but less than 50 (e.g. 20)|The following appears: _"If you wish to book a table for 20 people, please contact us using the contact form"_. The second half of the message is a clickable link to a prepopulated contact form|PASS|
+|Check Availability response|Valid information is entered, but no matching tables are available|The following appears: _"Unfortunately, we do not have a table available for your group of X at the chosen time. Please contact us using the contact form for assistance, or try searching for another time or date"_, where X is replaced by the number of guests entered in the form. The second half of the message is clickable and again leads to a prepopulated contact form|PASS|
+||Valid information is entered and one or more tables are available|A list of all of the smallest tables that match the booking's requests are shown, each with an active _Reserve Table_ button in the case of making a reservation, and _Update Reservation_ in the case of editing a reservation|PASS|
+|Reserve Table/Update Reservation buttons|Click|Thank you page opens. A confirmation email is sent to both the restaurant and the guest with the reservation details. In the case of an updated reservation, the email contains both the old and new reservation information|PASS|
+
 
 **My Reservations**
 
@@ -677,79 +683,97 @@ Below are the records for the manual testing of all functionalities of the appli
 |-------------|------------------|-----------|-------|
 |List of current reservations|Do the shown reservations accurately reflect the data in the database?|YES|PASS|
 |Edit button|Click|Edit Reservation form opens, with information prepopulated. [See note in Unresolved Bugs](#unresolved)|PASS|
-|Cancel button|Click|User is asked if they wish to cancel.|PASS|
-|Yes, Cancel button|Click|Reservation is deleted from the database. The restaurant and the user both get an email confirming this.|PASS|
+|Cancel button|Click|User is asked if they wish to cancel|PASS|
+|Yes, Cancel button|Click|Reservation is deleted from the database. The restaurant and the user both get an email confirming this|PASS|
 
-See our Menu
 
-|Test Item|Test Carried Out|Result|Pass/Fail|
-|-------------|------------------|-----------|-------|
-|Filter button|Click|Chosen allergens/preferences are applied to the search.|PASS|
-|Clear Filters button|Click|All chosen allergens/preferences are unchecked.|PASS|
-|Gluten|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.|PASS|
-|Crustaceans|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.|PASS|
-|Eggs|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.|PASS|
-|Fish|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.|PASS|
-|Peanuts|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.|PASS|
-|Soy|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.|PASS|
-|Dairy|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.|PASS|
-|Nuts|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.|PASS|
-|Celery|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.|PASS|
-|Mustard|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.|PASS|
-|Sesame|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.|PASS|
-|Sulphites|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.|PASS|
-|Lupin|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.|PASS|
-|Molluscs|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items.|PASS|
-|Vegan|Check box, click filter|All items from the menu that are NOT vegan are removed from the displayed items.|PASS|
-|Vegetarian|Check box, click filter|All items from the menu that are NOT vegetarian are removed from the displayed items.|PASS|
-|Menu item title|Click|Larger image and description opens in the same tab. The url name/slug is the name of the dish.|PASS|
-|Menu item image|Click|Larger image and description opens in the same tab. The url name/slug is the name of the dish.|PASS|
-|Back to Menu (under larger image)|Click|Return to menu, with previously chosen checkboxes still checked and applies.|PASS|
-|Make a Reservation (under larger image)|Click when logged in|Redirected to Make a Reservation page, user information prepopulated.|PASS|
-|Make a Reservation (under larger image)|Click when NOT logged in|Redirected to Sign Up page.|PASS|
-
-**Contact us**
+**See our Menu**
 
 |Test Item|Test Carried Out|Result|Pass/Fail|
 |-------------|------------------|-----------|-------|
-|Contact Form in navbar|Click whilst user is logged in|Contact Form page loads, users information (First Name, Last Name, Email) is prepopulated, but can be altered.|PASS|
-|Contact Form in navbar|Click whilst user is NOT logged in|Unpopulated contact form loads.|PASS|
-|Contact Form - Large group, redirected from Make a Reservation/Edit Reservation|Attempt to make a reservation for a large group (e.g. 20). Click on link that appears.|Information entered in reservation form populated in contact form's subject line. Message from reservation form (if non-empty) populated into message field.|PASS|
-|Contact Form - No available table, redirected from Make a Reservation/Edit Reservation|Attempt to make/edit a reservation for a time when there are no available, feasible tables. Click on link that appears.|Information entered in reservation form populated in contact form's subject line. Message from reservation form (if non-empty) populated into message field.|PASS|
+|Filter button|Click|Chosen allergens/preferences are applied to the search|PASS|
+|Clear Filters button|Click|All chosen allergens/preferences are unchecked|PASS|
+|Gluten|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items|PASS|
+|Crustaceans|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items|PASS|
+|Eggs|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items|PASS|
+|Fish|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items|PASS|
+|Peanuts|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items|PASS|
+|Soy|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items|PASS|
+|Dairy|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items|PASS|
+|Nuts|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items|PASS|
+|Celery|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items|PASS|
+|Mustard|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items|PASS|
+|Sesame|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items|PASS|
+|Sulphites|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items|PASS|
+|Lupin|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items|PASS|
+|Molluscs|Check box, click filter|All items from the menu including this allergen (and any other checked allergens/preferences) are removed from the displayed items|PASS|
+|Vegan|Check box, click filter|All items from the menu that are NOT vegan are removed from the displayed items|PASS|
+|Vegetarian|Check box, click filter|All items from the menu that are NOT vegetarian are removed from the displayed items|PASS|
+|Menu item title|Click|Larger image and description opens in the same tab. The url name/slug is the name of the dish|PASS|
+|Menu item image|Click|Larger image and description opens in the same tab. The url name/slug is the name of the dish|PASS|
+|Back to Menu (under larger image)|Click|Return to menu, with previously chosen checkboxes still checked and applied|PASS|
+|Make a Reservation (under larger image)|Click when logged in|Redirected to Make a Reservation page, user information prepopulated|PASS|
+|Make a Reservation (under larger image)|Click when NOT logged in|Redirected to Sign Up page|PASS|
+
+
+**Contact Us**
+
+|Test Item|Test Carried Out|Result|Pass/Fail|
+|-------------|------------------|-----------|-------|
+|Contact Form in navbar|Click whilst user is logged in|Contact Form page loads, users information (First Name, Last Name, Email) is prepopulated, but can be altered|PASS|
+||Click whilst user is NOT logged in|Unpopulated contact form loads|PASS|
+|Contact Form - Large group, redirected from Make a Reservation/Edit Reservation|Attempt to make a reservation for a large group (e.g. 20). Click on link that appears|Information entered in reservation form populated in contact form's subject line. Message from reservation form (if non-empty) populated into message field|PASS|
+|Contact Form - No available table, redirected from Make a Reservation/Edit Reservation|Attempt to make/edit a reservation for a time when there are no available, feasible tables. Click on link that appears|Information entered in reservation form populated in contact form's subject line. Message from reservation form (if non-empty) populated into message field|PASS|
+
+
+**Sign In, Sign Out, Sign up**
+
+|Test Item|Test Carried Out|Result|Pass/Fail|
+|-------------|------------------|-----------|-------|
+|Sign In function|Enter an invalid email/password combination|The following appears: _"The email address and/or password you specified are not correct"_. Status remains NOT signed in|PASS|
+||Enter a valid user (non superuser) email/password combination|The user is signed in. The _My Reservations_ link appears in the navbar. The _Sign In_ and _Sign Up_ links in the navbar become a _Sign Out_ link, reflecting the fact that the user is logged in. Their contact info is prepopulated into the contact form and booking form upon opening. They are unable to access the Django admin panel|PASS|
+||Enter a valid superuser email/password combination|The user is signed in. The _My Reservations_ link appears in the navbar. The _Sign In_ and _Sign Up_ links in the navbar become a _Sign Out_ link, reflecting the fact that the user is logged in. Their contact info is prepopulated into the contact form and booking form upon opening. They are able to access the Django admin panel|PASS|
+|Sign Up function|Enter an invalid email|An error message appears, not allowing the user to create an account with an invalid email|PASS|
+||Enter an invalid password (e.g. too short, using a common word)|An error message appears, reflecting the issue with the password|PASS|
+||Enter a valid email/name/password combination|A new user account is added to the Django database. The user is automatically signed in|PASS|
+|Sign Out function|Click _Sign Out_|A confirmation message appears, checking that the user in fact wants to sign out|PASS|
+||Click and confirm _Sign Out_|The user is signed out. The _My Reservations_ link disappears from the navbar. The _Sign In_ and _Sign Up_ links appear in the navbar, whilst the _Sign Out_ link disappears, reflecting the fact that the user is not logged in. Their contact info is no longer prepopulated into the contact form and booking form upon opening|PASS|
+||Click any other link on the site, or back|The user remains signed in|PASS|
+
 
 **Error Pages**
 
 |Test Item|Test Carried Out|Result|Pass/Fail|
 |-------------|------------------|-----------|-------|
-|404 Error|Force a 404 error by adding `/doesnotexist` to url|404.html loads with link to Home page.|PASS|
-|500 Error|Force a 500 error by removing `ALLOWED_HOST` from `settings.py`|500.html loads with link to Home page.|PASS|
+|404 Error|Force a 404 error by adding `/doesnotexist` to url|404.html loads with link to Home page|PASS|
+|500 Error|Force a 500 error by removing `ALLOWED_HOST` from `settings.py`|500.html loads with link to Home page|PASS|
 
-I was unable to find a reliable way to test the 400 and 403 error pages. However, [after reading about default template names in Django's ducomentation](https://docs.djangoproject.com/en/5.0/ref/views/), coupled with the fact that the 404 and 500 error pages work, I am confident that they will also work.
+I was unable to find a reliable way to test the 400 and 403 error pages. However, [after reading about default template names in Django's documentation](https://docs.djangoproject.com/en/5.0/ref/views/), coupled with the fact that the 404 and 500 error pages work, I am confident that they will also work.
 
 ### Automated Testing
 
 For this, I used the inbuilt testing module `unittest`. I tested the `menu_item_list` view in the _Allergens_ app. This is the view that controls the filtering of dishes containing certain allergens and whether they are vegan/vegetarian.
 
-In order for an this test to pass, it needs to do the following:
+In order for this test to pass, the view needs to do the following:
 
-- FAIL if any of the inputs are not Boolean. The input into this function is a series of Boolean values stating whether certain allergens/dietary requirements apply or do not apply. If, for example, the function receives a float as one of the inputs, it should raise a `TypeError`.
+- FAIL if any of the inputs are not `Boolean`. The input into this function is a series of Boolean values stating whether certain allergens/dietary requirements apply or do not apply.
 - FAIL if any of the inputs are of the type `None`, i.e. there is missing data. In order for the function to be accurate, an input must be received for each of the dietary criteria.
 - If the input for an allergen **a** is `True`, then the return **must not** include any entries from the _MenuItem_ database that have the attribute `a` value set to `True`.
-- If the input for an allergen **b** is `False`, then the return must not exclude any entries from the _MenuItem_ database based on their `b` value. For example, if you do **not** a _Peanut_ allergy, then the item's **Peanut** variable value is irrelevant; it must not affect the return. 
-- If the input for **Vegetarian** is `True`, then the return **must not** include any entries from the _MenuItem_ database that have the attribute `vegetarian` value `False`.
-- If the input for an **Vegetarian**** is `False`, then the return must not exclude any entries from the _MenuItem_ database based on their `vegetarian` value. If you are not a vegetarian, then the item's **Vegetarian** variable value is irrelevant; it must not affect the return. 
-- If the input for **Vegan** is `True`, then the return **must not** include any entries from the _MenuItem_ database that have the attribute `vegan` value `False`.
-- If the input for an **Vegan** is `False`, then the return must not exclude any entries from the _MenuItem_ database based on their `vegan` value. If you are not a vegan, then the item's **Vegan** variable value is irrelevant; it must not affect the return.
+- If the input for an allergen **b** is `False`, then the return must not exclude any entries from the _MenuItem_ database based on their `b` value. For example, if you do **not** have a _Peanut_ allergy, then the item's **Peanut** variable value is irrelevant; it must not affect the return. 
+- If the input for **Vegetarian** is `True`, then the return **must not** include any entries from the _MenuItem_ database that have the attribute `vegetarian` value set to `False`.
+- If the input for **Vegetarian** is `False`, then the return must not exclude any entries from the _MenuItem_ database based on their `vegetarian` value. If you are not a vegetarian, then the item's **Vegetarian** variable value is irrelevant; it must not affect the return. 
+- If the input for **Vegan** is `True`, then the return **must not** include any entries from the _MenuItem_ database that have the attribute `vegan` value set to `False`.
+- If the input for **Vegan** is `False`, then the return must not exclude any entries from the _MenuItem_ database based on their `vegan` value. If you are not a vegan, then the item's **Vegan** variable value is irrelevant; it must not affect the return.
 
 Whilst testing, one of my tests (`test_dietary_requirement_not_ticked_filtering`) failed repeatedly.
 
 ![Test Fail](/media/readme-images/test_fail_2.png)
 
-After examining it further, the reason that it failed is due to the way the information is being passed. Since `default=True` for all of the allergen/dietary variables, they are simply not included in the url, if they are not selected. Hence, my search for `'?vegan=false'` could not exist in the actual application of the view `menu_list_item`. The way I solved this issue was to change the approach taken by the test. After ensuring the SetUp included both `vegan=True` and `vegan=False` values, I simply checked that no applying the `vegan` filter resulted in both vegan and non-vegan dishes being included in the response. The test passed.
+After examining it further, the reason that it failed is due to the way the information is being passed. Since `default=True` for all of the allergen/dietary variables, they are simply not included in the url, if they are not selected. Hence, my search for `'?vegan=false'` could not exist in the actual application of the view `menu_list_item`. The way I solved this issue was to change the approach taken by the test. After ensuring the test included both `vegan=True` and `vegan=False` values, I simply checked that not applying the `vegan` filter resulted in both vegan and non-vegan dishes being included in the response. The test passed.
 
 ### PageSpeed Testing
 
-I have attached 2 images from PageSpeed testing that represent the scores that the website received. As there are a lot of different parts to the website, I have only included 2.
+The website receieves high score on all pages. I have attached 2 images from PageSpeed testing that represent the scores that the website received. As there are a lot of different parts to the website, I have only included 2.
 
 ![PageSpeed Result - Home](/media/readme-images/pagespeed_home.png)
 
@@ -765,7 +789,7 @@ Web Accessibility Evaluation Tools revealed 0 errors.
 
 The 2 alerts are for the following:
 
-- Skipped heading level: on some pages, there may be `<h1>` tags and `<h3>` tags, but no `<h2>` tags. Since this is part of the styling I have chosen, this is also by choice.
+- Skipped heading level: on some pages, there may be `<h1>` tags and `<h3>` tags, but no `<h2>` tags. Since this is part of the styling I have chosen, this is of no concern.
 - _Home_ appears in the navbar, even when on the _Home_ page. This is by choice, for consistency in the styling and appearance of the navbar.
 
 ### HTML
@@ -846,11 +870,10 @@ __booking/views.py__
 - Add possibility for user to select several tables when booking for a larger group. Although the current logic (directing the user to the contact form) deals with this instance (and is arguably better and more flexible from the restaurant's point of view), I feel this would be a nice touch, and would give larger parties even more control over their dining experience.
 - Cascade for when the opening hours are changed, affecting an already existing reservation. If, for example, the restaurant decides to begin closing early on Mondays or they decide to add an extra day to `ExceptionalClosingHours`, ideally a message should be sent to all future guests that have a reservation affected by this alteration (as well as to the restaurant to notify them of this). The current workaround would be to filter the existing reservations on the Django Admin panel and manually contact them (which is standard practise in most places), but an automated response would be more professional.
 - Add logic to the _MenuItem_ database, so that any item with _Dairy_ or _Eggs_ set to `True`, automatically has _Vegan_ set to `False`. This should not be an issue if data is input correctly, but it gives the user less chance to introduce an error/inconsistency into the model.
-- Assuming this was a real restaurant, I would hire a professional photographer to take real photos of the food, as opposes to [using generated images](#technology--resources).
+- Assuming this was a real restaurant, I would hire a professional photographer to take real photos of the food, as opposed to [using manually generated images](#technology--resources).
 - Add an email/SMS reminder 24 hours before a booking to remind a guest of their reservation.
 
 ## Acknowledgments
 
 - **Student Care**: Quick responses and troubleshooting, especially when there were issues with the CI Database.
 - **Mentor**: Having the ability to find broken logic and quickly point out areas that need improving.
-
