@@ -17,6 +17,16 @@ class ReservationForm(forms.ModelForm):
         model = Reservation
         exclude = ['status', 'table', 'reservation_end_time', 'user']
 
+    LENGTH_CHOICES = [
+        (1.0, '1 hour'),
+        (1.5, '1.5 hours'),
+        (2.0, '2 hours'),
+        (2.5, '2.5 hours'),
+        (3.0, '3 hours'),
+    ]
+
+    reservation_length = forms.FloatField(widget=forms.Select(choices=LENGTH_CHOICES))
+
     # Autofill information from user
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
@@ -102,7 +112,7 @@ class EditReservationForm(forms.ModelForm):
         (3.0, '3 hours'),
     ]
 
-    reservation_length = forms.ChoiceField(choices=LENGTH_CHOICES)
+    reservation_length = forms.FloatField(widget=forms.Select(choices=LENGTH_CHOICES))
 
     class Meta:
         model = Reservation

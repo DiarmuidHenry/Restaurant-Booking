@@ -511,8 +511,9 @@ def process_reservation(
             reservation_datetime = (
                 datetime.combine(reservation_date, reservation_time))
             reservation_end_datetime = (
-                reservation_datetime + timedelta(hours=(
-                    round(float(reservation_length)) - 1), minutes=59))
+                reservation_datetime + timedelta(
+                    hours=reservation_length) - timedelta(
+                        minutes=1))
             reservation_end_time = reservation_end_datetime.time()
 
             # Set the reservation_end_time before saving the form
