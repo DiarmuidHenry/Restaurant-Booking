@@ -826,6 +826,10 @@ __allergens/models.py__
 
 ![Python Validation allergens/models.py](/media/readme-images/lint_allergens_models.png)
 
+__allergens/test.py__
+
+![Python Validation allergens/test.py](/media/readme-images/lint_allergens_test.png)
+
 __allergens/urls.py__
 
 ![Python Validation allergens/urls.py](/media/readme-images/lint_allergens_urls.png)
@@ -851,10 +855,6 @@ __booking/forms.py__
 __booking/models.py__
 
 ![Python Validation booking/models.py](/media/readme-images/lint_booking_models.png)
-
-__booking/test.py__
-
-![Python Validation booking/test.py](/media/readme-images/lint_booking_test.png)
 
 __booking/urls.py__
 
