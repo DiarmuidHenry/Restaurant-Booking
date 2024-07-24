@@ -420,9 +420,9 @@ Here is the flow/path through making, editing and cancelling a reservation:
 
 ![Reservation Creation Email Restaurant](/media/readme-images/reservation_creation_restaurant.png)
 
-- If the user wishes to edit their reservation, they can (if signed in) click on _My Reservations_. Here, a table populated with the user's reservation details appears.
+- If the user wishes to edit their reservation, they can (if signed in) click on _My Reservations_. Here, a table populated with the user's reservation details appears. Here, the newly made reservation for 22/10/2024 can be seen.
 
-![My Reservations original](/media/readme-images/my_reservations_original.png)
+![My Reservations original](/media/readme-images/my_reservations_before.png)
 
 - When the user clicks on _Edit_, they are redirected to the _Edit My Reservation_ form, where the booking information (including the message, if any) is included. The user can then change their reservation information.
 
@@ -446,7 +446,7 @@ In this example, the user has moved the reservation to 30 minutes earlier, made 
 
 - The changes to the reservation can be seen in _My Reservations_. 
 
-![My Reservation Updated](/media/readme-images/my_reservations_before.png)
+![My Reservation Updated](/media/readme-images/my_reservations_original.png)
 
 - If the user wishes to cancel their reservation, they can simply click on _Cancel_. A warning page comes up, in order to confirm that the guest does indeed wish to delete their reservation.
 
