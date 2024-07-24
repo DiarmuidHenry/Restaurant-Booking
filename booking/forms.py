@@ -25,7 +25,8 @@ class ReservationForm(forms.ModelForm):
         (3.0, '3 hours'),
     ]
 
-    reservation_length = forms.FloatField(widget=forms.Select(choices=LENGTH_CHOICES))
+    reservation_length = forms.FloatField(
+        widget=forms.Select(choices=LENGTH_CHOICES))
 
     # Autofill information from user
     def __init__(self, *args, **kwargs):
@@ -112,7 +113,8 @@ class EditReservationForm(forms.ModelForm):
         (3.0, '3 hours'),
     ]
 
-    reservation_length = forms.FloatField(widget=forms.Select(choices=LENGTH_CHOICES))
+    reservation_length = forms.FloatField(
+        widget=forms.Select(choices=LENGTH_CHOICES))
 
     class Meta:
         model = Reservation
