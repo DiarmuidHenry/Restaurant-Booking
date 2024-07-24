@@ -611,6 +611,16 @@ In the corresponding `VALUE` field, enter the value for these variables. For exa
 
   ![HTML Validation Error Fixed](/media/readme-images/html_validation_error_fix.png)
 
+- **Incorrect Reservation Length being added to reservation**
+
+  When making a reservation, those I tested that were 1.5 or 2.5 hours long, were both being saved as 2 hours long. Since this was a problem only for the decimal values of hours, I figured it was to do with a possible float/integer mix up. It was in fact due to the float being rounded in my calculations of the reservation end time that led to the mistake.
+
+  ![Float rounding error before](/media/readme-images/bug_float_round_error_before.png)
+
+  After reading more about the timedelta function, I read that it can handle floats as inputs to the number of hours, minutes etc. This led to the following as a more elegant and understandable solution:
+
+  ![Float rounding error after](/media/readme-images/bug_float_round_error_after.png)
+
 
 ### Unresolved
 
